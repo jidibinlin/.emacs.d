@@ -20,7 +20,7 @@
 ;;; Code:
 
 (load-theme 'modus-operandi)
-(enable-theme 'modus-operandi)
+;;(enable-theme 'modus-operandi)
 
 (provide 'init-theme)
 ;;; init-theme.el ends here

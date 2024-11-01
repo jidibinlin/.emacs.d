@@ -32,6 +32,11 @@
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles partial-completion)))))
 
+(use-package marginalia
+  :hook (after-init . marginalia-mode)
+  :demand t
+  :ensure t)
+
 (use-package vertico
   :hook (after-init . vertico-mode)
   :pin melpa
@@ -39,7 +44,7 @@
   :custom
   (vertico-scroll-margin 0)
   (vertico-count 20)
-  (vertico-resize t)
+  (vertico-resize nil)
   (vertico-cycle t)
   (enable-recursive-minibuffers t)
   (read-extended-command-predicate #'command-completion-default-include-p)
@@ -57,6 +62,9 @@
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
+
+(use-package consult
+  :ensure t)
 
 (provide 'init-vertico)
 ;;; init-vertico.el ends here

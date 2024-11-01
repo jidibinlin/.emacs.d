@@ -23,7 +23,6 @@
 (require 'init-font)
 (require 'init-theme)
 (require 'init-headerline)
-(require 'init-treesit)
 (require 'init-meow)
 (require 'init-vertico)
 (require 'init-corfu)
@@ -35,8 +34,8 @@
  ;; If there is more than one, they won't work right.
  '(ignored-local-variable-values '((git-commit-major-mode . git-commit-elisp-text-mode)))
  '(package-selected-packages
-   '(breadcrumb consult corfu hide-mode-line marginalia meow orderless
-		spacious-padding treesit-auto vertico)))
+   '(breadcrumb corfu hide-mode-line marginalia meow orderless
+		spacious-padding vertico)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

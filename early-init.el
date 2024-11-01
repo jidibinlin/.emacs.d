@@ -22,8 +22,6 @@
 (add-to-list 'load-path (concat user-emacs-directory "envir/"))
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 
-(prefer-coding-system 'utf-8)
-
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertico-scroll-bars) default-frame-alist)
@@ -31,6 +29,11 @@
 (setq menu-bar-mode nil
       tool-bar-mode nil
       scroll-bar-mode nil)
+
+(scroll-bar-mode -1)
+
+
+(prefer-coding-system 'utf-8)
 
 (setq package-archives
       (let ((proto (if (gnutls-available-p) "https" "http")))
