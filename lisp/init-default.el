@@ -22,6 +22,13 @@
 (setq jit-lock-chunk-size 8192)
 (setq jit-lock-stealth-nice 1)
 
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+(defun run-after-load-theme-hook (&rest _)
+  "Run `after-load-theme-hook'."
+  (run-hooks 'after-load-theme-hook))
+(advice-add #'load-theme :after #'run-after-load-theme-hook)
+
 (use-package hungry-delete
   :ensure t
   :hook (elpaca-after-init . global-hungry-delete-mode))
@@ -69,13 +76,13 @@
 (use-package eldoc
   :config
   (defun conia/eldoc-invoke-strategy-advice (_)
-   (if (or (not (listp eldoc-documentation-functions))
-           (equal (cl-first eldoc-documentation-functions) #'flymake-eldoc-function))
-       nil
-     (setq-local eldoc-documentation-functions
-		 (let ((rest (remove #'flymake-eldoc-function eldoc-documentation-functions)))
-		   (cons #'flymake-eldoc-function  rest)))))
-  
+    (if (or (not (listp eldoc-documentation-functions))
+            (equal (cl-first eldoc-documentation-functions) #'flymake-eldoc-function))
+        nil
+      (setq-local eldoc-documentation-functions
+		  (let ((rest (remove #'flymake-eldoc-function eldoc-documentation-functions)))
+		    (cons #'flymake-eldoc-function  rest)))))
+
   (advice-add #'eldoc--invoke-strategy :before #'conia/eldoc-invoke-strategy-advice))
 
 (use-package eldoc-box
@@ -111,5 +118,68 @@
   (define-key prog-mode-map (kbd "M-n") #'my/eldoc-box-scroll-down)
   (define-key prog-mode-map (kbd "M-p") #'my/eldoc-box-scroll-down))
 
+(use-package helpful
+  :ensure t
+  :bind (([remap describe-function] . helpful-callable)
+	 ([remap describe-command] . helpful-command)
+	 ([remap describe-variable] . helpful-variable)
+	 ([remap describe-key] . helpful-key)
+	 ([remap describe-symbol] . helpful-symbol)))
+
+(use-package posframe
+  :ensure t)
+
+(use-package hydra
+  :ensure t
+  :init
+  (setq hydra-hint-display-type 'posframe)
+  (with-eval-after-load 'posframe
+    (defun hydra-set-posframe-show-params ()
+      "Set hydra-posframe style."
+      (setq hydra-posframe-show-params
+            `(:left-fringe 3
+              :right-fringe 3
+              :internal-border-width 2
+	      :internal-border-color ,(face-background 'tooltip nil t)
+              :background-color ,(face-background 'tooltip nil t)
+              :foreground-color ,(face-foreground 'tooltip nil t)
+              :lines-truncate t
+              :poshandler posframe-poshandler-frame-center)))
+    (hydra-set-posframe-show-params)
+    (add-hook 'after-load-theme-hook 'hydra-set-posframe-show-params t)))
+
+(use-package pretty-hydra
+  :ensure t
+  :custom (pretty-hydra-default-title-body-format-spec " %s%s")
+  :bind (:map meow-normal-state-keymap
+	      ("SPC" . toggles-hydra/body))
+  :init
+  (cl-defun pretty-hydra-title (title &optional icon-type icon-name
+                                      &key face height v-adjust)
+    "Add an icon in the hydra title."
+    (let ((face (or face `(:inherit highlight :reverse-video t)))
+          (height (or height 1.2))
+          (v-adjust (or v-adjust 0.0)))
+      (concat
+       (when (and icon-type icon-name)
+         (let ((f (intern (format "nerd-icons-%s" icon-type))))
+           (when (fboundp f)
+             (concat
+              (apply f (list icon-name :face face :height height :v-adjust v-adjust))
+              " "))))
+       (propertize title 'face face))))
+  (pretty-hydra-define toggles-hydra (:title (pretty-hydra-title "Main" 'faicon "nf-fa-toggle_on")
+					  :color amaranth :quit-key ("q" "C-g" "ESC"))
+    ("Project"
+     (("p p" project-switch-project "switch project" :exit t)
+      ("p f" project-find-file "find file" :exit t)
+      ("p v" magit "magit" :exit t))
+     "Files"
+     (("f s" save-buffer "save current file" :exit t))
+     "Search"
+     (("s d" xref-find-definitions "find definitions" :exit t)
+      ("s r" xref-find-references "find references" :exit t))
+     "Compile"
+      ())))
 (provide 'init-default)
 ;;; init-default.el ends here
