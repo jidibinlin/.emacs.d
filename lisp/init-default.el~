@@ -1,0 +1,77 @@
+;;; init-default.el --- Description -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2024 jidibinlin
+;;
+;; Author: jidibinlin <2694273649@qq.com>
+;; Maintainer: jidibinlin <2694273649@qq.com>
+;; Created: November 01, 2024
+;; Modified: November 01, 2024
+;; Version: 0.0.1
+;; Keywords: Symbol’s value as variable is void: finder-known-keywords
+;; Homepage: https://github.com/qibin/init-vc
+;; Package-Requires: ((emacs "24.3"))
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+;;
+;;  Description
+;;
+;;; Code:
+
+(setq jit-lock-chunk-size 8192)
+(setq jit-lock-stealth-nice 1)
+
+(use-package hungry-delete
+  :ensure t
+  :hook (after-init . global-hungry-delete-mode))
+
+(use-package eldoc
+  :config
+  (advice-add #'eldoc--invoke-strategy
+    :before (lambda (_)
+              (if (or (not (listp eldoc-documentation-functions))
+                    (equal (cl-first eldoc-documentation-functions) #'flymake-eldoc-function))
+                nil
+                (setq-local eldoc-documentation-functions (let ((rest (remove
+                              #'flymake-eldoc-function
+                              eldoc-documentation-functions)))
+                  (cons #'flymake-eldoc-function  rest)))))))
+
+(use-package eldoc-box
+  :vc (:url "https://github.com/jidibinlin/eldoc-box"
+       :rev :newest)
+  :hook (eldoc-mode . eldoc-box-hover-at-point-mode)
+  :diminish (eldoc-box-hover-at-point-mode eldoc-box-hover-mode)
+  :ensure t
+  :init
+  (setq-default eldoc-idle-delay 1)
+  :custom-face
+  (eldoc-box-border ((t (:inherit region :background unspecified))))
+  (eldoc-box-body ((t (:inherit tooltip))))
+  :config
+  (setq eldoc-box-max-pixel-width 600)
+  (setq eldoc-box-max-pixel-height 200)
+
+  (defun my/eldoc-box-scroll-up ()
+    "Scroll up in `eldoc-box--frame'"
+    (interactive)
+    (with-current-buffer eldoc-box--buffer
+      (with-selected-frame eldoc-box--frame
+        (scroll-down 3))))
+
+  (defun my/eldoc-box-scroll-down ()
+    "Scroll down in `eldoc-box--frame'"
+    (interactive)
+    (with-current-buffer eldoc-box--buffer
+      (with-selected-frame eldoc-box--frame
+        (scroll-up 3))))
+
+  (add-to-list 'eldoc-box-self-insert-command-list #'my/eldoc-box-scroll-down)
+  (add-to-list 'eldoc-box-self-insert-command-list #'my/eldoc-box-scroll-up)
+
+  (map! :map 'prog-mode-map :n "M-n" #'my/eldoc-box-scroll-down)
+  (map! :map 'prog-mode-map :n "M-p" #'my/eldoc-box-scroll-up))
+
+(provide 'init-default)
+;;; init-vc.el ends here

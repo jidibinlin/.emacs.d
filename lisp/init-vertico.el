@@ -33,13 +33,12 @@
   (completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
-  :hook (after-init . marginalia-mode)
+  :hook (elpaca-after-init . marginalia-mode)
   :demand t
   :ensure t)
 
 (use-package vertico
-  :hook (after-init . vertico-mode)
-  :pin melpa
+  :hook (elpaca-after-init . vertico-mode)
   :ensure t
   :custom
   (vertico-scroll-margin 0)

@@ -21,15 +21,14 @@
 
 
 (use-package hide-mode-line
-  :pin melpa
-  :hook (after-init . global-hide-mode-line-mode)
+  :hook (elpaca-after-init . global-hide-mode-line-mode)
   :ensure t
   :demand t)
 
 (use-package spacious-padding
   :ensure t
   :demand t
-  :hook ((after-init . spacious-padding-mode)))
+  :hook ((elpaca-after-init . spacious-padding-mode)))
 
 (defun subtle-modeline ()
   "`subtle-modeline' enable subtle mode line."

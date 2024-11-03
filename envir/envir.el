@@ -42,6 +42,5 @@
 (defconst conia-sysis-mac  (equal conia-system 'macos))
 (defconst conia-syis-wsl (when (equal conia-system 'wsl) 'wsl))
 
-
 (provide 'envir)
 ;;; envir.el ends here

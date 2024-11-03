@@ -20,20 +20,41 @@
 ;;; Code:
 
 (use-package corfu
-  :hook (after-init . global-corfu-mode)
+  :hook ((elpaca-after-init . global-corfu-mode)
+	 (meow-insert-exit . corfu-quit))
+  :bind (:map corfu-map
+              ("M-j" . corfu-next)
+              ("M-k" . corfu-previous))
   :ensure t
-  :config
+  :init
   (setq corfu-auto t
         corfu-auto-delay 0
         corfu-auto-prefix 2
-        corfu-count 5
+        corfu-count 10
         corfu-scroll-margin 5
-        corfu-max-width 45
+        corfu-max-width 60
         corfu-cycle t
         corfu-preselect 'first
         corfu-on-exact-match nil
-        corfu-quit-no-match  corfu-quit-at-boundary))
+        corfu-quit-no-match  #'corfu-quit-at-boundary)
+  :config
+  (defun conia/switch-corfu-preselect-prompt-for-eshell ()
+    (setq-local corfu-preselect 'prompt)))
 
+(use-package cape
+  :defer t
+  :ensure t
+  :init
+  (advice-add #'tempel-complete :around #'cape-wrap-nonexclusive)
+  (advice-add #'tempel-expand :around #'cape-wrap-nonexclusive)
+  (advice-add #'eglot-completion-at-point :around #'cape-wrap-nonexclusive))
+
+(use-package nerd-icons-corfu
+  :defer t
+  :after corfu
+  :ensure t
+  :init
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (provide 'init-corfu)
 ;;; init-corfu.el ends here

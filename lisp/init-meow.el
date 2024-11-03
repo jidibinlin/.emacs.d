@@ -20,9 +20,17 @@
 ;;; Code:
 
 (use-package meow
-  :vc (:url "https://github.com/jidibinlin/meow"
-       :rev  :newest)
-
+  :ensure (:host github :repo "jidibinlin/meow")
+  :demand t
+  :custom-face
+  (meow-normal-indicator ((t (:inherit font-lock-keyword-face :bold t))))
+  (meow-motion-indicator ((t (:inherit font-lock-keyword-face :bold t))))
+  (meow-keypad-indicator ((t (:inherit font-lock-keyword-face :bold t))))
+  (meow-insert-indicator ((t (:inherit font-lock-keyword-face :bold t))))
+  (meow-beacon-indicator ((t (:inherit font-lock-keyword-face :bold t))))
+  :custom
+  (meow-use-clipboard t)
+  (meow-use-cursor-position-hack t)
   :config
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -110,7 +118,15 @@
      '("'" . repeat)
      '("<escape>" . ignore)))
   (meow-setup)
-  (meow-global-mode 1))
+  (meow-global-mode 1)
+
+  (defun conia/delay-jit-lock-time ()
+    (setq-local jit-lock-defer-time 0.25))
+  (defun conia/resume-jit-lock-time ()
+    (setq-local jit-lock-defer-time 0.1))
+
+  (add-hook 'meow-insert-enter-hook #'conia/delay-jit-lock-time)
+  (add-hook 'meow-insert-exit-hook #'conia/resume-jit-lock-time))
 
 (provide 'init-meow)
 ;;; init-meow.el ends here
