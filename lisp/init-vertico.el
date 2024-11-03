@@ -63,7 +63,8 @@
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 (use-package consult
-  :ensure t)
+  :ensure t
+  :bind (("C-s" . consult-line)))
 
 (provide 'init-vertico)
 ;;; init-vertico.el ends here

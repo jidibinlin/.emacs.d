@@ -27,6 +27,7 @@
 (require 'init-meow)
 (require 'init-vertico)
 (require 'init-corfu)
+(require 'init-snippets)
 (require 'init-vc)
 (require 'init-default)
 ;;; init.el ends here

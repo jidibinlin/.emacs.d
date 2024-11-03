@@ -36,7 +36,7 @@
         corfu-cycle t
         corfu-preselect 'first
         corfu-on-exact-match nil
-        corfu-quit-no-match  #'corfu-quit-at-boundary)
+        corfu-quit-no-match  'separator)
   :config
   (defun conia/switch-corfu-preselect-prompt-for-eshell ()
     (setq-local corfu-preselect 'prompt)))
