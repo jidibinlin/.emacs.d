@@ -172,26 +172,25 @@
        (propertize title 'face face))))
   
   (pretty-hydra-define toggles-hydra (:title (pretty-hydra-title "Main" 'faicon "nf-fa-toggle_on")
-					     :color amaranth :quit-key ("q" "C-g" "ESC"))
-    ("Project"
-     (("p p" project-switch-project "switch project" :exit t)
-      ("p f" project-find-file "find file" :exit t)
-      ("p v" magit "magit" :exit t)
-      ("p s" consult-ripgrep "search in project" :exit t))
-     "Files"
-     (("f s" save-buffer "save current file" :exit t))
-     "Search"
-     (("s d" xref-find-definitions "find definitions" :exit t)
-      ("s r" xref-find-references "find references" :exit t))
-     "Window/Workspace"
-     (("w v" split-window-right "split window vertico" :exit t)
-      ("w h" split-window-below "split window horizontal" :exit t)      
-      ("w d" delete-window "close current window" :exit t)
-      ("w o" other-window "other window"))))
+				      :color amaranth :quit-key ("q" "C-g" "ESC"))
+                       ("Project"
+                        (("p p" project-switch-project "switch project" :exit t)
+                         ("p f" project-find-file "find file" :exit t)
+                         ("p v" magit "magit" :exit t)
+                         ("p s" consult-ripgrep "search in project" :exit t))
+                        "Files"
+                        (("f s" save-buffer "save current file" :exit t))
+                        "Search"
+                        (("s d" xref-find-definitions "find definitions" :exit t)
+                         ("s r" xref-find-references "find references" :exit t))
+                        "Window/Workspace"
+                        (("w v" split-window-right "split window vertico" :exit t)
+                         ("w h" split-window-below "split window horizontal" :exit t)
+                         ("w d" delete-window "close current window" :exit t)
+                         ("w o" other-window "other window")))))
 
 (use-package elec-pair
   :hook (prog-mode . electric-pair-mode))
-
 
 (provide 'init-default)
 ;;; init-default.el ends here
