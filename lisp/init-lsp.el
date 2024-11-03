@@ -24,8 +24,7 @@
   (cl-callf plist-put eglot-events-buffer-config :size 0))
 
 (use-package consult-eglot
-  :defer t
-  )
+  :ensure t)
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

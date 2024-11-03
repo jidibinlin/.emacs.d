@@ -22,6 +22,7 @@
 (setq jit-lock-chunk-size 8192)
 (setq jit-lock-stealth-nice 1)
 (global-display-fill-column-indicator-mode 1)
+(global-display-line-numbers-mode 1)
 
 (defvar after-load-theme-hook nil
   "Hook run after a color theme is loaded using `load-theme'.")
@@ -169,6 +170,7 @@
               (apply f (list icon-name :face face :height height :v-adjust v-adjust))
               " "))))
        (propertize title 'face face))))
+  
   (pretty-hydra-define toggles-hydra (:title (pretty-hydra-title "Main" 'faicon "nf-fa-toggle_on")
 					     :color amaranth :quit-key ("q" "C-g" "ESC"))
     ("Project"
