@@ -45,5 +45,11 @@
 (use-package consult-eglot
   :ensure t)
 
+(when (< emacs-major-version 30)
+	(use-package eglot-booster
+		:ensure (:host github :repo "jdtsmith/eglot-booster")
+		:after eglot
+		:hook (elpaca-after-init . eglot-booster-mode)))
+
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

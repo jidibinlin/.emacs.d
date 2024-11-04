@@ -23,6 +23,9 @@
 (setq jit-lock-stealth-nice 1)
 (global-display-line-numbers-mode 1)
 
+(setq-default scroll-conservatively most-positive-fixnum)
+(setq-default scroll-margin 10)
+
 (setq-default tab-width 2)
 
 (use-package hungry-delete
@@ -112,13 +115,10 @@
 						:color amaranth :quit-key ("q" "C-g" "ESC"))
     ("Project"
      (("p p" project-switch-project "switch project" :exit t)
-      ("p f" project-find-file "find file" :exit t)
+      ("p f" consult-project-buffer "find file" :exit t)
       ("p v" magit "magit" :exit t)
       ("p s" consult-ripgrep "search in project" :exit t)
-      ("p b" project-switch-to-buffer "switch buffer" :exit t)
 			("p c" project-kill-buffers "close project" :exit t))
-     "Files"
-     (("f s" save-buffer "save current file" :exit t))
      "Search"
      (("s d" xref-find-definitions "find definitions" :exit t)
       ("s r" xref-find-references "find references" :exit t))
@@ -128,8 +128,9 @@
       ("w d" delete-window "close current window" :exit t)
       ("w o" other-window "other window"))
      "Buffer"
-     (("b b" switch-to-buffer "switch buffer" :exit t)
-      ("b d" kill-current-buffer "kill buffer" :exit t)))))
+     (("," consult-buffer "switch buffer" :exit t)
+      ("b d" kill-current-buffer "kill buffer" :exit t)
+			("f s" save-buffer "save current buffer" :exit t)))))
 
 (provide 'init-default)
 ;;; init-default.el ends here
