@@ -1,0 +1,2 @@
+;;   -*- mode: lisp-data; -*-
+((:container ((elisp org-element--headline-cache) (elisp org-element--cache) (version "2.3")) :persist-file "2f/4577f0-3a2e-4ad2-a989-d5e0e43a05a0" :associated (:hash "a658abfbae94b2b43fe5eea3843316f1" :file "c:/Users/yangqibin/.doom.d/config.org" :inode 3377699721355572) :expiry 30 :last-access 1730689727.4762504 :last-access-hr "2024-11-04T11:08:47+0800") (:container ((index "3.2")) :persist-file "c2/b98f16-2ad9-46f3-b759-438a12fe6bda" :associated nil :expiry never :last-access 1730689958.9059598 :last-access-hr "2024-11-04T11:12:38+0800"))

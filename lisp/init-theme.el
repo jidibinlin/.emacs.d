@@ -19,8 +19,22 @@
 ;;
 ;;; Code:
 
-(load-theme 'modus-operandi)
 ;;(enable-theme 'modus-operandi)
+
+(use-package doom-themes
+	:ensure t)
+
+;; use-package with Elpaca:
+(use-package dashboard
+  :ensure t
+  :config
+  (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+  (dashboard-setup-startup-hook))
+
+(add-hook 'elpaca-after-init-hook
+					(lambda ()
+						(load-theme 'doom-dark+ :no-confirm)))
 
 (provide 'init-theme)
 ;;; init-theme.el ends here

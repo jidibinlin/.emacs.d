@@ -28,9 +28,9 @@
 (use-package spacious-padding
   :ensure t
   :demand t
-  :hook ((elpaca-after-init . spacious-padding-mode)))
+  :hook (elpaca-after-init . spacious-padding-mode))
 
-(defun subtle-modeline ()
+(defun subtle-modeline (&rest _)
   "`subtle-modeline' enable subtle mode line."
   (let* ((active-subtle (face-foreground 'font-lock-constant-face nil t))
          (inactive-subtle (face-foreground 'shadow nil t))
@@ -50,17 +50,14 @@
                         :overline inactive-subtle  :background background :box new-box)
     (set-face-attribute 'header-line nil
                         :overline active-subtle :foreground foreground
-                        :background background :box new-box)))
+                        :background background :box new-box))
+  (message "subtle-modeline runed"))
 
-(defun enable-theme-func-subtlemodeline(_)
-  "`enable-theme-func-subtlemodeline' `enable-theme' advice for `subtle-modeline'."
-  (subtle-modeline))
-
-(add-hook 'after-init-hook
+(add-hook 'elpaca-after-init-hook
           (lambda ()
-            (subtle-modeline)
-            (advice-add 'enable-theme :after #'enable-theme-func-subtlemodeline)
-            (add-hook 'spacious-padding-mode-hook #'subtle-modeline)))
+            (subtle-modeline)))
+
+(add-to-list 'enable-theme-functions #'subtle-modeline)
 
 (use-package breadcrumb
   :init

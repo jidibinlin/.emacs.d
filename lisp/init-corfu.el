@@ -21,7 +21,7 @@
 
 (use-package corfu
   :hook ((elpaca-after-init . global-corfu-mode)
-	 (meow-insert-exit . corfu-quit))
+				 (meow-insert-exit . corfu-quit))
   :bind (:map corfu-map
               ("M-j" . corfu-next)
               ("M-k" . corfu-previous))

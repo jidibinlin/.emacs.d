@@ -17,11 +17,10 @@
 ;;
 ;;; Code:
 (use-package eglot
-  :commands eglot eglot-ensure
   :init
   (setq eglot-autoshutdown t)
-  :config
-  (cl-callf plist-put eglot-events-buffer-config :size 0))
+  (setq eglot-send-changes-idle-time 0.05)
+  (setq-default eglot-events-buffer-size 0))
 
 (use-package consult-eglot
   :ensure t)

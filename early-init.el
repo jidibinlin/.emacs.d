@@ -46,9 +46,9 @@
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                       :ref nil :depth 1
-                       :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                       :build (:not elpaca--activate-package)))
+															:ref nil :depth 1
+															:files (:defaults "elpaca-test.el" (:exclude "extensions"))
+															:build (:not elpaca--activate-package)))
 (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
        (build (expand-file-name "elpaca/" elpaca-builds-directory))
        (order (cdr elpaca-order))
@@ -81,9 +81,10 @@
 (elpaca `(,@elpaca-order))
 
 (setq package-enable-at-startup nil)
-(setq custom-file (expand-file-name "customs.el" user-emacs-directory))
+;;(setq custom-file (expand-file-name "customs.el" user-emacs-directory))
+(setq custom-file null-device)
 (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
 
 (elpaca elpaca-use-package
-        (elpaca-use-package-mode))
+  (elpaca-use-package-mode))
 ;;; early-init.el ends here

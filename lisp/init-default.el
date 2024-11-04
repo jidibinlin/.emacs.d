@@ -21,15 +21,9 @@
 
 (setq jit-lock-chunk-size 8192)
 (setq jit-lock-stealth-nice 1)
-(global-display-fill-column-indicator-mode 1)
 (global-display-line-numbers-mode 1)
 
-(defvar after-load-theme-hook nil
-  "Hook run after a color theme is loaded using `load-theme'.")
-(defun run-after-load-theme-hook (&rest _)
-  "Run `after-load-theme-hook'."
-  (run-hooks 'after-load-theme-hook))
-(advice-add #'load-theme :after #'run-after-load-theme-hook)
+(setq-default tab-width 2)
 
 (use-package hungry-delete
   :ensure t
@@ -82,8 +76,8 @@
             (equal (cl-first eldoc-documentation-functions) #'flymake-eldoc-function))
         nil
       (setq-local eldoc-documentation-functions
-		  (let ((rest (remove #'flymake-eldoc-function eldoc-documentation-functions)))
-		    (cons #'flymake-eldoc-function  rest)))))
+									(let ((rest (remove #'flymake-eldoc-function eldoc-documentation-functions)))
+										(cons #'flymake-eldoc-function  rest)))))
 
   (advice-add #'eldoc--invoke-strategy :before #'conia/eldoc-invoke-strategy-advice))
 
@@ -123,10 +117,19 @@
 (use-package helpful
   :ensure t
   :bind (([remap describe-function] . helpful-callable)
-	 ([remap describe-command] . helpful-command)
-	 ([remap describe-variable] . helpful-variable)
-	 ([remap describe-key] . helpful-key)
-	 ([remap describe-symbol] . helpful-symbol)))
+				 ([remap describe-command] . helpful-command)
+				 ([remap describe-variable] . helpful-variable)
+				 ([remap describe-key] . helpful-key)
+				 ([remap describe-symbol] . helpful-symbol)))
+
+(use-package display-fill-column-indicator
+  :hook (after-init   . global-display-fill-column-indicator-mode)
+  :config
+  (defun my/disable-fille-column-background(&rest _)
+    (set-face-attribute 'fill-column-indicator nil :background 'unspecified))
+  (add-hook 'display-fill-column-indicator-mode-hook
+            #'my/disable-fille-column-background)
+  (add-to-list 'enable-theme-functions #'my/disable-fille-column-background))
 
 (use-package posframe
   :ensure t)
@@ -139,10 +142,11 @@
     (defun hydra-set-posframe-show-params ()
       "Set hydra-posframe style."
       (setq hydra-posframe-show-params
-            `(:left-fringe 3
-              :right-fringe 3
-              :internal-border-width 2
-	      :internal-border-color ,(face-background 'tooltip nil t)
+            `(
+							;; :left-fringe 3
+              ;; :right-fringe 3
+              :internal-border-width 10
+							:internal-border-color ,(face-background 'tooltip nil t)
               :background-color ,(face-background 'tooltip nil t)
               :foreground-color ,(face-foreground 'tooltip nil t)
               :lines-truncate t
@@ -154,7 +158,7 @@
   :ensure t
   :custom (pretty-hydra-default-title-body-format-spec " %s%s")
   :bind (:map meow-normal-state-keymap
-	      ("SPC" . toggles-hydra/body))
+							("SPC" . toggles-hydra/body))
   :init
   (cl-defun pretty-hydra-title (title &optional icon-type icon-name
                                       &key face height v-adjust)
@@ -171,26 +175,56 @@
               " "))))
        (propertize title 'face face))))
   
-  (pretty-hydra-define toggles-hydra (:title (pretty-hydra-title "Main" 'faicon "nf-fa-toggle_on")
-				      :color amaranth :quit-key ("q" "C-g" "ESC"))
-                       ("Project"
-                        (("p p" project-switch-project "switch project" :exit t)
-                         ("p f" project-find-file "find file" :exit t)
-                         ("p v" magit "magit" :exit t)
-                         ("p s" consult-ripgrep "search in project" :exit t))
-                        "Files"
-                        (("f s" save-buffer "save current file" :exit t))
-                        "Search"
-                        (("s d" xref-find-definitions "find definitions" :exit t)
-                         ("s r" xref-find-references "find references" :exit t))
-                        "Window/Workspace"
-                        (("w v" split-window-right "split window vertico" :exit t)
-                         ("w h" split-window-below "split window horizontal" :exit t)
-                         ("w d" delete-window "close current window" :exit t)
-                         ("w o" other-window "other window")))))
+  (pretty-hydra-define
+    toggles-hydra
+    (:title (pretty-hydra-title "Main" 'faicon "nf-fa-toggle_on")
+						:color amaranth :quit-key ("q" "C-g" "ESC"))
+    ("Project"
+     (("p p" project-switch-project "switch project" :exit t)
+      ("p f" project-find-file "find file" :exit t)
+      ("p v" magit "magit" :exit t)
+      ("p s" consult-ripgrep "search in project" :exit t)
+      ("p b" project-switch-to-buffer "switch buffer" :exit t))
+     "Files"
+     (("f s" save-buffer "save current file" :exit t))
+     "Search"
+     (("s d" xref-find-definitions "find definitions" :exit t)
+      ("s r" xref-find-references "find references" :exit t))
+     "Window/Workspace"
+     (("w v" split-window-right "split window vertico" :exit t)
+      ("w h" split-window-below "split window horizontal" :exit t)
+      ("w d" delete-window "close current window" :exit t)
+      ("w o" other-window "other window"))
+     "Buffer"
+     (("b b" switch-to-buffer "switch buffer" :exit t)
+      ("b d" kill-current-buffer "kill buffer" :exit t)))))
 
 (use-package elec-pair
-  :hook (prog-mode . electric-pair-mode))
+  :hook (prog-mode . electric-pair-mode)
+  ;; {{ @see https://debbugs.gnu.org/cgi/bugreport.cgi?bug=55340
+  ;; `new-line-indent` disables `electric-indent-mode'
+  :config
+  (defun my-electric-pair-open-newline-between-pairs-psif-hack (orig-func &rest args)
+    (ignore orig-func args)
+    (when (and (if (functionp electric-pair-open-newline-between-pairs)
+                   (funcall electric-pair-open-newline-between-pairs)
+                 electric-pair-open-newline-between-pairs)
+               (eq last-command-event ?\n)
+               (< (1+ (point-min)) (point) (point-max))
+               (eq (save-excursion
+                     (skip-chars-backward "\t\s")
+                     (char-before (1- (point))))
+									 (matching-paren (char-after))))
+      (save-excursion (newline-and-indent 1))))
+  (advice-add 'electric-pair-open-newline-between-pairs-psif
+							:around
+							#'my-electric-pair-open-newline-between-pairs-psif-hack)
+  ;; }}
+  (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
+
+(use-package apheleia
+  :ensure t
+  :hook (elpaca-after-init . apheleia-global-mode))
 
 (provide 'init-default)
 ;;; init-default.el ends here

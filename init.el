@@ -21,13 +21,15 @@
 
 (require 'envir)
 (require 'init-font)
-(require 'init-theme)
 (require 'init-headerline)
+(require 'init-theme)
 (require 'init-treesit)
 (require 'init-meow)
+(require 'init-default)
 (require 'init-vertico)
 (require 'init-corfu)
 (require 'init-snippets)
 (require 'init-vc)
-(require 'init-default)
+(require 'init-lsp)
+(require 'init-typescript)
 ;;; init.el ends here
