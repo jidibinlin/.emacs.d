@@ -116,7 +116,10 @@ targets."
 		(cl-nsubstitute #'+vertico-embark-which-key-indicator #'embark-mixed-indicator embark-indicators)))
 
 (use-package wgrep
-	:ensure t)
+	:commands wgrep-change-to-wgrep-mode
+	:ensure t
+	:config
+	(setq wgrep-auto-save-buffer t))
 
 (provide 'init-vertico)
 ;;; init-vertico.el ends here
