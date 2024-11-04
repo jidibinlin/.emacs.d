@@ -26,10 +26,13 @@
 (require 'init-treesit)
 (require 'init-meow)
 (require 'init-default)
+(require 'init-prog)
+(require 'init-window)
 (require 'init-vertico)
 (require 'init-corfu)
 (require 'init-snippets)
 (require 'init-vc)
 (require 'init-lsp)
 (require 'init-typescript)
+(require 'init-go)
 ;;; init.el ends here
