@@ -27,14 +27,27 @@
 ;; use-package with Elpaca:
 (use-package dashboard
   :ensure t
-  :config
-  (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
-  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
-  (dashboard-setup-startup-hook))
+	:init
+	(setq-default dashboard-center-content t)
+	(setq dashboard-items '((recents . 5)
+													(projects . 5)
+													(agenda . 5)
+													(registers . 5)))
+	(setq dashboard-item-shortcuts '((recents . "r")
+																	 (projects . "p")
+																	 (agenda . "a")
+																	 (registers . "e")))
+	(setq-default dashboard-display-icons-p t)
+	(setq-default dashboard-icon-type 'nerd-icons)
+	(setq-default dashboard-set-heading-icons t)
+	(setq-default dashboard-set-file-icons t)
+	:config
+	(add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+	(add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+	(dashboard-setup-startup-hook))
 
 (add-hook 'elpaca-after-init-hook
 					(lambda ()
 						(load-theme 'doom-dark+ :no-confirm)))
-
 (provide 'init-theme)
 ;;; init-theme.el ends here
