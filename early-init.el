@@ -82,9 +82,10 @@
 
 (setq package-enable-at-startup nil)
 ;;(setq custom-file (expand-file-name "customs.el" user-emacs-directory))
-(setq custom-file null-device)
+(setq custom-file (make-temp-file "emacs-custom"))
 (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
 
 (elpaca elpaca-use-package
   (elpaca-use-package-mode))
+
 ;;; early-init.el ends here
