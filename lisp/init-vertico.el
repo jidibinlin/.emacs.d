@@ -62,6 +62,15 @@
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
+(use-package vertico-directory
+	:after vertico
+	:ensure nil
+	:bind (:map vertico-map
+							("RET" . vertico-directory-enter)
+							("DEL" . vertico-directory-delete-char)
+							("M-DEL" . vertico-directory-delete-word))
+	:hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
 (use-package consult
   :ensure t
   :bind (("C-s" . consult-line))
