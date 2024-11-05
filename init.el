@@ -32,6 +32,8 @@
 (require 'init-corfu)
 (require 'init-snippets)
 (require 'init-vc)
+(require 'init-org)
+(require 'init-ai)
 (require 'init-lsp)
 (require 'init-typescript)
 (require 'init-go)

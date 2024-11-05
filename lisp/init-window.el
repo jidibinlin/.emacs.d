@@ -30,16 +30,17 @@
 (use-package popper
   :ensure t ; or :straight t
   :bind (("C-`"   . popper-toggle)
-         ("M-`"   . popper-cycle)
-         ("C-M-`" . popper-toggle-type))
+					("M-`"   . popper-cycle)
+					("C-M-`" . popper-toggle-type))
   :init
 	(setq popper-group-function #'popper-group-by-project)
   (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          help-mode
-          compilation-mode))
+    '("\\*Messages\\*"
+       "Output\\*$"
+       "\\*Async Shell Command\\*"
+			 "\\*Warnings\\*"
+       help-mode
+       compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
 
@@ -49,6 +50,7 @@
   ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
   :custom
   (persp-mode-prefix-key (kbd "C-c C-w"))  ; pick your own prefix key here
+	(persp-state-default-file (expand-file-name "persp-state" user-emacs-directory))
   :hook(elpaca-after-init . persp-mode))
 
 (use-package transient-posframe
@@ -59,11 +61,11 @@
 	:ensure t
   :init
   (setq transient-posframe-border-width 1
-				transient-posframe-min-height nil
-				transient-posframe-min-width 80
-				transient-posframe-poshandler 'posframe-poshandler-frame-center
-				transient-posframe-parameters '((left-fringe . 8)
-																				(right-fringe . 8)))
+		transient-posframe-min-height nil
+		transient-posframe-min-width 80
+		transient-posframe-poshandler 'posframe-poshandler-frame-center
+		transient-posframe-parameters '((left-fringe . 8)
+																		 (right-fringe . 8)))
   :config
   (with-no-warnings
     ;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
@@ -71,31 +73,31 @@
       "Show BUFFER in posframe and we do not use _ALIST at this period."
       (when (posframe-workable-p)
         (let* ((posframe
-                (posframe-show buffer
-															 :height (with-current-buffer buffer
-																				 (1+ (count-screen-lines (point-min) (point-max))))
-															 :font transient-posframe-font
-															 :position (point)
-															 :poshandler transient-posframe-poshandler
-															 :background-color (face-attribute 'transient-posframe
-																																 :background nil t)
-															 :foreground-color (face-attribute 'transient-posframe
-																																 :foreground nil t)
-															 :min-width transient-posframe-min-width
-															 :min-height transient-posframe-min-height
-															 :internal-border-width transient-posframe-border-width
-															 :internal-border-color (face-attribute 'transient-posframe-border
-																																			:background nil t)
-															 :override-parameters transient-posframe-parameters)))
+                 (posframe-show buffer
+									 :height (with-current-buffer buffer
+														 (1+ (count-screen-lines (point-min) (point-max))))
+									 :font transient-posframe-font
+									 :position (point)
+									 :poshandler transient-posframe-poshandler
+									 :background-color (face-attribute 'transient-posframe
+																			 :background nil t)
+									 :foreground-color (face-attribute 'transient-posframe
+																			 :foreground nil t)
+									 :min-width transient-posframe-min-width
+									 :min-height transient-posframe-min-height
+									 :internal-border-width transient-posframe-border-width
+									 :internal-border-color (face-attribute 'transient-posframe-border
+																						:background nil t)
+									 :override-parameters transient-posframe-parameters)))
           (frame-selected-window posframe))))
     (advice-add #'transient-posframe--show-buffer
-								:override #'conia/transient-posframe--show-buffer)
+			:override #'conia/transient-posframe--show-buffer)
 
     (defun conia/transient-posframe--hide ()
       "Hide transient posframe."
       (posframe-hide transient--buffer-name))
     (advice-add #'transient-posframe--delete
-								:override #'conia/transient-posframe--hide)))
+			:override #'conia/transient-posframe--hide)))
 
 (provide 'init-window)
 ;;; init-window.el ends here

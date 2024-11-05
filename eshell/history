@@ -7,3 +7,26 @@ cd Downloads/
 ls 
 git clone https://github.com/seagle0128/.emacs.d.git centaur_emacs
 exit 
+cd ..
+cd ..
+ls
+cd scene/
+cd ..
+ls
+cd ..
+ls
+cd engine/types/ 
+ls
+ll
+ls -lh
+ls -lhd
+ls -lh
+echo $shell
+echo $shell
+clear
+ls
+bash
+clear
+ls
+ls
+exit

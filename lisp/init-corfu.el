@@ -21,7 +21,9 @@
 
 (use-package corfu
   :hook ((elpaca-after-init . global-corfu-mode)
-				 (meow-insert-exit . corfu-quit))
+				 (meow-insert-exit . corfu-quit)
+				 (eshell-mode . conia/switch-corfu-preselect-prompt)
+				 (minibuffer-mode . conia/switch-corfu-preselect-prompt))
   :bind (:map corfu-map
               ("M-j" . corfu-next)
               ("M-k" . corfu-previous))
@@ -38,7 +40,7 @@
         corfu-on-exact-match nil
         corfu-quit-no-match  'separator)
   :config
-  (defun conia/switch-corfu-preselect-prompt-for-eshell ()
+  (defun conia/switch-corfu-preselect-prompt ()
     (setq-local corfu-preselect 'prompt)))
 
 (use-package cape

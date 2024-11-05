@@ -50,16 +50,16 @@
   :init
   (defun crm-indicator (args)
     (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
+            (replace-regexp-in-string
+              "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+              crm-separator)
+            (car args))
+      (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
+    '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 (use-package vertico-directory
@@ -74,9 +74,50 @@
 (use-package consult
   :ensure t
   :bind (("C-s" . consult-line))
+	:init
+	(defvar +fly-commands
+    '(consult-line
+       consult-outline
+       consult-imenu
+       consult-ripgrep
+       isearch-forward
+       isearch-backward
+       +vertico/project-search
+       eglot-rename))
 	:config
 	(setq xref-show-xrefs-function #'consult-xref)
-	(setq xref-show-definitions-function #'consult-xref))
+	(setq xref-show-definitions-function #'consult-xref)
+	
+	(defun +fly-back-to-present ()
+    "Self-explained."
+    (remove-hook 'pre-command-hook '+fly-back-to-present t)
+    (cond ((and (memq last-command +fly-commands)
+             (equal (this-command-keys-vector) (kbd "M-p")))
+            ;; repeat one time to get straight to the first history item
+            (setq unread-command-events
+              (append unread-command-events
+                (listify-key-sequence (kbd "M-p")))))
+      ((memq this-command +fly-back-commands)
+        (delete-region
+          (goto-char (minibuffer-prompt-end))
+          (point-max)))))
+	
+	(defun +fly-time-travel ()
+    "Insert `thing-at-point'."
+    (when (memq this-command +fly-commands)
+      (insert (propertize
+                (save-excursion
+                  (set-buffer (window-buffer (minibuffer-selected-window)))
+                  (or (seq-some
+                        (lambda (thing) (thing-at-point thing t))
+                        '(symbol))
+                    "No thing at point"))
+                'face 'shadow))
+      (add-hook 'pre-command-hook '+fly-back-to-present nil t)))
+	(add-hook 'minibuffer-setup-hook #'+fly-time-travel))
+
+(use-package consult-tramp
+	:ensure (:host github :repo "Ladicle/consult-tramp"))
 
 (use-package embark-consult
 	:ensure t)
@@ -96,32 +137,32 @@ current target followed by an ellipsis if there are further
 targets."
 		(lambda (&optional keymap targets prefix)
 			(if (null keymap)
-					(which-key--hide-popup-ignore-command)
+				(which-key--hide-popup-ignore-command)
 				(which-key--show-keymap
-				 (if (eq (plist-get (car targets) :type) 'embark-become)
-						 "Become"
-					 (format "Act on %s '%s'%s"
-									 (plist-get (car targets) :type)
-									 (embark--truncate-target (plist-get (car targets) :target))
-									 (if (cdr targets) "…" "")))
-				 (if prefix
-						 (pcase (lookup-key keymap prefix 'accept-default)
-							 ((and (pred keymapp) km) km)
-							 (_ (key-binding prefix 'accept-default)))
-					 keymap)
-				 nil nil t (lambda (binding)
-										 (not (string-suffix-p "-argument" (cdr binding))))))))
+					(if (eq (plist-get (car targets) :type) 'embark-become)
+						"Become"
+						(format "Act on %s '%s'%s"
+							(plist-get (car targets) :type)
+							(embark--truncate-target (plist-get (car targets) :target))
+							(if (cdr targets) "…" "")))
+					(if prefix
+						(pcase (lookup-key keymap prefix 'accept-default)
+							((and (pred keymapp) km) km)
+							(_ (key-binding prefix 'accept-default)))
+						keymap)
+					nil nil t (lambda (binding)
+											(not (string-suffix-p "-argument" (cdr binding))))))))
 
 	(with-eval-after-load 'which-key
 		(defun +vertico--embark-which-key-prompt (fn &rest args)
 			"Hide the which-key indicator immediately when using the completing-read prompter."
 			(which-key--hide-popup-ignore-command)
 			(let ((embark-indicators
-						 (remq #'embark-which-key-indicator embark-indicators)))
+							(remq #'embark-which-key-indicator embark-indicators)))
 				(apply fn args)))
 
 		(advice-add 'embark-completing-read-prompter
-								:around #'+vertico--embark-which-key-prompt)
+			:around #'+vertico--embark-which-key-prompt)
 		(cl-nsubstitute #'+vertico-embark-which-key-indicator #'embark-mixed-indicator embark-indicators))
 	(bind-key "C-;" #'embark-act minibuffer-local-map)
 	(bind-key "C-c C-;" #'embark-export minibuffer-local-map)
@@ -142,14 +183,14 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 		(require 'embark)
 		(require 'wgrep)
 		(let* ((edit-command
-						(pcase-let ((`(,type . ,candidates)
-												 (run-hook-with-args-until-success 'embark-candidate-collectors)))
-							(pcase type
-								('consult-grep #'wgrep-change-to-wgrep-mode)
-								('file #'wdired-change-to-wdired-mode)
-								('consult-location #'occur-edit-mode)
-								(x (user-error "embark category %S doesn't support writable export" x)))))
-					 (embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
+						 (pcase-let ((`(,type . ,candidates)
+													 (run-hook-with-args-until-success 'embark-candidate-collectors)))
+							 (pcase type
+								 ('consult-grep #'wgrep-change-to-wgrep-mode)
+								 ('file #'wdired-change-to-wdired-mode)
+								 ('consult-location #'occur-edit-mode)
+								 (x (user-error "embark category %S doesn't support writable export" x)))))
+						(embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
 			(embark-export))))
 
 (provide 'init-vertico)

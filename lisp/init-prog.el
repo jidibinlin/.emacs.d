@@ -35,18 +35,18 @@
   (defun my-electric-pair-open-newline-between-pairs-psif-hack (orig-func &rest args)
     (ignore orig-func args)
     (when (and (if (functionp electric-pair-open-newline-between-pairs)
-                   (funcall electric-pair-open-newline-between-pairs)
+                 (funcall electric-pair-open-newline-between-pairs)
                  electric-pair-open-newline-between-pairs)
-               (eq last-command-event ?\n)
-               (< (1+ (point-min)) (point) (point-max))
-               (eq (save-excursion
-                     (skip-chars-backward "\t\s")
-                     (char-before (1- (point))))
-									 (matching-paren (char-after))))
+            (eq last-command-event ?\n)
+            (< (1+ (point-min)) (point) (point-max))
+            (eq (save-excursion
+                  (skip-chars-backward "\t\s")
+                  (char-before (1- (point))))
+							(matching-paren (char-after))))
       (save-excursion (newline-and-indent 1))))
   (advice-add 'electric-pair-open-newline-between-pairs-psif
-							:around
-							#'my-electric-pair-open-newline-between-pairs-psif-hack)
+		:around
+		#'my-electric-pair-open-newline-between-pairs-psif-hack)
   ;; }}
   (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
@@ -88,21 +88,21 @@
   :init
   (defconst +flymake-fringe-bitmap-double-arrow-right
     [#b11011000
-     #b01101100
-     #b00110110
-     #b00011011
-     #b00110110
-     #b01101100
-     #b11011000])
+			#b01101100
+			#b00110110
+			#b00011011
+			#b00110110
+			#b01101100
+			#b11011000])
 
   (defconst +flymake-fringe-bitmap-double-arrow-left
     [#b00011011
-     #b00110110
-     #b01101100
-     #b11011000
-     #b01101100
-     #b00110110
-     #b00011011])
+			#b00110110
+			#b01101100
+			#b11011000
+			#b01101100
+			#b00110110
+			#b00011011])
 
   (define-fringe-bitmap
     '+flymake-fringe-bitmap-double-arrow-left
@@ -117,7 +117,7 @@
   (setq flymake-fringe-indicator-position 'right-fringe)
   (defun +pretty-flymake-fringe-indicator()
     (let ((bitmap (if (eq flymake-fringe-indicator-position 'right-fringe)
-                      '+flymake-fringe-bitmap-double-arrow-left
+                    '+flymake-fringe-bitmap-double-arrow-left
                     '+flymake-fringe-bitmap-double-arrow-right)))
       (setq flymake-error-bitmap `(,bitmap compilation-error))
       (setq flymake-warning-bitmap `(,bitmap compilation-warning))
@@ -131,6 +131,19 @@
 (use-package rainbow-delimiters
 	:ensure t
 	:hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package treesit-fold
+	:ensure (:host github :repo "emacs-tree-sitter/treesit-fold")
+	:after prog-mode
+	:hook ((elpaca-after-init . global-treesit-fold-mode)))
+
+(use-package protobuf-mode
+	:ensure t)
+
+(use-package markdown-mode
+	:ensure t
+	:custom-face
+	(markdown-code-face ((t (:inherit default :background unspecified :foreground unspecified)))))
 
 (provide 'init-prog)
 ;;; init-prog.el ends here
