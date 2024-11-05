@@ -33,5 +33,11 @@
   (vc-edited-state ((t (:inherit font-lock-warning-face :bold t))))
   (vc-conflict-state ((t (:inherit error :bold t)))))
 
+(use-package ediff
+	:init
+	(setq-default ediff-diff-options "-w"
+								ediff-split-window-function #'split-window-horizontally
+								ediff-window-setup-function #'ediff-setup-windows-plain))
+
 (provide 'init-vc)
 ;;; init-vc.el ends here
