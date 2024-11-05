@@ -84,6 +84,10 @@
        isearch-backward
        +vertico/project-search
        eglot-rename))
+	
+	(defvar +fly-back-commands
+    '(self-insert-command))
+	
 	:config
 	(setq xref-show-xrefs-function #'consult-xref)
 	(setq xref-show-definitions-function #'consult-xref)
