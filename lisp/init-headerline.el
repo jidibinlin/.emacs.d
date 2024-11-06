@@ -33,29 +33,29 @@
 (defun subtle-modeline (&rest _)
   "`subtle-modeline' enable subtle mode line."
   (let* ((active-subtle (face-foreground 'font-lock-constant-face nil t))
-					(inactive-subtle (face-foreground 'shadow nil t))
-					(foreground (face-foreground 'default nil t))
-					(background (face-background 'default nil t))
-					(origin-box (face-attribute 'mode-line :box))
-					(new-box  (if (plistp origin-box)
-                      (plist-put origin-box :color background)
-											(plist-put '() :color background))))
+				 (inactive-subtle (face-foreground 'shadow nil t))
+				 (foreground (face-foreground 'default nil t))
+				 (background (face-background 'default nil t))
+				 (origin-box (face-attribute 'mode-line :box))
+				 (new-box  (if (plistp origin-box)
+                       (plist-put origin-box :color background)
+										 (plist-put '() :color background))))
 
     (set-face-attribute 'mode-line nil
-      :overline active-subtle
-      :background background :box new-box)
+												:overline active-subtle
+												:background background :box new-box)
     (set-face-attribute 'mode-line-active nil
-      :overline active-subtle :background background :box new-box)
+												:overline active-subtle :background background :box new-box)
     (set-face-attribute 'mode-line-inactive nil
-      :overline inactive-subtle  :background background :box new-box)
+												:overline inactive-subtle  :background background :box new-box)
     (set-face-attribute 'header-line nil
-      :overline active-subtle :foreground foreground
-      :background background :box new-box))
+												:overline active-subtle :foreground foreground
+												:background background :box new-box))
   (message "subtle-modeline runed"))
 
 (add-hook 'elpaca-after-init-hook
-  (lambda ()
-    (subtle-modeline)))
+					(lambda ()
+						(subtle-modeline)))
 
 (add-to-list 'enable-theme-functions #'subtle-modeline)
 
@@ -66,9 +66,9 @@
   :ensure t)
 
 (setq-default header-line-format '((:eval (meow--render-indicator))
-																		vc-mode
-																		"  "
-																		(:eval (breadcrumb--header-line))))
+																	 vc-mode
+																	 "  "
+																	 (:eval (breadcrumb--header-line))))
 
 (defun conia/subtle-set-face-for-frame (frame)
 	"Set face for frame."

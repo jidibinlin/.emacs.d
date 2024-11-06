@@ -30,17 +30,17 @@
 (use-package popper
   :ensure t ; or :straight t
   :bind (("C-`"   . popper-toggle)
-					("M-`"   . popper-cycle)
-					("C-M-`" . popper-toggle-type))
+				 ("M-`"   . popper-cycle)
+				 ("C-M-`" . popper-toggle-type))
   :init
 	(setq popper-group-function #'popper-group-by-project)
   (setq popper-reference-buffers
-    '("\\*Messages\\*"
-       "Output\\*$"
-       "\\*Async Shell Command\\*"
-			 "\\*Warnings\\*"
-       help-mode
-       compilation-mode))
+				'("\\*Messages\\*"
+					"Output\\*$"
+					"\\*Async Shell Command\\*"
+					"\\*Warnings\\*"
+					help-mode
+					compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
 
@@ -54,25 +54,25 @@
 	:config
 	(defun conia/winum-icon (num)
 		(let* ((format-str "nf-md-numeric_%s_circle_outline")
-						(icon-str (format format-str num))
-						(icon (nerd-icons-mdicon icon-str
-										:face "winum-face" :v-adjust 0.1)))
+					 (icon-str (format format-str num))
+					 (icon (nerd-icons-mdicon icon-str
+																		:face "winum-face" :v-adjust 0.1)))
 			icon))
 
 	(setq conia/winum--mode-line-segment
-		'(:eval (format "%s"
-							(thread-first (winum-get-number-string)
-								(conia/winum-icon)))))
+				'(:eval (format "%s"
+												(thread-first (winum-get-number-string)
+																			(conia/winum-icon)))))
 
 	(setq-default header-line-format
-		(add-to-list 'header-line-format conia/winum--mode-line-segment))
+								(add-to-list 'header-line-format conia/winum--mode-line-segment))
 	(pretty-hydra-define+ toggles-hydra ()
 		("Window/Workspace"
-			(("w 1" winum-select-window-1 "jump to win1" :exit t)
-				("w 2" winum-select-window-2 "jump to win2" :exit t)
-				("w 3" winum-select-window-3 "jump to win3" :exit t)
-				("w 4" winum-select-window-4 "jump to win4" :exit t)
-				("w 5" winum-select-window-5 "jump to win5" :exit t)))))
+		 (("w 1" winum-select-window-1 "jump to win1" :exit t)
+			("w 2" winum-select-window-2 "jump to win2" :exit t)
+			("w 3" winum-select-window-3 "jump to win3" :exit t)
+			("w 4" winum-select-window-4 "jump to win4" :exit t)
+			("w 5" winum-select-window-5 "jump to win5" :exit t)))))
 
 (use-package perspective
 	:ensure t
@@ -85,7 +85,7 @@
 	:config
 	(pretty-hydra-define+ toggles-hydra ()
 		("Window/Workspace"
-			(("w w" persp-switch "switch workspace" :exit t)))))
+		 (("w w" persp-switch "switch workspace" :exit t)))))
 
 (use-package transient-posframe
 	:diminish
@@ -95,11 +95,11 @@
 	:ensure t
 	:init
 	(setq transient-posframe-border-width 1
-		transient-posframe-min-height nil
-		transient-posframe-min-width 80
-		transient-posframe-poshandler 'posframe-poshandler-frame-center
-		transient-posframe-parameters '((left-fringe . 8)
-																		 (right-fringe . 8)))
+				transient-posframe-min-height nil
+				transient-posframe-min-width 80
+				transient-posframe-poshandler 'posframe-poshandler-frame-center
+				transient-posframe-parameters '((left-fringe . 8)
+																				(right-fringe . 8)))
 	:config
 	(with-no-warnings
 		;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
@@ -107,31 +107,31 @@
 			"Show BUFFER in posframe and we do not use _ALIST at this period."
 			(when (posframe-workable-p)
 				(let* ((posframe
-								 (posframe-show buffer
-									 :height (with-current-buffer buffer
-														 (1+ (count-screen-lines (point-min) (point-max))))
-									 :font transient-posframe-font
-									 :position (point)
-									 :poshandler transient-posframe-poshandler
-									 :background-color (face-attribute 'transient-posframe
-																			 :background nil t)
-									 :foreground-color (face-attribute 'transient-posframe
-																			 :foreground nil t)
-									 :min-width transient-posframe-min-width
-									 :min-height transient-posframe-min-height
-									 :internal-border-width transient-posframe-border-width
-									 :internal-border-color (face-attribute 'transient-posframe-border
-																						:background nil t)
-									 :override-parameters transient-posframe-parameters)))
+								(posframe-show buffer
+															 :height (with-current-buffer buffer
+																				 (1+ (count-screen-lines (point-min) (point-max))))
+															 :font transient-posframe-font
+															 :position (point)
+															 :poshandler transient-posframe-poshandler
+															 :background-color (face-attribute 'transient-posframe
+																																 :background nil t)
+															 :foreground-color (face-attribute 'transient-posframe
+																																 :foreground nil t)
+															 :min-width transient-posframe-min-width
+															 :min-height transient-posframe-min-height
+															 :internal-border-width transient-posframe-border-width
+															 :internal-border-color (face-attribute 'transient-posframe-border
+																																			:background nil t)
+															 :override-parameters transient-posframe-parameters)))
 					(frame-selected-window posframe))))
 		(advice-add #'transient-posframe--show-buffer
-			:override #'conia/transient-posframe--show-buffer)
+								:override #'conia/transient-posframe--show-buffer)
 
 		(defun conia/transient-posframe--hide ()
 			"Hide transient posframe."
 			(posframe-hide transient--buffer-name))
 		(advice-add #'transient-posframe--delete
-			:override #'conia/transient-posframe--hide)))
+								:override #'conia/transient-posframe--hide)))
 
 (use-package project
 	:ensure nil

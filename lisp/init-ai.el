@@ -33,23 +33,23 @@
   (setq gptel-model "anthropic/claude-3.5-sonnet")
   :config
   (setq gptel-backend
-		(gptel-make-openai
-			"OpenRouter"
-			:host "openrouter.ai"
-			:endpoint "/api/v1/chat/completions"
-			:stream t
-			:key "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"
-			:models '("anthropic/claude-3.5-sonnet"))))
+				(gptel-make-openai
+						"OpenRouter"
+					:host "openrouter.ai"
+					:endpoint "/api/v1/chat/completions"
+					:stream t
+					:key "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"
+					:models '("anthropic/claude-3.5-sonnet"))))
 
 (use-package aider
 	:ensure
 	(:host github :repo "tninja/aider.el")
   :config
   (setq aider-args '("--no-auto-commits"
-											"--model" "openrouter/anthropic/claude-3.5-sonnet"))
+										 "--model" "openrouter/anthropic/claude-3.5-sonnet"))
   (setenv
-		"OPENROUTER_API_KEY"
-		"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"))
+	 "OPENROUTER_API_KEY"
+	 "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"))
 
 (use-package copilot
 	:ensure
@@ -58,7 +58,7 @@
                        (when (not (derived-mode-p 'read-only-mode))
                          (copilot-mode))))
   :bind (:map  copilot-completion-map
-					("<tab>" . 'copilot-accept-completion))
+							 ("<tab>" . 'copilot-accept-completion))
   :init
   (setq copilot-lisp-indent-offset 2)
 	:custom
@@ -69,9 +69,9 @@
   (add-to-list 'copilot-indentation-alist '(go-ts-mode go-ts-mode-indent-offset))
   (add-to-list 'copilot-indentation-alist '(scheme-mode copilot-lisp-indent-offset))
   (add-to-list 'copilot-indentation-alist
-		'(clojure-ts-mode copilot-lisp-indent-offset))
+							 '(clojure-ts-mode copilot-lisp-indent-offset))
   (add-to-list 'copilot-indentation-alist
-		'(clojure-mode copilot-lisp-indent-offset))
+							 '(clojure-mode copilot-lisp-indent-offset))
 	
 	(advice-add 'copilot-mode :around #'conia/large-file-control))
 

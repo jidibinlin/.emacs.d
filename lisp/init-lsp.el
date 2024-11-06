@@ -30,9 +30,9 @@
 		(with-current-buffer buffer
 			(or (with-demoted-errors "%s"
 						(always (eglot-format beg end)))
-				(ignore (funcall callback)))))
+					(ignore (funcall callback)))))
 	(cl-defun conia/apheleia-formatter-eglot
-		(&rest plist &key buffer callback &allow-other-keys)
+			(&rest plist &key buffer callback &allow-other-keys)
 		(conia/format--with-eglot nil nil :buffer buffer plist))
 
 	(defun conia/enable-eglot-format-onsave ()
@@ -41,7 +41,7 @@
 
 	(defun conia/eglot--register-apheleia-formatter()
 		(add-to-list 'apheleia-formatters
-			'(eglot . conia/apheleia-formatter-eglot)))
+								 '(eglot . conia/apheleia-formatter-eglot)))
 	(add-hook 'elpaca-after-init-hook  #'conia/eglot--register-apheleia-formatter))
 
 (use-package consult-eglot
