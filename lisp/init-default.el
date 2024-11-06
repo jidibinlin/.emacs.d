@@ -23,6 +23,7 @@
 (setq jit-lock-stealth-nice 1)
 (setq-default display-line-numbers-width 4)
 (global-display-line-numbers-mode 1)
+(setq make-backup-files t)
 
 (setq-default bidi-display-reordering nil)
 (setq bidi-inhibit-bpa t
@@ -123,7 +124,7 @@
 	
 	(pretty-hydra-define
 		toggles-hydra
-		(:title (pretty-hydra-title "Main" 'faicon "nf-fa-toggle_on")
+		(:title (pretty-hydra-title "Main" 'mdicon "nf-md-cat")
 			:color amaranth :quit-key ("q" "C-g" "ESC"))
 		("Project"
 			(("p p" project-switch-project "switch project" :exit t)

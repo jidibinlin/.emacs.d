@@ -44,36 +44,72 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
+(use-package winum
+	:ensure t
+	:custom
+	(winum-auto-setup-mode-line nil)
+	:hook (elpaca-after-init . winum-mode)
+	:custom-face
+	(winum-face ((t (:inherit font-lock-keyword-face))))
+	:config
+
+	(defun conia/winum-icon (num)
+		(let* ((format-str "nf-md-numeric_%s_circle_outline")
+						(icon-str (format format-str num))
+						(icon (nerd-icons-mdicon icon-str
+										:face "winum-face" :v-adjust 0.1)))
+			icon))
+	
+
+	(setq conia/winum--mode-line-segment
+		'(:eval (format "%s"
+							(thread-first (winum-get-number-string)
+								(conia/winum-icon)))))
+
+	(setq-default header-line-format
+		(add-to-list 'header-line-format conia/winum--mode-line-segment))
+	(pretty-hydra-define+ toggles-hydra ()
+		("Window/Workspace"
+			(("w 1" winum-select-window-1 "jump to win1" :exit t)
+				("w 2" winum-select-window-2 "jump to win2" :exit t)
+				("w 3" winum-select-window-3 "jump to win3" :exit t)
+				("w 4" winum-select-window-3 "jump to win4" :exit t)
+				("w 5" winum-select-window-3 "jump to win5" :exit t)))))
+
 (use-package perspective
 	:ensure t
-  :bind
-  ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
-  :custom
-  (persp-mode-prefix-key (kbd "C-c C-w"))  ; pick your own prefix key here
+	:bind
+	("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+	:custom
+	(persp-mode-prefix-key (kbd "C-c C-w"))  ; pick your own prefix key here
 	(persp-state-default-file (expand-file-name "persp-state" user-emacs-directory))
-  :hook(elpaca-after-init . persp-mode))
+	:hook(elpaca-after-init . persp-mode)
+	:config
+	(pretty-hydra-define+ toggles-hydra ()
+		("Window/Workspace"
+			(("w w" persp-switch "switch workspace" :exit t)))))
 
 (use-package transient-posframe
-  :diminish
-  :custom-face
-  (transient-posframe ((t (:inherit tooltip))))
-  :hook (elpaca-after-init . transient-posframe-mode)
+	:diminish
+	:custom-face
+	(transient-posframe ((t (:inherit tooltip))))
+	:hook (elpaca-after-init . transient-posframe-mode)
 	:ensure t
-  :init
-  (setq transient-posframe-border-width 1
+	:init
+	(setq transient-posframe-border-width 1
 		transient-posframe-min-height nil
 		transient-posframe-min-width 80
 		transient-posframe-poshandler 'posframe-poshandler-frame-center
 		transient-posframe-parameters '((left-fringe . 8)
 																		 (right-fringe . 8)))
-  :config
-  (with-no-warnings
-    ;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
-    (defun conia/transient-posframe--show-buffer (buffer _alist)
-      "Show BUFFER in posframe and we do not use _ALIST at this period."
-      (when (posframe-workable-p)
-        (let* ((posframe
-                 (posframe-show buffer
+	:config
+	(with-no-warnings
+		;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
+		(defun conia/transient-posframe--show-buffer (buffer _alist)
+			"Show BUFFER in posframe and we do not use _ALIST at this period."
+			(when (posframe-workable-p)
+				(let* ((posframe
+								 (posframe-show buffer
 									 :height (with-current-buffer buffer
 														 (1+ (count-screen-lines (point-min) (point-max))))
 									 :font transient-posframe-font
@@ -89,14 +125,14 @@
 									 :internal-border-color (face-attribute 'transient-posframe-border
 																						:background nil t)
 									 :override-parameters transient-posframe-parameters)))
-          (frame-selected-window posframe))))
-    (advice-add #'transient-posframe--show-buffer
+					(frame-selected-window posframe))))
+		(advice-add #'transient-posframe--show-buffer
 			:override #'conia/transient-posframe--show-buffer)
 
-    (defun conia/transient-posframe--hide ()
-      "Hide transient posframe."
-      (posframe-hide transient--buffer-name))
-    (advice-add #'transient-posframe--delete
+		(defun conia/transient-posframe--hide ()
+			"Hide transient posframe."
+			(posframe-hide transient--buffer-name))
+		(advice-add #'transient-posframe--delete
 			:override #'conia/transient-posframe--hide)))
 
 (use-package project
