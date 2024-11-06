@@ -23,7 +23,12 @@
   :ensure (:version (lambda (_) "0.7.6")))
 
 (use-package magit
-  :ensure t)
+  :ensure t
+	:custom-face
+	(magit-header-line ((t (:inherit header-line
+													 :foreground unspecified
+													 :background unspecified
+													 :box unspecified)))))
 
 (use-package vc
   :defer t
@@ -36,8 +41,8 @@
 (use-package ediff
 	:init
 	(setq-default ediff-diff-options "-w"
-								ediff-split-window-function #'split-window-horizontally
-								ediff-window-setup-function #'ediff-setup-windows-plain))
+		ediff-split-window-function #'split-window-horizontally
+		ediff-window-setup-function #'ediff-setup-windows-plain))
 
 (provide 'init-vc)
 ;;; init-vc.el ends here
