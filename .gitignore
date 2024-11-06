@@ -9,3 +9,5 @@ persp-state
 eshell/
 recentf
 .cache/
+org-persist/
+eshell/
