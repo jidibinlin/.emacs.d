@@ -81,7 +81,11 @@
   (add-to-list 'eldoc-box-self-insert-command-list #'my/eldoc-box-scroll-up)
 
   (define-key prog-mode-map (kbd "M-n") #'my/eldoc-box-scroll-down)
-  (define-key prog-mode-map (kbd "M-p") #'my/eldoc-box-scroll-down))
+  (define-key prog-mode-map (kbd "M-p") #'my/eldoc-box-scroll-down)
+	(defun conia/eldoc-box-frame-pretty(_)
+		(set-face-attribute 'eldoc-box-border nil :inherit 'region :background 'unspecified)
+		(set-face-attribute 'eldoc-box-body nil :inherit 'tooltip))
+	(add-to-list 'enable-theme-functions #'conia/eldoc-box-frame-pretty))
 
 (use-package flymake
   :hook (prog-mode . flymake-mode)
@@ -115,13 +119,14 @@
   :hook (flymake-mode . +pretty-flymake-fringe-indicator)
   :config
   (setq flymake-fringe-indicator-position 'right-fringe)
-  (defun +pretty-flymake-fringe-indicator()
+  (defun +pretty-flymake-fringe-indicator(&rest _)
     (let ((bitmap (if (eq flymake-fringe-indicator-position 'right-fringe)
                     '+flymake-fringe-bitmap-double-arrow-left
                     '+flymake-fringe-bitmap-double-arrow-right)))
       (setq flymake-error-bitmap `(,bitmap compilation-error))
       (setq flymake-warning-bitmap `(,bitmap compilation-warning))
-      (setq flymake-note-bitmap `(,bitmap compilation-info)))))
+      (setq flymake-note-bitmap `(,bitmap compilation-info))))
+	(add-to-list 'enable-theme-functions #'+pretty-flymake-fringe-indicator))
 
 (use-package apheleia
   :ensure t
