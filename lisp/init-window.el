@@ -53,11 +53,15 @@
 	(winum-face ((t (:inherit font-lock-keyword-face))))
 	:config
 	(defun conia/winum-icon (num)
-		(let* ((format-str "nf-md-numeric_%s_circle_outline")
-					 (icon-str (format format-str num))
-					 (icon (nerd-icons-mdicon icon-str
-																		:face "winum-face" :v-adjust 0.1)))
-			icon))
+		(if (or (string= "" num)
+						(string= "0" num))
+				""
+			(let* ((format-str "nf-md-numeric_%s_circle_outline")
+						 (icon-str (format format-str num))
+						 (icon (nerd-icons-mdicon
+										icon-str
+										:face "winum-face" :v-adjust 0.1)))
+				icon)))
 
 	(setq conia/winum--mode-line-segment
 				'(:eval (format "%s"
