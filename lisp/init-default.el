@@ -158,7 +158,8 @@
 				("p c" project-kill-buffers "close project" :exit t))
 			"Search"
 			(("s d" xref-find-definitions "find definitions" :exit t)
-				("s r" xref-find-references "find references" :exit t))
+				("s r" xref-find-references "find references" :exit t)
+				("s i" consult-imenu-multi "imenu" :exit t))
 			"Window/Workspace"
 			(("w v" split-window-right "split window vertico" :exit t)
 				("w h" split-window-below "split window horizontal" :exit t)

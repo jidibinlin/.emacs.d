@@ -66,9 +66,9 @@
 	:after vertico
 	:ensure nil
 	:bind (:map vertico-map
-							("RET" . vertico-directory-enter)
-							("DEL" . vertico-directory-delete-char)
-							("M-DEL" . vertico-directory-delete-word))
+					("RET" . vertico-directory-enter)
+					("DEL" . vertico-directory-delete-char)
+					("M-DEL" . vertico-directory-delete-word))
 	:hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package consult
@@ -82,7 +82,8 @@
        consult-ripgrep
        isearch-forward
        isearch-backward
-       +vertico/project-search
+			 project-search
+			 consult-imenu-multi
        eglot-rename))
 	
 	(defvar +fly-back-commands
