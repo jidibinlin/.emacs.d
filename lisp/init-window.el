@@ -52,14 +52,12 @@
 	:custom-face
 	(winum-face ((t (:inherit font-lock-keyword-face))))
 	:config
-
 	(defun conia/winum-icon (num)
 		(let* ((format-str "nf-md-numeric_%s_circle_outline")
 						(icon-str (format format-str num))
 						(icon (nerd-icons-mdicon icon-str
 										:face "winum-face" :v-adjust 0.1)))
 			icon))
-	
 
 	(setq conia/winum--mode-line-segment
 		'(:eval (format "%s"
@@ -73,8 +71,8 @@
 			(("w 1" winum-select-window-1 "jump to win1" :exit t)
 				("w 2" winum-select-window-2 "jump to win2" :exit t)
 				("w 3" winum-select-window-3 "jump to win3" :exit t)
-				("w 4" winum-select-window-3 "jump to win4" :exit t)
-				("w 5" winum-select-window-3 "jump to win5" :exit t)))))
+				("w 4" winum-select-window-4 "jump to win4" :exit t)
+				("w 5" winum-select-window-5 "jump to win5" :exit t)))))
 
 (use-package perspective
 	:ensure t
