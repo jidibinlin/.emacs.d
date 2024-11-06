@@ -50,8 +50,7 @@
 												:overline inactive-subtle  :background background :box new-box)
     (set-face-attribute 'header-line nil
 												:overline active-subtle :foreground foreground
-												:background background :box new-box))
-  (message "subtle-modeline runed"))
+												:background background :box new-box)))
 
 (add-hook 'elpaca-after-init-hook
 					(lambda ()
