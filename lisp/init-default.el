@@ -53,11 +53,11 @@
 
 (setq-default fringes-outside-margins t)
 
-(when conia-sysis-windows
-	(setq large-file-threshold (* 1024 1024)))
+(setq large-file-threshold (* 1024 1024))
 
 (defun conia/large-file-control (orig-fun &rest args)
-	"Control large file"
+	"`conia/large-file-control' control large file.
+`ORIG-FUN' is the original function `ARGS' is the rest param."
 	(if (and buffer-file-name
 				(> (buffer-size) large-file-threshold))
 		(progn (read-only-mode 1)

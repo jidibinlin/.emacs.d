@@ -11,3 +11,4 @@ recentf
 .cache/
 org-persist/
 eshell/
+transient/
