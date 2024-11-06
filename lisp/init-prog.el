@@ -130,7 +130,9 @@
 
 (use-package rainbow-delimiters
 	:ensure t
-	:hook (prog-mode . rainbow-delimiters-mode))
+	:hook (prog-mode . rainbow-delimiters-mode)
+	:custom
+	(rainbow-delimiters-max-face-count 4))
 
 (use-package treesit-fold
 	:ensure (:host github :repo "emacs-tree-sitter/treesit-fold")

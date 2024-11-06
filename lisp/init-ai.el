@@ -43,7 +43,7 @@
 
 (use-package aider
 	:ensure
-	(:host git.sr.ht :repo "~abcdw/emacs-arei")
+	(:host github :repo "tninja/aider.el")
   :config
   (setq aider-args '("--no-auto-commits"
 											"--model" "openrouter/anthropic/claude-3.5-sonnet"))
@@ -71,7 +71,9 @@
   (add-to-list 'copilot-indentation-alist
 		'(clojure-ts-mode copilot-lisp-indent-offset))
   (add-to-list 'copilot-indentation-alist
-		'(clojure-mode copilot-lisp-indent-offset)))
+		'(clojure-mode copilot-lisp-indent-offset))
+	
+	(advice-add 'copilot-mode :around #'conia/large-file-control))
 
 (use-package copilot-chat
   :after (request)

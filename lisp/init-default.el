@@ -19,10 +19,20 @@
 ;;
 ;;; Code:
 
+(require 'envir)
+
+;; font-jit
 (setq jit-lock-chunk-size 8192)
 (setq jit-lock-stealth-nice 1)
-(setq-default display-line-numbers-width 4)
-(global-display-line-numbers-mode 1)
+(setq jit-lock-defer-time 0.1)
+
+;; linum
+(setq-default display-line-numbers-width 3)
+(setq-default display-line-numbers-widen t)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-mode-hook #'display-line-numbers-mode)
+
 (setq make-backup-files t)
 
 (setq-default bidi-display-reordering nil)
@@ -41,6 +51,21 @@
 
 (setq-default lisp-indent-offset 2)
 
+(setq-default fringes-outside-margins t)
+
+(when conia-sysis-windows
+	(setq large-file-threshold (* 1024 1024)))
+
+(defun conia/large-file-control (orig-fun &rest args)
+	"Control large file"
+	(if (and buffer-file-name
+				(> (buffer-size) large-file-threshold))
+		(progn (read-only-mode 1)
+			nil)
+		(apply orig-fun args)))
+
+(advice-add 'font-lock-mode :around #'conia/large-file-control)
+
 (use-package hungry-delete
 	:ensure t
 	:hook (elpaca-after-init . global-hungry-delete-mode))
@@ -56,8 +81,6 @@
 					(cons #'flymake-eldoc-function  rest)))))
 
 	(advice-add #'eldoc--invoke-strategy :before #'conia/eldoc-invoke-strategy-advice))
-
-
 
 (use-package helpful
 	:ensure t

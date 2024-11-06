@@ -22,15 +22,17 @@
   (setq eglot-autoshutdown t)
   (setq eglot-send-changes-idle-time 0.05)
   (setq-default eglot-events-buffer-size 0)
+	(setq-default eglot-sync-connect 0)
 	:config
+	(add-to-list 'eglot-stay-out-of 'imenu)
 	;; format on save
 	(cl-defun conia/format--with-eglot (beg end &key buffer callback &allow-other-keys)
 		(with-current-buffer buffer
 			(or (with-demoted-errors "%s"
 						(always (eglot-format beg end)))
-					(ignore (funcall callback)))))
+				(ignore (funcall callback)))))
 	(cl-defun conia/apheleia-formatter-eglot
-			(&rest plist &key buffer callback &allow-other-keys)
+		(&rest plist &key buffer callback &allow-other-keys)
 		(conia/format--with-eglot nil nil :buffer buffer plist))
 
 	(defun conia/enable-eglot-format-onsave ()
@@ -39,7 +41,7 @@
 
 	(defun conia/eglot--register-apheleia-formatter()
 		(add-to-list 'apheleia-formatters
-								 '(eglot . conia/apheleia-formatter-eglot)))
+			'(eglot . conia/apheleia-formatter-eglot)))
 	(add-hook 'elpaca-after-init-hook  #'conia/eglot--register-apheleia-formatter))
 
 (use-package consult-eglot
