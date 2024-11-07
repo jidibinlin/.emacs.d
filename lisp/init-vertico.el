@@ -128,7 +128,8 @@
 	:ensure t)
 
 (use-package which-key
-	:ensure t)
+	:ensure t
+	:hook (elpaca-after-init . which-key-mode))
 
 (use-package embark
 	:ensure t
