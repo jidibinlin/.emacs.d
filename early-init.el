@@ -34,6 +34,7 @@
 
 
 (prefer-coding-system 'utf-8)
+(setq gc-cons-threshold (* 1024 1024 1024 5))
 
 (setq package-archives
       (let ((proto (if (gnutls-available-p) "https" "http")))
