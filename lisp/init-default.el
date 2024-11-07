@@ -137,7 +137,7 @@
 		"Add an icon in the hydra title."
 		(let ((face (or face `(:inherit highlight
 																		:reverse-video t
-																		:background 'unspecified)))
+																		:background unspecified)))
 					(height (or height 1.2))
 					(v-adjust (or v-adjust 0.0)))
 			(concat

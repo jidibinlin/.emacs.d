@@ -73,7 +73,7 @@
 	
 	(pretty-hydra-define
 		toggles-window
-		(:title (pretty-hydra-title "Main" 'mdicon "nf-md-microsoft_windows")
+		(:title (pretty-hydra-title "Windowd/Workspace" 'mdicon "nf-md-microsoft_windows")
 						:color amaranth :quit-key ("q" "C-g" "ESC"))
 		("split/delete"
 		 (("v" split-window-right "split window vertico" :exit t)
@@ -90,16 +90,19 @@
 
 (use-package perspective
 	:ensure t
-	:bind
-	("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+	:hook((kill-emacs . persp-state-save))
+	:init
+	(persp-mode)
 	:custom
-	(persp-mode-prefix-key (kbd "C-c C-w"))  ; pick your own prefix key here
-	(persp-state-default-file (expand-file-name "persp-state" user-emacs-directory))
-	:hook(elpaca-after-init . persp-mode)
+	(persp-mode-prefix-key (kbd "C-c C-w"))
 	:config
-	(pretty-hydra-define+ toggles-window ()
-		("persp"
-		 (("w" persp-switch "switch workspace" :exit t)))))
+	(setq persp-state-default-file (expand-file-name "persp-state-file" user-emacs-directory))
+	(defun conia/pretty-hydra-define-persp ()
+		(pretty-hydra-define+
+			toggles-window ()
+			("persp"
+			 (("w" persp-switch "switch workspace" :exit t)))))
+	(add-hook 'elpaca-after-init-hook #'conia/pretty-hydra-define-persp 100))
 
 (use-package transient-posframe
 	:diminish
