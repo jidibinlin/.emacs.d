@@ -70,13 +70,23 @@
 
 	(setq-default header-line-format
 								(add-to-list 'header-line-format conia/winum--mode-line-segment))
-	(pretty-hydra-define+ toggles-hydra ()
-		("Window/Workspace"
-		 (("w 1" winum-select-window-1 "jump to win1" :exit t)
-			("w 2" winum-select-window-2 "jump to win2" :exit t)
-			("w 3" winum-select-window-3 "jump to win3" :exit t)
-			("w 4" winum-select-window-4 "jump to win4" :exit t)
-			("w 5" winum-select-window-5 "jump to win5" :exit t)))))
+	
+	(pretty-hydra-define
+		toggles-window
+		(:title (pretty-hydra-title "Main" 'mdicon "nf-md-microsoft_windows")
+						:color amaranth :quit-key ("q" "C-g" "ESC"))
+		("split/delete"
+		 (("v" split-window-right "split window vertico" :exit t)
+			("h" split-window-below "split window horizontal" :exit t)
+			("d" delete-window "close current window" :exit t)
+			("o" other-window "other window")
+			("i" delete-other-windows "del other window" :exit t))
+		 "jump"
+		 (("1" winum-select-window-1 "jump to win1" :exit t)
+			("2" winum-select-window-2 "jump to win2" :exit t)
+			("3" winum-select-window-3 "jump to win3" :exit t)
+			("4" winum-select-window-4 "jump to win4" :exit t)
+			("5" winum-select-window-5 "jump to win5" :exit t)))))
 
 (use-package perspective
 	:ensure t
@@ -87,9 +97,9 @@
 	(persp-state-default-file (expand-file-name "persp-state" user-emacs-directory))
 	:hook(elpaca-after-init . persp-mode)
 	:config
-	(pretty-hydra-define+ toggles-hydra ()
-		("Window/Workspace"
-		 (("w w" persp-switch "switch workspace" :exit t)))))
+	(pretty-hydra-define+ toggles-window ()
+		("persp"
+		 (("w" persp-switch "switch workspace" :exit t)))))
 
 (use-package transient-posframe
 	:diminish

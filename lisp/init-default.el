@@ -135,7 +135,9 @@
 	(cl-defun pretty-hydra-title (title &optional icon-type icon-name
 																			&key face height v-adjust)
 		"Add an icon in the hydra title."
-		(let ((face (or face `(:inherit highlight :reverse-video t)))
+		(let ((face (or face `(:inherit highlight
+																		:reverse-video t
+																		:background 'unspecified)))
 					(height (or height 1.2))
 					(v-adjust (or v-adjust 0.0)))
 			(concat
@@ -163,10 +165,7 @@
 			("s r" xref-find-references "find references" :exit t)
 			("s i" consult-imenu-multi "imenu" :exit t))
 		 "Window/Workspace"
-		 (("w v" split-window-right "split window vertico" :exit t)
-			("w h" split-window-below "split window horizontal" :exit t)
-			("w d" delete-window "close current window" :exit t)
-			("w o" other-window "other window"))
+		 (("w" toggles-window/body "windows/workspace" :exit t))
 		 "Buffer"
 		 (("," consult-buffer "switch buffer" :exit t)
 			("b d" kill-current-buffer "kill buffer" :exit t)
