@@ -108,6 +108,8 @@
 
 (use-package hydra
 	:ensure t
+	:bind (:map meow-motion-state-keymap
+							("SPC" . toggles-hydra/body))
 	:init
 	(setq hydra-hint-display-type 'posframe)
 	(with-eval-after-load 'posframe
