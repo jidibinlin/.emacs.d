@@ -85,7 +85,8 @@
 	(defun conia/eldoc-box-frame-pretty(_)
 		(set-face-attribute 'eldoc-box-border nil :inherit 'region :background 'unspecified)
 		(set-face-attribute 'eldoc-box-body nil :inherit 'tooltip))
-	(add-to-list 'enable-theme-functions #'conia/eldoc-box-frame-pretty))
+	(add-to-list 'enable-theme-functions #'conia/eldoc-box-frame-pretty)
+	(add-to-list 'after-make-frame-functions #'conia/eldoc-box-frame-pretty))
 
 (use-package flymake
   :hook (prog-mode . flymake-mode)
