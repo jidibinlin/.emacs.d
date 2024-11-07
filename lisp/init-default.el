@@ -33,7 +33,7 @@
 (add-hook 'text-mode-hook #'display-line-numbers-mode)
 (add-hook 'conf-mode-hook #'display-line-numbers-mode)
 
-(setq make-backup-files t)
+(setq make-backup-files nil)
 
 (setq-default bidi-display-reordering nil)
 (setq bidi-inhibit-bpa t
@@ -170,6 +170,9 @@
 		 (("," consult-buffer "switch buffer" :exit t)
 			("b d" kill-current-buffer "kill buffer" :exit t)
 			("f s" save-buffer "save current buffer" :exit t)))))
+
+(use-package elisp-benchmarks
+	:ensure t)
 
 (provide 'init-default)
 ;;; init-default.el ends here
