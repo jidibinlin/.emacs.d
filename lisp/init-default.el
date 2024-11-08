@@ -104,7 +104,9 @@
 (use-package posframe
 	:ensure t
 	:config
-	(add-to-list 'enable-theme-functions (lambda (_) (posframe-delete-all))))
+	(defun conia/refresh-posframe (_)
+		(posframe-delete-all))
+	(add-to-list 'enable-theme-functions #'conia/refresh-posframe))
 
 (use-package hydra
 	:ensure t
