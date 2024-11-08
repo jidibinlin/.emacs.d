@@ -37,4 +37,5 @@
 (require 'init-lsp)
 (require 'init-typescript)
 (require 'init-go)
+(require 'init-cc)
 ;;; init.el ends here
