@@ -27,11 +27,24 @@
 
 ;;; Code:
 
+(use-package clangd-inactive-regions
+	:ensure (:host github :repo "jidibinlin/clangd-inactive-regions.el")
+  :after eglot
+	:hook ((c-ts-mode . clangd-inactive-regions-mode)
+				 (c++-ts-mode . clangd-inactive-regions-mode))
+  :config
+	(defun conia/config-clangd-inactive-regions()
+		(clangd-inactive-regions-set-method "darken-foreground")
+		(clangd-inactive-regions-set-opacity 0.55))
+	(add-hook 'elpaca-after-init-hook #'conia/config-clangd-inactive-regions))
+
 (use-package c-ts-mode
-	:hook (c-ts-mode . eglot-ensure))
+	:config
+	(add-hook 'c-ts-mode-hook #'eglot-ensure -100))
 
 (use-package c++-ts-mode
-	:hook (c++-ts-mode . eglot-ensure))
+	:config
+	(add-hook 'c++-ts-mode-hook #'eglot-ensure -100))
 
 (provide 'init-cc)
 ;;; init-cc.el ends here
