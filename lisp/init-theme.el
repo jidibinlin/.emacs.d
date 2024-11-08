@@ -48,7 +48,10 @@
 
 (use-package page-break-lines
 	:ensure t
-	:hook (elpaca-after-init . global-page-break-lines-mode))
+	:hook (elpaca-after-init . global-page-break-lines-mode)
+	:config
+	(add-to-list 'page-break-lines-modes 'prog-mode)
+	(add-to-list 'page-break-lines-modes 'fundamental-mode))
 
 (add-hook 'elpaca-after-init-hook
 					(lambda ()
