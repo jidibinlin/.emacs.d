@@ -104,51 +104,51 @@
 			 (("w" persp-switch "switch workspace" :exit t)))))
 	(add-hook 'elpaca-after-init-hook #'conia/pretty-hydra-define-persp 100))
 
-(use-package transient-posframe
-	:diminish
-	:custom-face
-	(transient-posframe ((t (:inherit tooltip))))
-	:hook (elpaca-after-init . transient-posframe-mode)
-	:ensure t
-	:init
-	(setq transient-posframe-border-width 1
-				transient-posframe-min-height nil
-				transient-posframe-min-width 80
-				transient-posframe-poshandler 'posframe-poshandler-frame-center
-				transient-posframe-parameters '((left-fringe . 8)
-																				(right-fringe . 8)))
-	:config
-	(with-no-warnings
-		;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
-		(defun conia/transient-posframe--show-buffer (buffer _alist)
-			"Show BUFFER in posframe and we do not use _ALIST at this period."
-			(when (posframe-workable-p)
-				(let* ((posframe
-								(posframe-show buffer
-															 :height (with-current-buffer buffer
-																				 (1+ (count-screen-lines (point-min) (point-max))))
-															 :font transient-posframe-font
-															 :position (point)
-															 :poshandler transient-posframe-poshandler
-															 :background-color (face-attribute 'transient-posframe
-																																 :background nil t)
-															 :foreground-color (face-attribute 'transient-posframe
-																																 :foreground nil t)
-															 :min-width transient-posframe-min-width
-															 :min-height transient-posframe-min-height
-															 :internal-border-width transient-posframe-border-width
-															 :internal-border-color (face-attribute 'transient-posframe-border
-																																			:background nil t)
-															 :override-parameters transient-posframe-parameters)))
-					(frame-selected-window posframe))))
-		(advice-add #'transient-posframe--show-buffer
-								:override #'conia/transient-posframe--show-buffer)
+;; (use-package transient-posframe
+;; 	:diminish
+;; 	:custom-face
+;; 	(transient-posframe ((t (:inherit tooltip))))
+;; 	:hook (elpaca-after-init . transient-posframe-mode)
+;; 	:ensure t
+;; 	:init
+;; 	(setq transient-posframe-border-width 1
+;; 				transient-posframe-min-height nil
+;; 				transient-posframe-min-width 80
+;; 				transient-posframe-poshandler 'posframe-poshandler-frame-center
+;; 				transient-posframe-parameters '((left-fringe . 8)
+;; 																				(right-fringe . 8)))
+;; 	:config
+;; 	(with-no-warnings
+;; 		;; FIXME:https://github.com/yanghaoxie/transient-posframe/issues/5#issuecomment-1974871665
+;; 		(defun conia/transient-posframe--show-buffer (buffer _alist)
+;; 			"Show BUFFER in posframe and we do not use _ALIST at this period."
+;; 			(when (posframe-workable-p)
+;; 				(let* ((posframe
+;; 								(posframe-show buffer
+;; 															 :height (with-current-buffer buffer
+;; 																				 (1+ (count-screen-lines (point-min) (point-max))))
+;; 															 :font transient-posframe-font
+;; 															 :position (point)
+;; 															 :poshandler transient-posframe-poshandler
+;; 															 :background-color (face-attribute 'transient-posframe
+;; 																																 :background nil t)
+;; 															 :foreground-color (face-attribute 'transient-posframe
+;; 																																 :foreground nil t)
+;; 															 :min-width transient-posframe-min-width
+;; 															 :min-height transient-posframe-min-height
+;; 															 :internal-border-width transient-posframe-border-width
+;; 															 :internal-border-color (face-attribute 'transient-posframe-border
+;; 																																			:background nil t)
+;; 															 :override-parameters transient-posframe-parameters)))
+;; 					(frame-selected-window posframe))))
+;; 		(advice-add #'transient-posframe--show-buffer
+;; 								:override #'conia/transient-posframe--show-buffer)
 
-		(defun conia/transient-posframe--hide ()
-			"Hide transient posframe."
-			(posframe-hide transient--buffer-name))
-		(advice-add #'transient-posframe--delete
-								:override #'conia/transient-posframe--hide)))
+;; 		(defun conia/transient-posframe--hide ()
+;; 			"Hide transient posframe."
+;; 			(posframe-hide transient--buffer-name))
+;; 		(advice-add #'transient-posframe--delete
+;; 								:override #'conia/transient-posframe--hide)))
 
 (use-package project
 	:ensure nil

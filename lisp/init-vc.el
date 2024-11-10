@@ -20,7 +20,7 @@
 ;;; Code:
 
 (use-package transient
-  :ensure (:version (lambda (_) "0.7.6")))
+  :ensure t)
 
 (use-package magit
   :ensure t
