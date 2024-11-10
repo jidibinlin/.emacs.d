@@ -134,7 +134,6 @@
 																																 :foreground nil t)
 															 :width (round (* (frame-width) 0.62))
 															 :min-width transient-posframe-min-width
-															 :min-height transient-posframe-min-height
 															 :internal-border-width transient-posframe-border-width
 															 :internal-border-color (face-attribute 'transient-posframe-border
 																																			:background nil t)
