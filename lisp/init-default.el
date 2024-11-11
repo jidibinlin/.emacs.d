@@ -103,6 +103,8 @@
 
 (use-package posframe
 	:ensure t
+	:custom
+	(posframe-inhibit-double-buffering t)
 	:config
 	(defun conia/refresh-posframe (_)
 		(posframe-delete-all))
