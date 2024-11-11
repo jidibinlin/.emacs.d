@@ -32,7 +32,7 @@
 
 (scroll-bar-mode -1)
 
-
+(setq-default auto-save-default nil)
 (prefer-coding-system 'utf-8)
 (setq gc-cons-threshold (* 1024 1024 1024 5))
 
