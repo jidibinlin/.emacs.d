@@ -29,6 +29,7 @@
 (require 'init-prog)
 (require 'init-window)
 (require 'init-vertico)
+(require 'init-utils)
 (require 'init-corfu)
 (require 'init-snippets)
 (require 'init-vc)
