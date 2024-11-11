@@ -30,6 +30,7 @@
 (use-package makefile-executor
 	:ensure t
 	:hook (makefile-mode . makefile-executor-mode)
+	:demand t
 	:config
 	(defun +make/run ()
 		"Run a make task in the current project. If multiple makefiles are available,

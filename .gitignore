@@ -13,3 +13,4 @@ org-persist/
 eshell/
 transient/
 persp-state-file
+tree-sitter/
