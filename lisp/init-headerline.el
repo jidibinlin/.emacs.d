@@ -64,8 +64,16 @@
   :demand t
   :ensure t)
 
+(defun conia/major-mode-name ()
+	"Return the major mode name."
+	(let* ((mode-name (symbol-name major-mode))
+				 (trimed-mode-name (replace-regexp-in-string "-mode" "" mode-name)))
+		(concat "* " (capitalize trimed-mode-name))))
+
 (setq-default header-line-format '((:eval (meow--render-indicator))
 																	 vc-mode
+																	 " "
+																	 (:eval (conia/major-mode-name))
 																	 "  "
 																	 (:eval (breadcrumb--header-line))))
 
