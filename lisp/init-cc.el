@@ -28,7 +28,7 @@
 ;;; Code:
 
 (use-package clangd-inactive-regions
-	:ensure (:host github :repo "jidibinlin/clangd-inactive-regions.el")
+	:ensure (:host github :repo "fargiolas/clangd-inactive-regions.el")
   :after eglot
 	:hook ((c-ts-mode . clangd-inactive-regions-mode)
 				 (c++-ts-mode . clangd-inactive-regions-mode))
