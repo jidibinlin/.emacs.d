@@ -27,6 +27,8 @@
 
 ;;; Code:
 
+(require 'envir)
+
 (use-package makefile-executor
 	:ensure t
 	:hook (makefile-mode . makefile-executor-mode)
@@ -46,6 +48,22 @@ you'll be prompted to select one."
 					(user-error "Cannot find a makefile in the current project"))
 				(let ((default-directory (file-name-directory makefile)))
 					(makefile-executor-execute-target makefile))))))
+
+(when conia-syis-wsl
+	(use-package rime
+		:ensure t
+		:demand t
+		:bind  (:map rime-active-mode-map
+								 ("<escape>" . nil))
+		:custom
+		(default-input-method "rime")
+		(rime-show-candidate 'posframe)
+		:config
+		(add-to-list 'rime-disable-predicates 'meow-normal-mode-p)
+		(defun conia/enable-rime ()
+			(rime-activate nil)
+			(rime-lib-select-schema "luna_pinyin_simp"))
+		(add-hook 'elpaca-after-init-hook #'conia/enable-rime)))
 
 (provide 'init-utils)
 ;;; init-utils.el ends here

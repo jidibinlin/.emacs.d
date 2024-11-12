@@ -77,6 +77,8 @@
 
 (defun conia/set-base-header-line-format ()
 	(setq-default header-line-format '((:eval (meow--render-indicator))
+																		 current-input-method
+																		 " "
 																		 (:eval (conia/vc-mode))
 																		 " "
 																		 (:eval (conia/major-mode-name))
