@@ -63,7 +63,17 @@
   :ensure t)
 
 (defun conia/vc-mode ()
-	(string-trim-left vc-mode))
+	(when (stringp vc-mode)
+		vc-mode))
+
+(defvar-local conia-major-mode-icon-cache nil)
+(defun conia/major-icon ()
+	(if (thread-first conia-major-mode-icon-cache null not)
+			conia-major-mode-icon-cache
+		(progn
+			(setq-local conia-major-mode-icon-cache
+									(nerd-icons-icon-for-buffer))
+			conia-major-mode-icon-cache)))
 
 (defun conia/set-base-header-line-format ()
 	(setq-default header-line-format '((:eval (meow--render-indicator))
@@ -71,7 +81,7 @@
 																		 " "
 																		 (:eval (conia/vc-mode))
 																		 " "
-																		 (:eval (nerd-icons-icon-for-buffer))
+																		 (:eval (conia/major-icon))
 																		 " "
 																		 (:eval (breadcrumb--header-line)))))
 

@@ -110,17 +110,6 @@
 		(posframe-delete-all))
 	(add-to-list 'enable-theme-functions #'conia/refresh-posframe))
 
-(use-package nerd-icons
-	:ensure t
-	:demand t
-	:config
-	(setf (alist-get 'go-mode  nerd-icons-mode-icon-alist)
-				'(nerd-icons-sucicon "nf-seti-go2" :face nerd-icons-blue))
-	(setf (alist-get 'go-ts-mode  nerd-icons-mode-icon-alist)
-				'(nerd-icons-sucicon "nf-seti-go2" :face nerd-icons-blue))
-	(setf (alist-get "go"  nerd-icons-extension-icon-alist)
-				'(nerd-icons-sucicon "nf-seti-go2" :face nerd-icons-blue)))
-
 (use-package hydra
 	:ensure t
 	:bind (:map meow-motion-state-keymap
