@@ -46,9 +46,10 @@
 
 (use-package winum
 	:ensure t
+	:demand t
 	:custom
 	(winum-auto-setup-mode-line nil)
-	:hook (elpaca-after-init . winum-mode)
+	:hook ((elpaca-after-init . winum-mode))
 	:custom-face
 	(winum-face ((t (:inherit font-lock-keyword-face))))
 	:config
@@ -62,14 +63,17 @@
 										icon-str
 										:face "winum-face" :v-adjust 0.16)))
 				icon)))
-
-	(setq conia/winum--mode-line-segment
-				'(:eval (format "%s"
-												(thread-first (winum-get-number-string)
-																			(conia/winum-icon)))))
-
-	(setq-default header-line-format
-								(add-to-list 'header-line-format conia/winum--mode-line-segment))
+	
+	(defvar conia/winum--mode-line-segment
+		'(:eval (format "%s"
+										(thread-first (winum-get-number-string)
+																	(conia/winum-icon)))))
+	
+	(defun conia/winum-append-header-line-format ()
+		(setq-default header-line-format
+									(add-to-list 'header-line-format conia/winum--mode-line-segment)))
+	
+	(add-hook 'elpaca-after-init-hook #'conia/winum-append-header-line-format 100)
 	
 	(pretty-hydra-define
 		toggles-window
@@ -90,9 +94,8 @@
 
 (use-package perspective
 	:ensure t
-	:hook((kill-emacs . persp-state-save))
-	:init
-	(persp-mode)
+	:hook((kill-emacs . persp-state-save)
+				(elpaca-after-init . persp-mode))
 	:custom
 	(persp-mode-prefix-key (kbd "C-c C-w"))
 	:config
@@ -102,7 +105,7 @@
 			toggles-window ()
 			("persp"
 			 (("w" persp-switch "switch workspace" :exit t)))))
-	(add-hook 'elpaca-after-init-hook #'conia/pretty-hydra-define-persp 100))
+	(add-hook 'persp-mode-hook #'conia/pretty-hydra-define-persp 100))
 
 (use-package transient-posframe
 	:diminish

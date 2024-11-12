@@ -23,6 +23,7 @@
   (setq eglot-send-changes-idle-time 0.05)
   (setq-default eglot-events-buffer-size 0)
 	(setq-default eglot-sync-connect 0)
+	:demand t
 	:config
 	(add-to-list 'eglot-stay-out-of 'imenu)
 	;; format on save

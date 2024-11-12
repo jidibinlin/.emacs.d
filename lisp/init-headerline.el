@@ -70,12 +70,15 @@
 				 (trimed-mode-name (replace-regexp-in-string "-mode" "" mode-name)))
 		(concat "* " (capitalize trimed-mode-name))))
 
-(setq-default header-line-format '((:eval (meow--render-indicator))
-																	 vc-mode
-																	 " "
-																	 (:eval (conia/major-mode-name))
-																	 "  "
-																	 (:eval (breadcrumb--header-line))))
+(defun conia/set-base-header-line-format ()
+	(setq-default header-line-format '((:eval (meow--render-indicator))
+																		 vc-mode
+																		 " "
+																		 (:eval (conia/major-mode-name))
+																		 "  "
+																		 (:eval (breadcrumb--header-line)))))
+
+(add-hook 'elpaca-after-init-hook #'conia/set-base-header-line-format)
 
 (defun conia/subtle-set-face-for-frame (frame)
 	"Set face for frame."

@@ -44,7 +44,9 @@
 	:config
 	(add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
 	(add-hook 'elpaca-after-init-hook #'dashboard-initialize)
-	(dashboard-setup-startup-hook))
+	(dashboard-setup-startup-hook)
+	(remove-hook #'after-init-hook #'dashboard-insert-startupify-lists)
+	(remove-hook #'emacs-startup-hook #'dashboard-initialize))
 
 (use-package page-break-lines
 	:ensure t

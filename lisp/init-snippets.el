@@ -45,23 +45,23 @@
 ;; The package is young and doesn't have comprehensive coverage.
 (use-package tempel-collection
   :after tempel
-  :ensure t)
+  :ensure t
+	:demand t)
 
 (use-package eglot-tempel
   :hook (after-init . eglot-tempel-mode)
   :ensure t
-  ;; :init
-  ;; (defun tempel-eglot-completion-at-point()
-  ;;   (cape-wrap-super #'eglot-completion-at-point #'tempel-complete))
-  ;; :config
-  ;; (defun tweak-eglot-managed-capf ()
-  ;;   (setq-local completion-at-point-functions
-  ;;               (remove #'tempel-complete completion-at-point-functions))
-  ;;   (setq-local completion-at-point-functions
-  ;;               (remove #'eglot-completion-at-point completion-at-point-functions))
-  ;;   (push #'tempel-eglot-completion-at-point completion-at-point-functions))
-  ;; (add-hook 'eglot-managed-mode-hook #'tweak-eglot-managed-capf)
-	)
+	:demand t
+  :config
+	(defun tempel-eglot-completion-at-point()
+    (cape-wrap-super #'eglot-completion-at-point #'tempel-complete))
+  (defun tweak-eglot-managed-capf ()
+    (setq-local completion-at-point-functions
+                (remove #'tempel-complete completion-at-point-functions))
+    (setq-local completion-at-point-functions
+                (remove #'eglot-completion-at-point completion-at-point-functions))
+    (push #'tempel-eglot-completion-at-point completion-at-point-functions))
+  (add-hook 'eglot-managed-mode-hook #'tweak-eglot-managed-capf))
 
 (provide 'init-snippets)
 ;;; init-snippets.el ends here
