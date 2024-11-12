@@ -62,15 +62,22 @@
   :demand t
   :ensure t)
 
+(defface conia/major-mode-indicator-face
+	'((t :inherit (font-lock-keyword-face bold)))
+	"Face for major mode indicator."
+	:group 'conia)
+
 (defun conia/major-mode-name ()
 	"Return the major mode name."
-	(let* ((mode-name (symbol-name major-mode))
-				 (trimed-mode-name (replace-regexp-in-string "-mode" "" mode-name)))
-		(concat "* " (capitalize trimed-mode-name))))
+	(propertize  (nerd-icons-icon-for-buffer)
+							 'face 'conia/major-mode-indicator-face))
+
+(defun conia/vc-mode ()
+	(string-trim-left vc-mode))
 
 (defun conia/set-base-header-line-format ()
 	(setq-default header-line-format '((:eval (meow--render-indicator))
-																		 vc-mode
+																		 (:eval (conia/vc-mode))
 																		 " "
 																		 (:eval (conia/major-mode-name))
 																		 "  "
