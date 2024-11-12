@@ -80,7 +80,7 @@
 																		 (:eval (conia/vc-mode))
 																		 " "
 																		 (:eval (conia/major-mode-name))
-																		 "  "
+																		 " "
 																		 (:eval (breadcrumb--header-line)))))
 
 (add-hook 'elpaca-after-init-hook #'conia/set-base-header-line-format)
