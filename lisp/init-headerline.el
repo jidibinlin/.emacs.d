@@ -52,9 +52,7 @@
 												:overline active-subtle :foreground foreground
 												:background background :box new-box)))
 
-(add-hook 'elpaca-after-init-hook
-					(lambda ()
-						(subtle-modeline)))
+(add-hook 'elpaca-after-init-hook #'subtle-modeline)
 
 (add-to-list 'enable-theme-functions #'subtle-modeline)
 

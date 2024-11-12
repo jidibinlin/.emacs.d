@@ -55,9 +55,15 @@
 	(add-to-list 'page-break-lines-modes 'prog-mode)
 	(add-to-list 'page-break-lines-modes 'fundamental-mode))
 
-(add-hook 'elpaca-after-init-hook
-					(lambda ()
-						(load-theme 'doom-dark+ :no-confirm)))
+(defvar choosed-theme 'doom-dark+)
+
+(defun conia/load-theme (&optional theme)
+	(interactive)
+	(if theme
+			(load-theme theme :no-confirm)
+		(load-theme choosed-theme :no-confirm)))
+
+(add-hook 'elpaca-after-init-hook #'conia/load-theme)
 
 (provide 'init-theme)
 ;;; init-theme.el ends here
