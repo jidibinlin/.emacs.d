@@ -40,7 +40,7 @@
 												:endpoint "/api/v1/chat/completions"
 												:stream t
 												:key openrouter_token
-												:models '("anthropic/claude-3.5-sonnet")))
+												:models '(anthropic/claude-3.5-sonnet)))
 	(setq gptel-github (gptel-make-openai
 												 "Github Models"
 											 :host "models.inference.ai.azure.com"
@@ -48,6 +48,7 @@
 											 :stream t
 											 :key github_token
 											 :models '(gpt-4o)))
+	
 	(setq gptel-model 'gpt-4o
 				gptel-backend gptel-github
 				gptel-log-level 'debug))
