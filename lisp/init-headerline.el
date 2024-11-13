@@ -76,7 +76,7 @@
 (defvar-local conia/header-line-mode-icon-cache nil)
 (defun conia/header-line-mode-indicator ()
 	(if (thread-first conia/header-line-mode-icon-cache null not)
-			conia-major-mode-icon-cache
+			conia/header-line-mode-icon-cache
 		(let* ((icon (nerd-icons-icon-for-buffer))
 					 (prop (text-properties-at 0 icon))
 					 (face (plist-get prop 'face))
