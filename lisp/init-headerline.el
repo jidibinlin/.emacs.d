@@ -25,6 +25,8 @@
   :ensure t
   :demand t)
 
+
+
 (use-package spacious-padding
   :ensure t
   :demand t
@@ -62,35 +64,45 @@
   :demand t
   :ensure t)
 
-(defface conia/major-mode-indicator-face
+(defface conia/header-line-mode-indicator-face
 	'((t :inherit (font-lock-keyword-face)))
 	"Face for major mode indicator."
 	:group 'conia)
 
-(defun conia/vc-mode ()
+(defun conia/header-line-vc-indicator ()
 	(when (stringp vc-mode)
-		vc-mode))
+		(string-trim-left vc-mode)))
 
-(defvar-local conia-major-mode-icon-cache nil)
-(defun conia/major-icon ()
-	(if (thread-first conia-major-mode-icon-cache null not)
+(defvar-local conia/header-line-mode-icon-cache nil)
+(defun conia/header-line-mode-indicator ()
+	(if (thread-first conia/header-line-mode-icon-cache null not)
 			conia-major-mode-icon-cache
 		(let* ((icon (nerd-icons-icon-for-buffer))
 					 (prop (text-properties-at 0 icon))
 					 (face (plist-get prop 'face))
 					 (face (copy-sequence face))
-					 (_ (plist-put face :inherit 'conia/major-mode-indicator-face))
+					 (_ (plist-put face :inherit 'conia/header-line-mode-indicator-face))
 					 (icon (propertize icon 'face face)))
-			(setq-local conia-major-mode-icon-cache icon)
-			conia-major-mode-icon-cache)))
+			(setq-local conia/header-line-mode-icon-cache icon)
+			conia/header-line-mode-icon-cache)))
+
+(defface conia/header-line-input-method-indicator-face
+	'((t :inherit (font-lock-keyword-face) :bold t))
+	"Face for input method indicator."
+	:group 'conia)
+
+(defun conia/header-line-input-method-indicator ()
+	(when current-input-method
+		(let* ((str (format "%s " current-input-method))
+					 (str (capitalize str)))
+			(propertize str 'face 'conia/header-line-input-method-indicator-face))))
 
 (defun conia/set-base-header-line-format ()
 	(setq-default header-line-format '((:eval (meow--render-indicator))
-																		 current-input-method
+																		 (:eval (conia/header-line-input-method-indicator))
+																		 (:eval (conia/header-line-vc-indicator))
 																		 " "
-																		 (:eval (conia/vc-mode))
-																		 " "
-																		 (:eval (conia/major-icon))
+																		 (:eval (conia/header-line-mode-indicator))
 																		 " "
 																		 (:eval (breadcrumb--header-line)))))
 
