@@ -27,29 +27,37 @@
 
 ;;; Code:
 
+(setq openrouter_token (getenv "OPENROUTER_API_KEY"))
+(setq github_token (getenv "GITHUB_TOKEN"))
+
 (use-package gptel
 	:ensure t
-	:init
-  (setq gptel-model "anthropic/claude-3.5-sonnet")
+	:demand t
   :config
-  (setq gptel-backend
-				(gptel-make-openai
-						"OpenRouter"
-					:host "openrouter.ai"
-					:endpoint "/api/v1/chat/completions"
-					:stream t
-					:key "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"
-					:models '("anthropic/claude-3.5-sonnet"))))
+	(setq gptel-claude  (gptel-make-openai
+													"OpenRouter"
+												:host "openrouter.ai"
+												:endpoint "/api/v1/chat/completions"
+												:stream t
+												:key openrouter_token
+												:models '("anthropic/claude-3.5-sonnet")))
+	(setq gptel-github (gptel-make-openai
+												 "Github Models"
+											 :host "models.inference.ai.azure.com"
+											 :endpoint "/chat/completions"
+											 :stream t
+											 :key github_token
+											 :models '(gpt-4o)))
+	(setq gptel-model 'gpt-4o
+				gptel-backend gptel-github
+				gptel-log-level 'debug))
 
 (use-package aider
 	:ensure
 	(:host github :repo "tninja/aider.el")
   :config
   (setq aider-args '("--no-auto-commits"
-										 "--model" "openrouter/anthropic/claude-3.5-sonnet"))
-  (setenv
-	 "OPENROUTER_API_KEY"
-	 "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"))
+										 "--model" "openrouter/anthropic/claude-3.5-sonnet")))
 
 (use-package copilot
 	:ensure
@@ -74,14 +82,6 @@
 							 '(clojure-mode copilot-lisp-indent-offset))
 	
 	(advice-add 'copilot-mode :around #'conia/large-file-control))
-
-(use-package copilot-chat
-  :after (request)
-	:ensure
-	(:host github :repo "chep/copilot-chat.el")
-  :custom
-  (copilot-chat-frontend 'org))
-
 
 (provide 'init-ai)
 ;;; init-ai.el ends here
