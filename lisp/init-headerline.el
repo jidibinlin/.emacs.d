@@ -62,6 +62,11 @@
   :demand t
   :ensure t)
 
+(defface conia/major-mode-indicator-face
+	'((t :inherit (font-lock-keyword-face)))
+	"Face for major mode indicator."
+	:group 'conia)
+
 (defun conia/vc-mode ()
 	(when (stringp vc-mode)
 		vc-mode))
@@ -70,9 +75,13 @@
 (defun conia/major-icon ()
 	(if (thread-first conia-major-mode-icon-cache null not)
 			conia-major-mode-icon-cache
-		(progn
-			(setq-local conia-major-mode-icon-cache
-									(nerd-icons-icon-for-buffer))
+		(let* ((icon (nerd-icons-icon-for-buffer))
+					 (prop (text-properties-at 0 icon))
+					 (face (plist-get prop 'face))
+					 (face (copy-sequence face))
+					 (_ (plist-put face :inherit 'conia/major-mode-indicator-face))
+					 (icon (propertize icon 'face face)))
+			(setq-local conia-major-mode-icon-cache icon)
 			conia-major-mode-icon-cache)))
 
 (defun conia/set-base-header-line-format ()
