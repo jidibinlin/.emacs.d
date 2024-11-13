@@ -113,9 +113,10 @@
 	(transient-posframe ((t (:inherit tooltip))))
 	:hook (elpaca-after-init . transient-posframe-mode)
 	:ensure t
+	:after (posframe)
 	:init
 	(setq transient-posframe-border-width 1
-				transient-posframe-poshandler 'posframe-poshandler-frame-center
+				transient-posframe-poshandler 'posframe-poshandler-frame-near-top-center
 				transient-posframe-parameters '((left-fringe . 8)
 																				(right-fringe . 8)))
 	:config

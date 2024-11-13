@@ -105,6 +105,20 @@
 	:ensure t
 	:custom
 	(posframe-inhibit-double-buffering t)
+	:init
+	(defun posframe-poshandler-frame-near-top-center (info)
+		"Posframe handler that smartly positions near top with dynamic offset."
+		(cons 
+		 ;; 水平居中
+		 (/ (- (plist-get info :parent-frame-width)
+					 (plist-get info :posframe-width))
+				2)
+		 ;; 让出顶部header-line
+		 (+ (line-pixel-height)
+				(plist-get spacious-padding-widths :internal-border-width)
+				(plist-get spacious-padding-widths :header-line-width)
+				(plist-get spacious-padding-widths :mode-line-width)
+				5)))
 	:config
 	(defun conia/refresh-posframe (_)
 		(posframe-delete-all))
