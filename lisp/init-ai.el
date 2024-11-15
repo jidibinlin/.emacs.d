@@ -86,5 +86,13 @@
 	
 	(advice-add 'copilot-mode :around #'conia/large-file-control))
 
+;; (use-package codeium
+;; 	:ensure (:host github :repo "Exafunction/codeium.el")
+;; 	:init
+;; 	(add-to-list 'conia/capfs-to-merge
+;; 							 (cons 'prog-mode #'codeium-completion-at-point))
+;; 	:config
+;; 	(setq use-dialog-box nil))
+
 (provide 'init-ai)
 ;;; init-ai.el ends here

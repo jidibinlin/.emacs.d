@@ -38,7 +38,8 @@
         corfu-cycle t
         corfu-preselect 'first
         corfu-on-exact-match nil
-        corfu-quit-no-match  'separator)
+        corfu-quit-no-match  t
+				corfu-quit-at-boundary 'separator)
   :config
   (defun conia/switch-corfu-preselect-prompt ()
     (setq-local corfu-preselect 'prompt)))
@@ -49,7 +50,29 @@
   :init
   (advice-add #'tempel-complete :around #'cape-wrap-nonexclusive)
   (advice-add #'tempel-expand :around #'cape-wrap-nonexclusive)
-  (advice-add #'eglot-completion-at-point :around #'cape-wrap-nonexclusive))
+	(advice-add #'elisp-completion-at-point :around #'cape-wrap-nonexclusive)
+	(advice-add #'codeium-completion-at-point :around #'cape-wrap-nonexclusive)
+
+	(defvar-local conia/supered-capfs nil)
+
+	(defun conia/super-capf ()
+		(apply #'cape-wrap-super conia/supered-capfs))
+
+	(defun conia/merge-capf ()
+		(let ((tosuper '()))
+			(dolist (mode-capf conia/capfs-to-merge)
+				(let ((enmode (car mode-capf))
+							(capf (cdr mode-capf)))
+					(when (or
+								 (and (boundp enmode) (symbol-value enmode))
+								 (derived-mode-p enmode))
+						(setq-local completion-at-point-functions
+												(remove capf completion-at-point-functions))
+						(when (not (member capf tosuper))
+							(cl-pushnew capf tosuper)))))
+			(setq-local conia/supered-capfs tosuper)
+			(add-to-list 'completion-at-point-functions
+									 #'conia/super-capf))))
 
 (use-package nerd-icons-corfu
   :defer t

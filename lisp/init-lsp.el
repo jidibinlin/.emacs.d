@@ -23,6 +23,8 @@
   (setq eglot-send-changes-idle-time 0.05)
   (setq-default eglot-events-buffer-size 0)
 	(setq-default eglot-sync-connect 0)
+	(add-to-list 'conia/capfs-to-merge (cons 'eglot--managed-mode
+																					 'eglot-completion-at-point))
 	:demand t
 	:config
 	(add-to-list 'eglot-stay-out-of 'imenu)
@@ -43,7 +45,8 @@
 	(defun conia/eglot--register-apheleia-formatter()
 		(add-to-list 'apheleia-formatters
 								 '(eglot . conia/apheleia-formatter-eglot)))
-	(add-hook 'elpaca-after-init-hook  #'conia/eglot--register-apheleia-formatter))
+	(add-hook 'elpaca-after-init-hook  #'conia/eglot--register-apheleia-formatter)
+	(add-hook 'eglot--managed-mode-hook #'conia/merge-capf 100))
 
 (use-package consult-eglot
   :ensure t)

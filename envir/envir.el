@@ -42,5 +42,9 @@
 (defconst conia-sysis-mac  (equal conia-system 'macos))
 (defconst conia-syis-wsl (when (equal conia-system 'wsl) 'wsl))
 
+(defvar conia/capfs-to-merge '()
+	"A list of `completion-at-point-functions' to merge.
+Each element should be a cons which car hold mode cdr hold capf.")
+
 (provide 'envir)
 ;;; envir.el ends here

@@ -24,22 +24,15 @@
               ("TAB" . tempel-next)
               ("S-TAB" . tempel-previous))
   :init
-  ;; Setup completion at point
-  (defun tempel-setup-capf ()
-    ;; Add the Tempel Capf to `completion-at-point-functions'.
-    ;; `tempel-expand' only triggers on exact matches. Alternatively use
-    ;; `tempel-complete' if you want to see all matches, but then you
-    ;; should also configure `tempel-trigger-prefix', such that Tempel
-    ;; does not trigger too often when you don't expect it. NOTE: We add
-    ;; `tempel-expand' *before* the main programming mode Capf, such
-    ;; that it will be tried first.
-    (setq-local completion-at-point-functions
-                (cons #'tempel-complete
-                      completion-at-point-functions)))
-
-  (add-hook 'conf-mode-hook 'tempel-setup-capf)
-  (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf))
+	(add-to-list 'conia/capfs-to-merge
+							 (cons 'prog-mode #'tempel-complete))
+	(add-to-list 'conia/capfs-to-merge
+							 (cons 'conf-mode #'tempel-complete))
+	(add-to-list 'conia/capfs-to-merge
+							 (cons 'text-mode #'tempel-complete))
+  (add-hook 'conf-mode-hook 'conia/merge-capf)
+  (add-hook 'prog-mode-hook 'conia/merge-capf)
+  (add-hook 'text-mode-hook 'conia/merge-capf))
 
 ;; Optional: Add tempel-collection.
 ;; The package is young and doesn't have comprehensive coverage.
@@ -51,17 +44,7 @@
 (use-package eglot-tempel
   :hook (after-init . eglot-tempel-mode)
   :ensure t
-	:demand t
-  :config
-	(defun tempel-eglot-completion-at-point()
-    (cape-wrap-super #'eglot-completion-at-point #'tempel-complete))
-  (defun tweak-eglot-managed-capf ()
-    (setq-local completion-at-point-functions
-                (remove #'tempel-complete completion-at-point-functions))
-    (setq-local completion-at-point-functions
-                (remove #'eglot-completion-at-point completion-at-point-functions))
-    (push #'tempel-eglot-completion-at-point completion-at-point-functions))
-  (add-hook 'eglot-managed-mode-hook #'tweak-eglot-managed-capf))
+	:demand t)
 
 (provide 'init-snippets)
 ;;; init-snippets.el ends here
