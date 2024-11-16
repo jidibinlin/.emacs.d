@@ -25,6 +25,7 @@
 	(setq-default eglot-sync-connect 0)
 	(add-to-list 'conia/capfs-to-merge (cons 'eglot--managed-mode
 																					 'eglot-completion-at-point))
+	(add-to-list 'conia/capfs-priority (cons 'eglot-completion-at-point 100))
 	:demand t
 	:config
 	(add-to-list 'eglot-stay-out-of 'imenu)
