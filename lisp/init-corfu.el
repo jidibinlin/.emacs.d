@@ -70,7 +70,14 @@
 												(remove capf completion-at-point-functions))
 						(when (not (member capf tosuper))
 							(cl-pushnew capf tosuper)))))
-			(setq-local conia/supered-capfs tosuper)
+			
+			;; sort tosuper by conia/capfs-priority
+			(setq-local conia/supered-capfs
+									(sort tosuper
+												(lambda (a b)
+													(> (or (alist-get a conia/capfs-priority) 0)
+														 (or (alist-get b conia/capfs-priority) 0)))))
+			
 			(add-to-list 'completion-at-point-functions
 									 #'conia/super-capf))))
 

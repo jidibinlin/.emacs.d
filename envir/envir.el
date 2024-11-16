@@ -42,6 +42,10 @@
 (defconst conia-sysis-mac  (equal conia-system 'macos))
 (defconst conia-syis-wsl (when (equal conia-system 'wsl) 'wsl))
 
+;; (capf . priority)
+(defvar conia/capfs-priority '()
+	"A list of `completion-at-point-functions' with priority.")
+
 (defvar conia/capfs-to-merge '()
 	"A list of `completion-at-point-functions' to merge.
 Each element should be a cons which car hold mode cdr hold capf.")
