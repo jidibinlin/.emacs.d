@@ -86,25 +86,5 @@
 	
 	(advice-add 'copilot-mode :around #'conia/large-file-control))
 
-;; (use-package codeium
-;; 	:ensure (:host github :repo "Exafunction/codeium.el")
-;; 	:init
-;; 	(add-to-list 'conia/capfs-to-merge
-;; 							 (cons 'prog-mode #'codeium-completion-at-point))
-;; 	:config
-;; 	(setq use-dialog-box nil))
-
-;; (use-package tabnine
-;; 	:ensure t
-;; 	:commands (tabnine-start-process)
-;; 	:custom
-;; 	(tabnine-wait 1)
-;; 	(tabnine-minium-prefix-length 0)
-;; 	:hook ((kill-emacs . tabnine-kill-process)
-;; 				 (elpaca-after-init . tabnine-start-process))
-;; 	:config
-;; 	(add-to-list 'conia/capfs-to-merge
-;; 							 (cons 'prog-mode #'tabnine-completion-at-point)))
-
 (provide 'init-ai)
 ;;; init-ai.el ends here
