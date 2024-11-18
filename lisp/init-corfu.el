@@ -48,10 +48,11 @@
   :defer t
   :ensure t
   :init
-  (advice-add #'tempel-complete :around #'cape-wrap-nonexclusive)
-  (advice-add #'tempel-expand :around #'cape-wrap-nonexclusive)
 	(advice-add #'elisp-completion-at-point :around #'cape-wrap-nonexclusive)
-	(advice-add #'codeium-completion-at-point :around #'cape-wrap-nonexclusive)
+
+	(add-to-list 'conia/capfs-to-merge (cons 'emacs-lisp-mode #'elisp-completion-at-point))
+	(add-to-list 'conia/capfs-priority '(elisp-completion-at-point . 0))
+	
 
 	(defvar-local conia/supered-capfs nil)
 
@@ -82,8 +83,8 @@
 									 #'conia/super-capf))))
 
 (use-package nerd-icons-corfu
-  :defer t
-  :after corfu
+	:defer t
+	:after corfu
   :ensure t
   :init
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
