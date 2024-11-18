@@ -65,5 +65,8 @@ you'll be prompted to select one."
 			(rime-lib-select-schema "luna_pinyin_simp"))
 		(add-hook 'elpaca-after-init-hook #'conia/enable-rime)))
 
+(use-package keycast
+	:ensure t)
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
