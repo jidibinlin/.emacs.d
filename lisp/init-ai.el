@@ -87,7 +87,19 @@
 	(advice-add 'copilot-mode :around #'conia/large-file-control)
 
 	(defvar-local copilot--cached-completion-returns '())
+
+	(defun copilot--completion-doc-buf (completions key)
+		(let ((completion (alist-get key completions)))
+			(when completion
+				(with-current-buffer (get-buffer-create "*copilot-doc*")
+					(message "called")
+					(erase-buffer)
+					(insert (plist-get completion :text))
+					(current-buffer)))))
+	
 	(defun copilot-completion-at-point()
+		"send the completion request to the server and return the cached completions"
+		;; send request each time this function triggered
 		(copilot--get-completion
 		 (jsonrpc-lambda (&key completions &allow-other-keys)
 			 (when (not (seq-empty-p completions))
@@ -95,30 +107,38 @@
 				 (when (length> copilot--cached-completion-returns 3)
 					 (setq copilot--cached-completion-returns
 								 (cdr copilot--cached-completion-returns))))))
-
 		(let* ((bounds (bounds-of-thing-at-point 'symbol))
 					 (start (or (car bounds) (point)))
 					 (end (or (cdr bounds) (point)))
-					 (completions (make-hash-table)))
+					 (completions '()))
+			;; preprocess cached completion data
+			;; keep completion entry unique
 			(cl-loop for completion-return in copilot--cached-completion-returns
 							 do
 							 (seq-doseq (completion completion-return)
-								 (puthash (plist-get completion :text) completion completions)))
-
-			(list start 
-						end
-						(let (results)
-							(maphash
-							 (lambda (key val)
-								 (add-to-list 'results
-															(cons (substring
-																		 key
-																		 (- start (line-beginning-position)))
-																		val)))
-							 completions)
-							results)
-						:exclusive 'no
-						:company-kind (lambda (_) 'copilot)))))
+								 (let ((key (plist-get completion :text)))
+									 (setf (alist-get key completions) completion))))
+			;; discard prefix
+			(let* ((discardpos (- start (line-beginning-position)))
+						 (prefix-suber
+							(lambda (foo)
+								(let* ((key (car foo))
+											 (subpose (min discardpos (length key))))
+									(setf (car foo) (substring key subpose))))))
+				(mapc prefix-suber completions))
+			
+			;; build completion data
+			(list
+			 start 
+			 end
+			 ;; the completions
+			 completions
+			 :exclusive 'no
+			 :company-kind (lambda (_) 'copilot)
+			 :company-doc-buffer (apply-partially #'copilot--completion-doc-buf completions))))
+	
+	(add-to-list 'conia/capfs-to-merge (cons 'prog-mode 'copilot-completion-at-point))
+	(add-to-list 'conia/capfs-priority '(copilot-completion-at-point . 50)))
 
 (provide 'init-ai)
 ;;; init-ai.el ends here
