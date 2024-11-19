@@ -84,7 +84,40 @@
   (add-to-list 'copilot-indentation-alist
 							 '(clojure-mode copilot-lisp-indent-offset))
 	
-	(advice-add 'copilot-mode :around #'conia/large-file-control))
+	(advice-add 'copilot-mode :around #'conia/large-file-control)
+
+	(defvar-local copilot--cached-completion-returns '())
+
+	(defun copilot-completion-at-point()
+		(copilot--get-completion
+		 (jsonrpc-lambda (&key completions &allow-other-keys)
+			 (when (not (seq-empty-p completions))
+				 (add-to-list 'copilot--cached-completion-returns completions t)
+				 (when (length> copilot--cached-completion-returns 3)
+					 (setq copilot--cached-completion-returns
+								 (cdr copilot--cached-completion-returns))))))
+
+		(let* ((bounds (bounds-of-thing-at-point 'symbol))
+					 (start (or (car bounds) (point)))
+					 (end (or (cdr bounds) (point)))
+					 (completions (make-hash-table)))
+			(cl-loop for completion-return in copilot--cached-completion-returns
+							 do
+							 (seq-doseq (completion completion-return)
+								 (puthash (plist-get completion :text) completion completions)))
+
+			(list start 
+						end
+						(let (results)
+							(maphash (lambda (key val)
+												 (add-to-list 'results
+																			(cons (substring key (- start (line-beginning-position))) val)))
+											 completions)
+							results))
+			))
+	)
+
+(setq-local completion-at-point-functions '(copilot-completion-at-point))
 
 (provide 'init-ai)
 ;;; init-ai.el ends here
