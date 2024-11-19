@@ -87,7 +87,6 @@
 	(advice-add 'copilot-mode :around #'conia/large-file-control)
 
 	(defvar-local copilot--cached-completion-returns '())
-
 	(defun copilot-completion-at-point()
 		(copilot--get-completion
 		 (jsonrpc-lambda (&key completions &allow-other-keys)
@@ -109,15 +108,17 @@
 			(list start 
 						end
 						(let (results)
-							(maphash (lambda (key val)
-												 (add-to-list 'results
-																			(cons (substring key (- start (line-beginning-position))) val)))
-											 completions)
-							results))
-			))
-	)
-
-(setq-local completion-at-point-functions '(copilot-completion-at-point))
+							(maphash
+							 (lambda (key val)
+								 (add-to-list 'results
+															(cons (substring
+																		 key
+																		 (- start (line-beginning-position)))
+																		val)))
+							 completions)
+							results)
+						:exclusive 'no
+						:company-kind (lambda (_) 'copilot)))))
 
 (provide 'init-ai)
 ;;; init-ai.el ends here
