@@ -65,9 +65,10 @@
 (use-package copilot
 	:ensure
 	(:host github :repo "copilot-emacs/copilot.el")
-  :hook (prog-mode . (lambda ()
-                       (when (not (derived-mode-p 'read-only-mode))
-                         (copilot-mode))))
+  :hook ((prog-mode . (lambda ()
+												(when (not (derived-mode-p 'read-only-mode))
+													(copilot-mode))))
+				 (copilot-mode . conia/remove-copilot-post-command))
   :bind (:map  copilot-completion-map
 							 ("<tab>" . 'copilot-accept-completion))
   :init
@@ -85,6 +86,8 @@
 							 '(clojure-mode copilot-lisp-indent-offset))
 	
 	(advice-add 'copilot-mode :around #'conia/large-file-control)
+	(defun conia/remove-copilot-post-command()
+		(remove-hook 'post-command-hook 'copilot--post-command t))
 
 	(defvar-local copilot--cached-completion-returns '())
 
@@ -92,14 +95,13 @@
 		(let ((completion (alist-get key completions)))
 			(when completion
 				(with-current-buffer (get-buffer-create "*copilot-doc*")
-					(message "called")
 					(erase-buffer)
 					(insert (plist-get completion :text))
 					(current-buffer)))))
 	
 	(defun copilot-completion-at-point()
-		"send the completion request to the server and return the cached completions"
-		;; send request each time this function triggered
+		"send completion request to copilot and return cached completions"
+		;; send request each time triggered
 		(copilot--get-completion
 		 (jsonrpc-lambda (&key completions &allow-other-keys)
 			 (when (not (seq-empty-p completions))
@@ -111,14 +113,13 @@
 					 (start (or (car bounds) (point)))
 					 (end (or (cdr bounds) (point)))
 					 (completions '()))
-			;; preprocess cached completion data
-			;; keep completion entry unique
+			;; preprocess cached completion data keep completion entry unique
 			(cl-loop for completion-return in copilot--cached-completion-returns
 							 do
 							 (seq-doseq (completion completion-return)
 								 (let ((key (plist-get completion :text)))
 									 (setf (alist-get key completions) completion))))
-			;; discard prefix
+			;; discard prefix from completion probably
 			(let* ((discardpos (- start (line-beginning-position)))
 						 (prefix-suber
 							(lambda (foo)
@@ -131,14 +132,16 @@
 			(list
 			 start 
 			 end
-			 ;; the completions
 			 completions
 			 :exclusive 'no
 			 :company-kind (lambda (_) 'copilot)
-			 :company-doc-buffer (apply-partially #'copilot--completion-doc-buf completions))))
+			 :company-doc-buffer (apply-partially
+														#'copilot--completion-doc-buf
+														completions))))
 	
 	(add-to-list 'conia/capfs-to-merge (cons 'prog-mode 'copilot-completion-at-point))
 	(add-to-list 'conia/capfs-priority '(copilot-completion-at-point . 50)))
 
 (provide 'init-ai)
+
 ;;; init-ai.el ends here
