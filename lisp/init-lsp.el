@@ -67,6 +67,53 @@
 
 	(defun eglot--async-completion-prefix()
 		(buffer-substring-no-properties (line-beginning-position) (point)))
+	
+	(defvar member-trigger '("->" "::" "=>" ":" "."))
+
+	(defun thing-at-point-member-trigger ()
+		(cl-loop for (trigger regex len) in
+						 (mapcar (lambda (trigger)
+											 (list trigger
+														 (regexp-quote trigger)
+														 (length trigger)))
+										 member-trigger)
+						 when (save-excursion
+										(backward-char len)
+										(looking-at regex))
+						 return trigger))
+	
+	(put 'member-trigger 'thing-at-point
+			 'thing-at-point-member-trigger)
+
+	;; (bind-key "C-'" (lambda ()
+	;; 									(interactive)
+	;; 									(message "thing %s" (thing-at-point
+	;; 																			 'member-trigger))))
+	
+	;; (type trigger)
+	;; symbol . sy
+	;; member (char . parent)
+	;; none
+	(defun eglot--async-completion-context()
+		(let ((trigger (thing-at-point 'member-trigger)))
+			(if trigger
+					(save-excursion
+						(backward-char (length trigger))
+						(list 'member trigger (thing-at-point 'symbol)))
+				(save-excursion
+					(when-let* ((symbol (thing-at-point 'symbol)))
+						(backward-char (length symbol))
+						(if-let* ((trigger (thing-at-point 'member-trigger)))
+								(progn
+									(backward-char (length trigger))
+									(list 'member trigger (thing-at-point 'symbol)))
+							(list 'symbol symbol)))))))
+	
+	(bind-key "C-'" (lambda ()
+										(interactive)
+										(message "thing %s" (eglot--async-completion-context))))
+
+	
 
 	(defun eglot--get-on-completion-return-callback (prefix)
 		(jsonrpc-lambda (&rest resp &allow-other-keys)
@@ -74,22 +121,16 @@
 						(cons prefix (if (vectorp resp) resp
 													 (plist-get resp :items))))))
 	
-	(setq eglot--on-completion-return
-				(jsonrpc-lambda (&rest resp &allow-other-keys)
-					(setq eglot--cached-completion
-								(if (vectorp resp) resp
-									(plist-get resp :items)))))
-	
 	(defun eglot-completion-at-point ()
 		"Eglot's `completion-at-point' function."
 
 		;; try notify lsp
 		(when-let (completion-capability (eglot--server-capable :completionProvider))
 			(eglot--signal-textDocument/didChange)
+			(message "eglot completion-at-point triggered")
 			(eglot--async-request
 			 'textDocument/completion
 			 (eglot--CompletionParams)
-			 ;;:success-fn (eglot--get-on-completion-return-callback )
 			 :success-fn (eglot--get-on-completion-return-callback
 										(eglot--async-completion-prefix)))
 			
@@ -105,37 +146,46 @@
 																 :sortText)))))
 						 (metadata `(metadata (category . eglot)
 																	(display-sort-function . ,sort-completions)))
+						 (prefix (eglot--async-completion-prefix))
 						 (cached-proxies :none)
 						 (proxies
 							(lambda ()
-								(if (listp cached-proxies) cached-proxies
-									(setq cached-proxies
-												(mapcar
-												 (jsonrpc-lambda
-														 (&rest item &key label insertText insertTextFormat
-																		textEdit &allow-other-keys)
-													 (let ((proxy
-																	;; Snippet or textEdit, it's safe to
-																	;; display/insert the label since
-																	;; it'll be adjusted.  If no usable
-																	;; insertText at all, label is best,
-																	;; too.
-																	(cond ((or (eql insertTextFormat 2)
-																						 textEdit
-																						 (null insertText)
-																						 (string-empty-p insertText))
-																				 (string-trim-left label))
-																				(t insertText))))
-														 (unless (zerop (length proxy))
-															 (put-text-property 0 1 'eglot--lsp-item item proxy))
-														 proxy))
-												 ;; chick if cached completion still valid
-												 (if (and (consp eglot--cached-completion)
-																	(let* ((cached-prefix (car eglot--cached-completion))
-																				 (cur-prefix (eglot--async-completion-prefix))
-																				 (equip? (string= cached-prefix cur-prefix)))
-																		equip?))
-														 (cdr eglot--cached-completion)))))))
+								(if
+										;; (and (consp cached-proxies)
+										;; 		 (string= prefix (car cached-proxies)))
+										(consp cached-proxies)
+										(cdr cached-proxies)
+									(progn
+										(setq cached-proxies
+													(cons prefix 
+																(mapcar
+																 (jsonrpc-lambda
+																		 (&rest item &key label insertText insertTextFormat
+																						textEdit &allow-other-keys)
+																	 (let ((proxy
+																					;; Snippet or textEdit, it's safe to
+																					;; display/insert the label since
+																					;; it'll be adjusted.  If no usable
+																					;; insertText at all, label is best,
+																					;; too.
+																					(cond ((or (eql insertTextFormat 2)
+																										 textEdit
+																										 (null insertText)
+																										 (string-empty-p insertText))
+																								 (string-trim-left label))
+																								(t insertText))))
+																		 (unless (zerop (length proxy))
+																			 (put-text-property 0 1 'eglot--lsp-item item proxy))
+																		 proxy))
+																 ;; chick if cached completion still valid
+																 (when
+																		 (and (consp eglot--cached-completion)
+																					(let* ((cached-prefix (car eglot--cached-completion))
+																								 (cur-prefix (eglot--async-completion-prefix))
+																								 (equip? (string= cached-prefix cur-prefix)))
+																						equip?))
+																	 (cdr eglot--cached-completion)))))
+										(cdr cached-proxies)))))
 						 (resolved (make-hash-table))
 						 (resolve-maybe
 							;; Maybe completion/resolve JSON object `lsp-comp' into
@@ -155,7 +205,6 @@
 				 (or (car bounds) (point))
 				 (or (cdr bounds) (point))
 				 (lambda (probe pred action)
-																				;(message "probe is %s" probe)
 					 (cond
 						((eq action 'metadata) metadata)               ; metadata
 						((eq action 'lambda)                           ; test-completion
@@ -166,7 +215,9 @@
 						((eq action t)                                 ; all-completions
 						 (all-completions
 							""
-							(funcall proxies)
+							(progn
+								(message "prefix is %s probe %s pred" prefix probe pred)
+								(funcall proxies))
 							(lambda (proxy)
 								(let* ((item (get-text-property 0 'eglot--lsp-item proxy))
 											 (filterText (plist-get item :filterText)))
