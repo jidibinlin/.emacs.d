@@ -49,6 +49,7 @@
 	(add-hook 'elpaca-after-init-hook  #'conia/eglot--register-apheleia-formatter)
 	(add-hook 'eglot--managed-mode-hook #'conia/merge-capf 100)
 
+	;; eglot async
 	(defvar-local eglot--cached-completion '())
 	
 	(cl-defmacro eglot--async-request
@@ -64,11 +65,8 @@
 														(with-current-buffer buf
 															(funcall ,success-fn result))))
 					,@args))))
-
-	(defun eglot--async-completion-prefix()
-		(buffer-substring-no-properties (line-beginning-position) (point)))
 	
-	(defvar member-trigger '("->" "::" "=>" ":" "."))
+	(defvar-local member-trigger '("->" "::" "=>" ":" "."))
 
 	(defun thing-at-point-member-trigger ()
 		(cl-loop for (trigger regex len) in
@@ -86,7 +84,7 @@
 			 'thing-at-point-member-trigger)
 
 	;; (symbol . sy)
-	;; (member (char . parent))
+	;; (member . (char . parent))
 	;; nil
 	(defun eglot--completion-context()
 		"Get current completion context"
@@ -94,37 +92,61 @@
 			(if trigger
 					(save-excursion
 						(backward-char (length trigger))
-						(list 'member (cons trigger (thing-at-point 'symbol t))))
+						(cons 'member (cons trigger (thing-at-point 'symbol t))))
 				(save-excursion
 					(when-let* ((symbol (thing-at-point 'symbol t))
 											(bounds (bounds-of-thing-at-point 'symbol)))
-						(message "bounds is %s" bounds)
 						(goto-char (car bounds))
 						(if-let* ((trigger (thing-at-point 'member-trigger t)))
 								(progn
 									(backward-char (length trigger))
-									(list 'member (cons trigger (thing-at-point 'symbol t))))
-							(list 'symbol symbol)))))))
+									(cons 'member (cons trigger (thing-at-point 'symbol t))))
+							(cons 'symbol symbol)))))))
 
+	;; (let ((context1 (cons 'member (cons "." "this")))
+	;; 			(context2 (cons 'member (cons "." "physxDemo_Button"))))
+	;; 	(message "is same? %s"(eglot--same-contextp context1 context2)))
+
+	(defun eglot--same-contextp (cached-context cur-context)
+		(let ((cached-t (when (consp cached-context)
+											(car cached-context)))
+					(cur-t (when (consp cur-context)
+									 (car cur-context))))
+			(when (equal cached-t cur-t)
+				(pcase cached-t
+					('symbol (equal (cdr cached-context) (cdr cur-context)))
+					('member (let* ((cached-trigger-punc (cadr cached-context))
+													(cached-trigger-parent (cddr cached-context))
+													(cur-trigger-punc (cadr cur-context))
+													(cur-trigger-parent (cddr cur-context)))
+										 (and 
+											(equal cached-trigger-punc cur-trigger-punc)
+											(equal cached-trigger-parent cur-trigger-parent))))
+					(t t)))))
 	
-	(defun eglot--get-on-completion-return-callback (prefix)
+	(defun eglot--get-on-completion-return-callback (context)
 		(jsonrpc-lambda (&rest resp &allow-other-keys)
 			(setq eglot--cached-completion
-						(cons prefix (if (vectorp resp) resp
-													 (plist-get resp :items))))))
+						(cons context (if (vectorp resp) resp
+														(plist-get resp :items))))))
 	
 	(defun eglot-completion-at-point ()
 		"Eglot's `completion-at-point' function."
 
 		;; try notify lsp
 		(when-let (completion-capability (eglot--server-capable :completionProvider))
-			(eglot--signal-textDocument/didChange)
-			(message "eglot completion-at-point triggered")
-			(eglot--async-request
-			 'textDocument/completion
-			 (eglot--CompletionParams)
-			 :success-fn (eglot--get-on-completion-return-callback
-										(eglot--async-completion-prefix)))
+																				;(eglot--signal-textDocument/didChange)
+			(let ((context (eglot--completion-context))
+						(cached-context (when (consp eglot--cached-completion)
+															(car eglot--cached-completion))))
+				(when (or (and (null context)
+											 (null cached-context))
+									(not (eglot--same-contextp cached-context context)))
+					(eglot--async-request
+					 'textDocument/completion
+					 (eglot--CompletionParams)
+					 :success-fn (eglot--get-on-completion-return-callback
+												context))))
 			
 			;; Commit logs for this function help understand what's going on.
 			(let* ((server (eglot--current-server-or-lose))
@@ -138,18 +160,14 @@
 																 :sortText)))))
 						 (metadata `(metadata (category . eglot)
 																	(display-sort-function . ,sort-completions)))
-						 (prefix (eglot--async-completion-prefix))
+						 (context (eglot--completion-context))
 						 (cached-proxies :none)
 						 (proxies
 							(lambda ()
-								(if
-										;; (and (consp cached-proxies)
-										;; 		 (string= prefix (car cached-proxies)))
-										(consp cached-proxies)
-										(cdr cached-proxies)
+								(if (consp cached-proxies) (cdr cached-proxies)
 									(progn
 										(setq cached-proxies
-													(cons prefix 
+													(cons context
 																(mapcar
 																 (jsonrpc-lambda
 																		 (&rest item &key label insertText insertTextFormat
@@ -163,7 +181,8 @@
 																					(cond ((or (eql insertTextFormat 2)
 																										 textEdit
 																										 (null insertText)
-																										 (string-empty-p insertText))
+																										 (string-empty-p insertText)
+																										 label)
 																								 (string-trim-left label))
 																								(t insertText))))
 																		 (unless (zerop (length proxy))
@@ -172,11 +191,11 @@
 																 ;; chick if cached completion still valid
 																 (when
 																		 (and (consp eglot--cached-completion)
-																					(let* ((cached-prefix (car eglot--cached-completion))
-																								 (cur-prefix (eglot--async-completion-prefix))
-																								 (equip? (string= cached-prefix cur-prefix)))
+																					(let* ((cached-context (car eglot--cached-completion))
+																								 (equip? (eglot--same-contextp context cached-context)))
 																						equip?))
 																	 (cdr eglot--cached-completion)))))
+										(message "new cached returned")
 										(cdr cached-proxies)))))
 						 (resolved (make-hash-table))
 						 (resolve-maybe
@@ -207,9 +226,7 @@
 						((eq action t)                                 ; all-completions
 						 (all-completions
 							""
-							(progn
-								(message "prefix is %s probe %s pred" prefix probe pred)
-								(funcall proxies))
+							(funcall proxies)
 							(lambda (proxy)
 								(let* ((item (get-text-property 0 'eglot--lsp-item proxy))
 											 (filterText (plist-get item :filterText)))
