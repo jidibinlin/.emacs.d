@@ -85,36 +85,28 @@
 	(put 'member-trigger 'thing-at-point
 			 'thing-at-point-member-trigger)
 
-	;; (bind-key "C-'" (lambda ()
-	;; 									(interactive)
-	;; 									(message "thing %s" (thing-at-point
-	;; 																			 'member-trigger))))
-	
-	;; (type trigger)
-	;; symbol . sy
-	;; member (char . parent)
-	;; none
-	(defun eglot--async-completion-context()
-		(let ((trigger (thing-at-point 'member-trigger)))
+	;; (symbol . sy)
+	;; (member (char . parent))
+	;; nil
+	(defun eglot--completion-context()
+		"Get current completion context"
+		(let ((trigger (thing-at-point 'member-trigger t)))
 			(if trigger
 					(save-excursion
 						(backward-char (length trigger))
-						(list 'member trigger (thing-at-point 'symbol)))
+						(list 'member (cons trigger (thing-at-point 'symbol t))))
 				(save-excursion
-					(when-let* ((symbol (thing-at-point 'symbol)))
-						(backward-char (length symbol))
-						(if-let* ((trigger (thing-at-point 'member-trigger)))
+					(when-let* ((symbol (thing-at-point 'symbol t))
+											(bounds (bounds-of-thing-at-point 'symbol)))
+						(message "bounds is %s" bounds)
+						(goto-char (car bounds))
+						(if-let* ((trigger (thing-at-point 'member-trigger t)))
 								(progn
 									(backward-char (length trigger))
-									(list 'member trigger (thing-at-point 'symbol)))
+									(list 'member (cons trigger (thing-at-point 'symbol t))))
 							(list 'symbol symbol)))))))
-	
-	(bind-key "C-'" (lambda ()
-										(interactive)
-										(message "thing %s" (eglot--async-completion-context))))
 
 	
-
 	(defun eglot--get-on-completion-return-callback (prefix)
 		(jsonrpc-lambda (&rest resp &allow-other-keys)
 			(setq eglot--cached-completion
