@@ -102,9 +102,12 @@
 																		 (:eval (conia/header-line-input-method-indicator))
 																		 (:eval (conia/header-line-vc-indicator))
 																		 " "
+																		 mode-line-position
+																		 " "
 																		 (:eval (conia/header-line-mode-indicator))
 																		 " "
 																		 (:eval (breadcrumb--header-line)))))
+(column-number-mode)
 
 (add-hook 'elpaca-after-init-hook #'conia/set-base-header-line-format)
 

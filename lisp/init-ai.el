@@ -138,7 +138,7 @@
 			 :company-doc-buffer (apply-partially
 														#'copilot--completion-doc-buf
 														completions))))
-	(add-to-list 'conia/capfs-to-merge (cons 'prog-mode 'copilot-completion-at-point))
+	;;(add-to-list 'conia/capfs-to-merge (cons 'prog-mode 'copilot-completion-at-point))
 	(add-to-list 'conia/capfs-priority '(copilot-completion-at-point . 50)))
 
 (provide 'init-ai)

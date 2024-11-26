@@ -20,7 +20,7 @@
 (use-package eglot
   :init
   (setq eglot-autoshutdown t)
-  (setq eglot-send-changes-idle-time 0.05)
+  (setq eglot-send-changes-idle-time 0.001)
   (setq-default eglot-events-buffer-size 0)
 	(setq-default eglot-sync-connect 0)
 	(add-to-list 'conia/capfs-to-merge (cons 'eglot--managed-mode
@@ -103,10 +103,6 @@
 									(cons 'member (cons trigger (thing-at-point 'symbol t))))
 							(cons 'symbol symbol)))))))
 
-	;; (let ((context1 (cons 'member (cons "." "this")))
-	;; 			(context2 (cons 'member (cons "." "physxDemo_Button"))))
-	;; 	(message "is same? %s"(eglot--same-contextp context1 context2)))
-
 	(defun eglot--same-contextp (cached-context cur-context)
 		(let ((cached-t (when (consp cached-context)
 											(car cached-context)))
@@ -129,13 +125,15 @@
 			(setq eglot--cached-completion
 						(cons context (if (vectorp resp) resp
 														(plist-get resp :items))))))
+	(bind-key "C-'" (lambda ()
+										(interactive)
+										(message "%s" (point))
+										))
 	
 	(defun eglot-completion-at-point ()
 		"Eglot's `completion-at-point' function."
-
 		;; try notify lsp
 		(when-let (completion-capability (eglot--server-capable :completionProvider))
-																				;(eglot--signal-textDocument/didChange)
 			(let ((context (eglot--completion-context))
 						(cached-context (when (consp eglot--cached-completion)
 															(car eglot--cached-completion))))
@@ -181,8 +179,7 @@
 																					(cond ((or (eql insertTextFormat 2)
 																										 textEdit
 																										 (null insertText)
-																										 (string-empty-p insertText)
-																										 label)
+																										 (string-empty-p insertText))
 																								 (string-trim-left label))
 																								(t insertText))))
 																		 (unless (zerop (length proxy))
@@ -195,7 +192,6 @@
 																								 (equip? (eglot--same-contextp context cached-context)))
 																						equip?))
 																	 (cdr eglot--cached-completion)))))
-										(message "new cached returned")
 										(cdr cached-proxies)))))
 						 (resolved (make-hash-table))
 						 (resolve-maybe
@@ -316,23 +312,16 @@
 								 (let ((snippet-fn (and (eql insertTextFormat 2)
 																				(eglot--snippet-expansion-fn))))
 									 (cond (textEdit
-													;; Undo (yes, undo) the newly inserted completion.
-													;; If before completion the buffer was "foo.b" and
-													;; now is "foo.bar", `proxy' will be "bar".  We
-													;; want to delete only "ar" (`proxy' minus the
-													;; symbol whose bounds we've calculated before)
-													;; (github#160).
-													(delete-region (+ (- (point) (length proxy))
-																						(if bounds
-																								(- (cdr bounds) (car bounds))
-																							0))
-																				 (point))
+													(when (null bounds)
+														(setq bounds (bounds-of-thing-at-point 'symbol)))
+													(delete-region (or (car bounds) (point)) (point))
 													(eglot--dbind ((TextEdit) range newText) textEdit
 														(pcase-let ((`(,beg . ,end)
 																				 (eglot--range-region range)))
 															(delete-region beg end)
 															(goto-char beg)
-															(funcall (or snippet-fn #'insert) newText))))
+															(funcall (or snippet-fn #'insert) newText)
+															)))
 												 (snippet-fn
 													;; A snippet should be inserted, but using plain
 													;; `insertText'.  This requires us to delete the

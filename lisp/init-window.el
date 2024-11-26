@@ -39,6 +39,7 @@
 					"Output\\*$"
 					"\\*Async Shell Command\\*"
 					"\\*Warnings\\*"
+					"Backtrace\\*"
 					help-mode
 					compilation-mode))
   (popper-mode +1)
