@@ -30,8 +30,8 @@
   :ensure t
   :init
   (setq corfu-auto t
-        corfu-auto-delay 0.025
-        corfu-auto-prefix 2
+        corfu-auto-delay 0.05
+        corfu-auto-prefix 0
         corfu-count 10
         corfu-scroll-margin 5
         corfu-max-width 60
