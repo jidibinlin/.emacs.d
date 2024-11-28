@@ -39,4 +39,5 @@
 (require 'init-typescript)
 (require 'init-go)
 (require 'init-cc)
+(require 'init-rust)
 ;;; init.el ends here

@@ -21,6 +21,8 @@
 
 (require 'envir)
 
+(setq-default create-lockfiles nil)
+
 ;; font-jit
 (setq jit-lock-chunk-size 8192)
 (setq jit-lock-stealth-nice 1)
