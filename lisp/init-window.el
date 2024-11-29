@@ -84,7 +84,8 @@
 			("h" split-window-below "split window horizontal" :exit t)
 			("d" delete-window "close current window" :exit t)
 			("o" other-window "other window")
-			("i" delete-other-windows "del other window" :exit t))
+			("i" delete-other-windows "del other window" :exit t)
+			("=" balance-windows "balance windows" :exit t))
 		 "jump"
 		 (("1" winum-select-window-1 "jump to win1" :exit t)
 			("2" winum-select-window-2 "jump to win2" :exit t)
