@@ -21,7 +21,6 @@
 
 (use-package corfu
   :hook ((elpaca-after-init . global-corfu-mode)
-				 (meow-insert-exit . corfu-quit)
 				 (eshell-mode . conia/switch-corfu-preselect-prompt)
 				 (minibuffer-mode . conia/switch-corfu-preselect-prompt))
   :bind (:map corfu-map
