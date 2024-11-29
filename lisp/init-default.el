@@ -144,7 +144,7 @@
 							:background-color ,(face-background 'tooltip nil t)
 							:foreground-color ,(face-foreground 'tooltip nil t)
 							:lines-truncate t
-							:poshandler posframe-poshandler-frame-center)))
+							:poshandler posframe-poshandler-frame-near-top-center)))
 		(hydra-set-posframe-show-params)
 		(add-to-list 'enable-theme-functions 'hydra-set-posframe-show-params t)))
 
