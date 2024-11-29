@@ -199,5 +199,10 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 					 (embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
 			(embark-export))))
 
+(use-package consult-xref-stack
+	:ensure (:host github :repo "brett-lempereur/consult-xref-stack")
+	:bind
+	(("C-," . consult-xref-stack-backward)))
+
 (provide 'init-vertico)
 ;;; init-vertico.el ends here
