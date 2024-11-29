@@ -81,7 +81,7 @@
   (add-to-list 'eldoc-box-self-insert-command-list #'my/eldoc-box-scroll-up)
 
   (define-key prog-mode-map (kbd "M-n") #'my/eldoc-box-scroll-down)
-  (define-key prog-mode-map (kbd "M-p") #'my/eldoc-box-scroll-down)
+  (define-key prog-mode-map (kbd "M-p") #'my/eldoc-box-scroll-up)
 	(defun conia/eldoc-box-frame-pretty(_)
 		(set-face-attribute 'eldoc-box-border nil :inherit 'region :background 'unspecified)
 		(set-face-attribute 'eldoc-box-body nil :inherit 'tooltip))
