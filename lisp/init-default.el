@@ -70,6 +70,11 @@
 
 (advice-add 'font-lock-mode :around #'conia/large-file-control)
 
+(use-package gcmh
+	:ensure t
+	:config
+	(gcmh-mode 1))
+
 (use-package hungry-delete
 	:ensure t
 	:hook (elpaca-after-init . global-hungry-delete-mode))
