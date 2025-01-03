@@ -20,7 +20,10 @@
 ;;; Code:
 
 (defvar conia-font (font-spec :family "Iosevka Comfy Fixed" :size 16))
+(defvar conia-variable-pitch-font (font-spec :family "Iosevka Etoile" :size 16))
+
 (set-face-attribute 'default nil :font conia-font)
+(set-face-attribute 'variable-pitch nil :font conia-variable-pitch-font)
 
 (use-package nerd-icons
 	:ensure t

@@ -36,9 +36,11 @@
   (org-insert-heading-respect-content t)
   (org-catch-invisible-edits 'show-and-error)
   (org-modern-block-fringe 1)
+	(org-modern-star 'Replace)
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :config
+	(set-face-attribute 'org-modern-symbol nil :family "Iosevka Etoile")
   (defun disable-org-block (_)
     (set-face-attribute 'org-block nil :foreground 'unspecified
 												:background 'unspecified :inherit 'unspecified)

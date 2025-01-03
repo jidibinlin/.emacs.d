@@ -35,6 +35,13 @@
 (add-hook 'text-mode-hook #'display-line-numbers-mode)
 (add-hook 'conf-mode-hook #'display-line-numbers-mode)
 
+;; show diff of save some buffer
+(add-to-list 'save-some-buffers-action-alist
+             (list "d"
+                   (lambda (buffer)
+										 (diff-buffer-with-file (buffer-file-name buffer)))
+                   "show diff between the buffer and its file"))
+
 (setq make-backup-files nil)
 
 (setq-default bidi-display-reordering nil)
