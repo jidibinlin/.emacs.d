@@ -68,5 +68,9 @@ you'll be prompted to select one."
 (use-package keycast
 	:ensure t)
 
+(use-package visual-replace
+	:ensure t
+	:hook (elpaca-after-init . visual-replace-global-mode))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
