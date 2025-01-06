@@ -25,8 +25,6 @@
   :ensure t
   :demand t)
 
-
-
 (use-package spacious-padding
   :ensure t
   :demand t
