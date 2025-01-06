@@ -22,6 +22,9 @@
 (use-package doom-themes
 	:ensure t)
 
+(use-package nano-theme
+	:ensure (:host github :repo "rougier/nano-theme"))
+
 ;; use-package with Elpaca:
 (use-package dashboard
   :ensure t
@@ -53,7 +56,7 @@
 	(add-to-list 'page-break-lines-modes 'prog-mode)
 	(add-to-list 'page-break-lines-modes 'fundamental-mode))
 
-(defvar choosed-theme 'doom-dark+)
+(defvar choosed-theme 'nano-light)
 
 (defun conia/load-theme (&optional theme)
 	(interactive)

@@ -204,5 +204,9 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 	:bind
 	(("C-," . consult-xref-stack-backward)))
 
+(use-package nano-vertico
+	:ensure (:host github :repo "rougier/nano-vertico")
+	:hook (vertico-mode . nano-vertico-mode))
+
 (provide 'init-vertico)
 ;;; init-vertico.el ends here
