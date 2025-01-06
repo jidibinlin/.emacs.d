@@ -27,30 +27,35 @@
 
 ;;; Code:
 
-(use-package org-modern
-	:ensure t
-  :custom
-  (org-pretty-entities t)
-  (org-modern-table nil)
-  (org-tags-column 0)
-  (org-insert-heading-respect-content t)
-  (org-catch-invisible-edits 'show-and-error)
-  (org-modern-block-fringe 1)
-	(org-modern-star 'Replace)
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda))
-  :config
-	(set-face-attribute 'org-modern-symbol nil :family "Iosevka Etoile")
-  (defun disable-org-block (_)
-    (set-face-attribute 'org-block nil :foreground 'unspecified
-												:background 'unspecified :inherit 'unspecified)
-    (set-face-attribute 'org-block-begin-line nil :foreground 'unspecified
-												:background 'unspecified)
-    (set-face-attribute 'org-block-end-line nil :foreground 'unspecified
-												:background 'unspecified))
+;; (use-package org-modern
+;; 	:ensure t
+;;   :custom
+;;   (org-pretty-entities t)
+;;   (org-modern-table nil)
+;;   (org-tags-column 0)
+;;   (org-insert-heading-respect-content t)
+;;   (org-catch-invisible-edits 'show-and-error)
+;;   (org-modern-block-fringe 1)
+;; 	(org-modern-star 'Replace)
+;;   :hook ((org-mode . org-modern-mode)
+;;          (org-agenda-finalize . org-modern-agenda))
+;;   :config
+;; 	(set-face-attribute 'org-modern-symbol nil :family "Iosevka Etoile")
+;;   (defun disable-org-block (_)
+;;     (set-face-attribute 'org-block nil :foreground 'unspecified
+;; 												:background 'unspecified :inherit 'unspecified)
+;;     (set-face-attribute 'org-block-begin-line nil :foreground 'unspecified
+;; 												:background 'unspecified)
+;;     (set-face-attribute 'org-block-end-line nil :foreground 'unspecified
+;; 												:background 'unspecified))
 
-  (add-to-list 'enable-theme-functions #'disable-org-block)
-  (add-hook 'org-modern-mode-hook (lambda () (disable-org-block nil))))
+;;   (add-to-list 'enable-theme-functions #'disable-org-block)
+;;   (add-hook 'org-modern-mode-hook (lambda () (disable-org-block nil))))
+
+
+(use-package org-margin
+	:ensure (:host github :repo "rougier/org-margin")
+	:hook (org-mode . org-margin-mode))
 
 (provide 'init-org)
 ;;; init-org.el ends here

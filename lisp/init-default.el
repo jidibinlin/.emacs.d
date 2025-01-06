@@ -208,5 +208,8 @@
 (use-package elisp-benchmarks
 	:ensure t)
 
+(use-package nano-read
+	:ensure (:host github :repo "rougier/nano-read"))
+
 (provide 'init-default)
 ;;; init-default.el ends here

@@ -59,6 +59,7 @@
 (use-package breadcrumb
   :init
   (setq breadcrumb-project-max-length 0.0)
+	(setq breadcrumb-idle-time 1.5)
   :demand t
   :ensure t)
 
@@ -67,9 +68,19 @@
 	"Face for major mode indicator."
 	:group 'conia)
 
+(defvar-local conia/header-line-vc-indicator-cache nil)
 (defun conia/header-line-vc-indicator ()
-	(when (stringp vc-mode)
-		(string-trim-left vc-mode)))
+	(if (thread-first conia/header-line-vc-indicator-cache null not)
+			conia/header-line-vc-indicator-cache
+		(when (stringp vc-mode)
+			(let ((icon (format "%s %s"
+													(nerd-icons-devicon "nf-dev-git_branch"
+																							:face
+																							"font-lock-keyword-face"
+																							:v-adjust 0.16)
+													(string-trim-left vc-mode))))
+				(setq-local conia/header-line-vc-indicator-cache icon)
+				icon))))
 
 (defvar-local conia/header-line-mode-icon-cache nil)
 (defun conia/header-line-mode-indicator ()

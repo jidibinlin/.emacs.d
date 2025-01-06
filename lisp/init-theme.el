@@ -19,8 +19,6 @@
 ;;
 ;;; Code:
 
-;;(enable-theme 'modus-operandi)
-
 (use-package doom-themes
 	:ensure t)
 
