@@ -20,7 +20,7 @@
 (use-package eglot
   :init
   (setq eglot-autoshutdown t)
-  (setq eglot-send-changes-idle-time 0.05)
+  (setq eglot-send-changes-idle-time 0.1)
   (setq-default eglot-events-buffer-size 0)
 	(setq-default eglot-sync-connect 0)
 	(add-to-list 'conia/capfs-to-merge (cons 'eglot--managed-mode
@@ -30,7 +30,9 @@
 	:config
 	(add-to-list 'eglot-stay-out-of 'imenu)
 	;; format on save
-	(cl-defun conia/format--with-eglot (beg end &key buffer callback &allow-other-keys)
+	(cl-defun conia/format--with-eglot (beg end
+																					&key buffer callback
+																					&allow-other-keys)
 		(with-current-buffer buffer
 			(or (with-demoted-errors "%s"
 						(always (eglot-format beg end)))

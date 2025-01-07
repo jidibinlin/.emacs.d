@@ -38,7 +38,6 @@
 (use-package clojure-ts-mode
 	:ensure t
 	:hook (((clojure-ts-mode clojure-mode) . jarchive-mode)
-																				;(clojure-ts-mode . cider-mode)
 				 (clojure-ts-mode . rainbow-delimiters-mode)
 				 (clojure-ts-mode . eglot-ensure))
 	:config
@@ -52,7 +51,8 @@
 				 (cider-mode . conia/cider--disable-completion))
 	:config
 	(defun conia/cider--disable-completion()
-		(remove-hook 'completion-at-point-functions #'cider-completion-at-point t)))
+		(remove-hook 'completion-at-point-functions
+								 #'cider-completion-at-point t)))
 
 (provide 'init-clojure)
 ;;; init-clojure.el ends here
