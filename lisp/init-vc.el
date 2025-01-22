@@ -40,6 +40,30 @@
   (vc-edited-state ((t (:inherit font-lock-warning-face :bold t))))
   (vc-conflict-state ((t (:inherit error :bold t)))))
 
+(use-package emsg-blame
+	:ensure (:host github :repo "ISouthRain/emsg-blame")
+  :hook (elpaca-after-init . global-emsg-blame-mode)
+  :config
+  (defun my--emsg-blame-display ()
+    "Display git blame message, right-aligned with Magit-style faces.
+If another message is already being displayed, display both messages unless they
+do not both fit in the echo area."
+    (let* ((message-log-max nil) ; prevent messages from being logged to *Messages*
+           (cur-msg (or (current-message) ""))
+           (blm-msg (format "%s %s %s "
+														emsg-blame--commit-summary
+														(propertize emsg-blame--commit-author 'face 'magit-log-author)
+														(propertize emsg-blame--commit-date 'face 'magit-log-date)))
+           (available-width (max 0 (- (frame-width) (string-width cur-msg) 1)))
+           (blm-msg-width (string-width blm-msg))
+           (padding (max 0 (- available-width blm-msg-width)))
+           (rev-blm-msg (concat (make-string padding ?\s) blm-msg)))
+      (if (> blm-msg-width available-width)
+					(message blm-msg)
+        (message (concat cur-msg rev-blm-msg)))))
+
+  (setq emsg-blame-display #'my--emsg-blame-display))
+
 (use-package ediff
 	:init
 	(setq-default ediff-diff-options "-w"

@@ -19,6 +19,12 @@
 ;;
 ;;; Code:
 
+(when (< emacs-major-version 31)
+	(setq-default comp-deferred-compilation nil)
+	(setq-default native-comp-deferred-compilation nil)
+	(setq-default native-comp-enable nil)
+	(setq-default native-comp-speed -1))
+
 (add-to-list 'load-path (concat user-emacs-directory "envir/"))
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 (require 'envir)
