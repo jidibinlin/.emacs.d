@@ -52,7 +52,6 @@
 	(add-to-list 'conia/capfs-to-merge (cons 'emacs-lisp-mode #'elisp-completion-at-point))
 	(add-to-list 'conia/capfs-priority '(elisp-completion-at-point . 0))
 	
-
 	(defvar-local conia/supered-capfs nil)
 
 	(defun conia/super-capf ()
