@@ -38,7 +38,7 @@
   :ensure t)
 
 (use-package vertico
-  :hook (elpaca-after-init . vertico-mode)
+  :hook ((elpaca-after-init . vertico-mode))
   :ensure t
   :custom
   (vertico-scroll-margin 0)
