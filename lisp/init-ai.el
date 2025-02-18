@@ -68,7 +68,8 @@
   :hook ((prog-mode . (lambda ()
 												(when (not (derived-mode-p 'read-only-mode))
 													(copilot-mode))))
-				 (copilot-mode . conia/remove-copilot-post-command))
+				 ;;(copilot-mode . conia/remove-copilot-post-command)
+				 )
   :bind (:map  copilot-completion-map
 							 ("<tab>" . 'copilot-accept-completion))
   :init
