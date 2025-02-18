@@ -138,9 +138,6 @@
 		(posframe-delete-all))
 	(add-to-list 'enable-theme-functions #'conia/refresh-posframe))
 
-(use-package nova
-	:ensure (:host github :repo "thisisran/nova"))
-
 (use-package hydra
 	:ensure t
 	:bind (:map meow-motion-state-keymap
