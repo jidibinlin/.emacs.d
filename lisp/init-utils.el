@@ -72,5 +72,10 @@ you'll be prompted to select one."
 	:ensure t
 	:hook (elpaca-after-init . visual-replace-global-mode))
 
+(use-package dumb-jump
+	:ensure t
+	:config
+	(add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
