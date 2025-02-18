@@ -58,9 +58,11 @@
 	:ensure
 	(:host github :repo "MatthewZMD/aidermacs")
   :config
-	(setq aidermacs-default-model "openrouter/anthropic/claude-3.5-sonnet")
+	(setq aidermacs-default-model "openrouter/deepseek/deepseek-r1")
 	(setq aidermacs-auto-commits t)
-	(setq aidermacs-use-architect-mode t))
+	(setq aidermacs-use-architect-mode t)
+	(setq aidermacs-architect-model "openrouter/deepseek/deepseek-r1")
+	(setq aidermacs-editor-model "openrouter/deepseek/deepseek-r1"))
 
 (use-package copilot
 	:ensure
