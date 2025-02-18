@@ -214,5 +214,9 @@
 (use-package nano-read
 	:ensure (:host github :repo "rougier/nano-read"))
 
+(use-package text-mode
+	:init
+	(setopt text-mode-ispell-word-completion t))
+
 (provide 'init-default)
 ;;; init-default.el ends here
