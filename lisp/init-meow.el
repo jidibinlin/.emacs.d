@@ -37,6 +37,8 @@
     (meow-motion-overwrite-define-key
      '("j" . meow-next)
      '("k" . meow-prev)
+		 '("h" . meow-left)
+		 '("l" . meow-right)
      '("<escape>" . ignore))
     (meow-normal-define-key
      '("0" . meow-expand-0)
@@ -115,5 +117,5 @@
 	(add-to-list 'meow-mode-state-list '(eshell-mode . insert))
 	(add-to-list 'meow-mode-state-list '(text-mode . insert)))
 
-	(provide 'init-meow)
+(provide 'init-meow)
 ;;; init-meow.el ends here
