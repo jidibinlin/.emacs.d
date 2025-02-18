@@ -27,16 +27,14 @@
 
 ;;; Code:
 
-(use-package clangd-inactive-regions
-	:ensure (:host github :repo "fargiolas/clangd-inactive-regions.el")
+(use-package eglot-inactive-regions
+	:ensure t
   :after eglot
-	:hook ((c-ts-mode . clangd-inactive-regions-mode)
-				 (c++-ts-mode . clangd-inactive-regions-mode))
-  :config
-	(defun conia/config-clangd-inactive-regions()
-		(clangd-inactive-regions-set-method "darken-foreground")
-		(clangd-inactive-regions-set-opacity 0.55))
-	(add-hook 'elpaca-after-init-hook #'conia/config-clangd-inactive-regions))
+	:hook ((c-ts-mode . eglot-inactive-regions-mode)
+				 (c++-ts-mode . eglot-inactive-regions-mode))
+	:custom
+	(eglot-inactive-regions-style 'darken-foreground)
+  (eglot-inactive-regions-opacity 0.4))
 
 (use-package c-ts-mode
 	:config
