@@ -51,16 +51,16 @@
 											 :stream t
 											 :key github_token
 											 :models '(gpt-4o)))
-	
 	(setq gptel-model 'openai/gpt-4o-mini
 				gptel-backend gptel-openrouter))
 
-(use-package aider
+(use-package aidermacs
 	:ensure
-	(:host github :repo "tninja/aider.el")
+	(:host github :repo "MatthewZMD/aidermacs")
   :config
-  (setq aider-args '("--no-auto-commits"
-										 "--model" "openrouter/anthropic/claude-3.5-sonnet")))
+	(setq aidermacs-default-model "openrouter/anthropic/claude-3.5-sonnet")
+	(setq aidermacs-auto-commits t)
+	(setq aidermacs-use-architect-mode t))
 
 (use-package copilot
 	:ensure
