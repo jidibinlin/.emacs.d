@@ -114,7 +114,6 @@
 	(add-to-list 'meow-mode-state-list '(comint-mode . insert))
 	(add-to-list 'meow-mode-state-list '(eshell-mode . insert))
 	(add-to-list 'meow-mode-state-list '(text-mode . insert))
-	)
 
-(provide 'init-meow)
+	(provide 'init-meow)
 ;;; init-meow.el ends here
