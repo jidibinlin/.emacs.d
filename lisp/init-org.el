@@ -38,7 +38,27 @@
   :config
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
+  (require 'org-roam-protocol)
+	(setq org-roam-capture-templates '(("n" "Note" plain "%?"
+																			:target (file+head "${title}/${title}.org"
+																												 "
+:PROPERTIES:
+:ID:            ${id}
+:TYPE:          ${TYPE}
+:END:
+#+title: ${title}")
+																			:unnarrowed t)))
+	(cl-defun org-roam-main-node-capture (&optional goto keys &key templates info)
+		(interactive "P")
+		(let ((filter-fn (lambda (org-roam-node)
+											 (--> (assoc "TYPE" (org-roam-node-properties org-roam-node))
+														(when it (cdr it))
+														(string= it "main")
+														))))
+			(org-roam-capture goto  keys
+												:filter-fn filter-fn
+												:templates templates
+												:info '(:TYPE "main")))))
 
 (provide 'init-org)
 ;;; init-org.el ends here
