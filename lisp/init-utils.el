@@ -77,5 +77,8 @@ you'll be prompted to select one."
 	:config
 	(add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
+(use-package pdf-tools
+	:ensure t)
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
