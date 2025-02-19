@@ -31,5 +31,14 @@
 	:ensure (:host github :repo "rougier/org-margin")
 	:hook (org-mode . org-margin-mode))
 
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/Documents/MyBlogSite/RoamNote/"))
+  :config
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
 (provide 'init-org)
 ;;; init-org.el ends here

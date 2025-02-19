@@ -18,3 +18,4 @@ tree-sitter/
 tramp
 /codeium
 .aider*
+org-roam.db
