@@ -19,3 +19,5 @@ tramp
 /codeium
 .aider*
 org-roam.db
+/.org-id-locations
+/bookmarks

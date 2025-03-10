@@ -55,8 +55,7 @@
 				gptel-backend gptel-openrouter))
 
 (use-package aidermacs
-	:ensure
-	(:host github :repo "MatthewZMD/aidermacs")
+	:ensure t
   :config
 	(setq aidermacs-default-model "openrouter/deepseek/deepseek-r1")
 	(setq aidermacs-auto-commits t)
@@ -87,7 +86,7 @@
 							 '(clojure-ts-mode copilot-lisp-indent-offset))
   (add-to-list 'copilot-indentation-alist
 							 '(clojure-mode copilot-lisp-indent-offset))
-	
+
 	(advice-add 'copilot-mode :around #'conia/large-file-control)
 	(defun conia/remove-copilot-post-command()
 		(remove-hook 'post-command-hook 'copilot--post-command t))
@@ -101,7 +100,7 @@
 					(erase-buffer)
 					(insert (plist-get completion :text))
 					(current-buffer)))))
-	
+
 	(defun copilot-completion-at-point()
 		"send completion request to copilot and return cached completions"
 		;; send request each time triggered
@@ -130,7 +129,7 @@
 											 (subpose (min discardpos (length key))))
 									(setf (car foo) (substring key subpose))))))
 				(mapc prefix-suber completions))
-			
+
 			;; build completion data
 			(list
 			 start 
@@ -141,7 +140,7 @@
 			 :company-doc-buffer (apply-partially
 														#'copilot--completion-doc-buf
 														completions))))
-	
+
 	;; (add-to-list 'conia/capfs-to-merge (cons 'prog-mode 'copilot-completion-at-point))
 	;; (add-to-list 'conia/capfs-priority '(copilot-completion-at-point . 50))
 	)
