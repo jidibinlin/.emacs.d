@@ -132,10 +132,5 @@
 		(advice-add #'transient-posframe--delete
 								:override #'conia/transient-posframe--hide)))
 
-(use-package project
-	:ensure nil
-	:custom
-	(project-switch-commands #'project-find-file))
-
 (provide 'init-window)
 ;;; init-window.el ends here
