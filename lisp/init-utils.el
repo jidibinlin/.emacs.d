@@ -54,6 +54,7 @@ you'll be prompted to select one."
 	:demand t
 	:bind  (:map rime-active-mode-map
 							 ("<escape>" . nil))
+	:hook (kill-emacs . rime-lib-finalize)
 	:custom
 	(default-input-method "rime")
 	(rime-show-candidate 'posframe)
