@@ -1,4 +1,4 @@
-;;; init-lsp.el --- Description -*- lexical-binding: t; -*-
+;;; init-lsp.el --- config for lsp -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;

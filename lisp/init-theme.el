@@ -1,4 +1,4 @@
-;;; init-theme.el init-theme -*- lexical-binding: t; -*-
+;;; init-theme.el --- config for themes -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;
@@ -43,6 +43,7 @@
 (defvar choosed-theme 'doom-nord)
 
 (defun conia/load-theme (&optional theme)
+	"Load a theme, `THEME' is the theme to load."
 	(interactive)
 	(if theme
 			(load-theme theme :no-confirm)
