@@ -19,7 +19,7 @@
 ;;
 ;;; Code:
 
-;;(require 'envir)
+(require 'envir)
 (require 'init-font)
 (require 'init-headerline)
 (require 'init-theme)
