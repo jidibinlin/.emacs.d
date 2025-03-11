@@ -19,11 +19,13 @@
 ;;
 ;;; Code:
 
-(when (< emacs-major-version 31)
-	(setq-default comp-deferred-compilation nil)
-	(setq-default native-comp-deferred-compilation nil)
-	(setq-default native-comp-enable nil)
-	(setq-default native-comp-speed -1))
+;; (when (< emacs-major-version 31)
+;; 	(setq-default comp-deferred-compilation nil)
+;; 	(setq-default native-comp-deferred-compilation nil)
+;; 	(setq-default native-comp-enable nil)
+;; 	(setq-default native-comp-speed -1))
+
+(setq native-comp-async-report-warnings-errors 'silent)
 
 (add-to-list 'load-path (concat user-emacs-directory "envir/"))
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
