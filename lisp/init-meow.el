@@ -1,5 +1,11 @@
 ;;; init-meow.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Meow modal editing configuration and keybindings
+;;
+;;; Code:
+
 (use-package meow
   :ensure (:host github :repo "jidibinlin/meow")
   :demand t

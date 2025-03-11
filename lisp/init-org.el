@@ -1,5 +1,11 @@
 ;;; init-org.el --- org -*- lexical-binding: t -*-
 
+;;; Commentary:
+;;
+;; Org-mode configuration with Roam integration
+;;
+;;; Code:
+
 ;; Author: yangqibin
 ;; Version: version
 ;; Package-Requires: dependencies

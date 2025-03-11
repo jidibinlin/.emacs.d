@@ -1,5 +1,11 @@
 ;;; init-cc.el --- cc -*- lexical-binding: t -*-
 
+;;; Commentary:
+;;
+;; Configuration for C/C++ development using Eglot and tree-sitter
+;;
+;;; Code:
+
 (use-package eglot-inactive-regions
 	:ensure t
   :after eglot

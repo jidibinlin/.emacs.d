@@ -1,5 +1,11 @@
 ;;; init-prog.el --- for progmode -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; General programming configuration and development tools
+;;
+;;; Code:
+
 (use-package elec-pair
   :hook (prog-mode . electric-pair-mode)
   ;; {{ @see https://debbugs.gnu.org/cgi/bugreport.cgi?bug=55340

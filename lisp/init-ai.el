@@ -1,5 +1,11 @@
 ;;; init-ai.el --- ai -*- lexical-binding: t -*-
 
+;;; Commentary:
+;;
+;; Configuration for AI-related packages like GPTel, Copilot, etc.
+;;
+;;; Code:
+
 (setq openrouter_token (getenv "OPENROUTER_API_KEY"))
 (setq github_token (getenv "GITHUB_TOKEN"))
 

@@ -1,5 +1,11 @@
 ;;; init-utils.el --- summary -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Utility packages and miscellaneous configurations
+;;
+;;; Code:
+
 (require 'envir)
 
 (use-package makefile-executor

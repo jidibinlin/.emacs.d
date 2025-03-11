@@ -1,5 +1,11 @@
 ;;; init-headerline.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Custom header line configuration with winum integration
+;;
+;;; Code:
+
 
 (use-package hide-mode-line
   :hook (elpaca-after-init . global-hide-mode-line-mode)

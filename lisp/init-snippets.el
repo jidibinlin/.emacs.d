@@ -1,5 +1,11 @@
 ;;; init-snippets.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Snippet management with Tempel and LSP integration
+;;
+;;; Code:
+
 (use-package tempel
   :bind (:map tempel-map
               ("TAB" . tempel-next)

@@ -1,5 +1,11 @@
 ;;; init-clojure.el --- summary -*- lexical-binding: t -*-
 
+;;; Commentary:
+;;
+;; Clojure development setup with CIDER and tree-sitter support
+;;
+;;; Code:
+
 (use-package eglot-java
 	:ensure t
   :hook (java-mode . eglot-java-mode))

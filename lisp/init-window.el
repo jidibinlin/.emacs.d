@@ -1,5 +1,11 @@
 ;;; init-window.el --- config for emacs window -*- lexical-binding: t -*-
 
+;;; Commentary:
+;;
+;; Window management and workspace configuration
+;;
+;;; Code:
+
 ;; Author: 
 ;; Version: version
 ;; Package-Requires: dependencies

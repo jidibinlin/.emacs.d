@@ -1,5 +1,11 @@
 ;;; init-font.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Font configuration and icon setup using nerd-icons
+;;
+;;; Code:
+
 (defvar conia-font (font-spec :family "Iosevka Comfy Fixed" :size 16))
 (set-face-attribute 'default nil :font conia-font)
 

@@ -1,5 +1,11 @@
 ;;; init-vertico.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Vertico completion framework configuration
+;;
+;;; Code:
+
 (defvar conia-completion-styles '(basic partial-completion orderless))
 
 ;; Optionally use the `orderless' completion style.

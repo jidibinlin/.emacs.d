@@ -1,5 +1,11 @@
 ;;; init-treesit.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Tree-sitter configuration and automatic grammar installation
+;;
+;;; Code:
+
 
 (use-package treesit-auto
   :ensure t

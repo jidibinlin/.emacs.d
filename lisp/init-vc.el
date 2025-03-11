@@ -1,5 +1,11 @@
 ;;; init-vc.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Version control configuration (Git, Magit, Diff tools)
+;;
+;;; Code:
+
 (use-package transient
   :ensure t)
 

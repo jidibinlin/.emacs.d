@@ -1,5 +1,11 @@
 ;;; init-theme.el init-theme -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Theme configuration and visual customization
+;;
+;;; Code:
+
 (use-package doom-themes
 	:ensure t)
 

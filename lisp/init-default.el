@@ -1,5 +1,11 @@
 ;;; init-default.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Core Emacs configuration and default settings
+;;
+;;; Code:
+
 (require 'envir)
 
 (setq-default create-lockfiles nil)

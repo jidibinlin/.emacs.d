@@ -1,5 +1,11 @@
 ;;; init-corfu.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Corfu completion framework configuration with CAPF integration
+;;
+;;; Code:
+
 (use-package corfu
   :hook ((elpaca-after-init . global-corfu-mode)
 				 (eshell-mode . conia/switch-corfu-preselect-prompt)

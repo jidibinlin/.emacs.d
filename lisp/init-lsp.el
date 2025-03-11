@@ -1,5 +1,11 @@
 ;;; init-lsp.el --- Description -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;
+;; Language Server Protocol (LSP) configuration using Eglot
+;;
+;;; Code:
+
 (use-package eglot
   :init
   (setq eglot-autoshutdown t)

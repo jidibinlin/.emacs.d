@@ -1,5 +1,11 @@
 ;;; init-rust.el --- summary -*- lexical-binding: t -*-
 
+;;; Commentary:
+;;
+;; Rust language configuration with tree-sitter support
+;;
+;;; Code:
+
 ;; Author: 
 ;; Version: version
 ;; Package-Requires: dependencies
