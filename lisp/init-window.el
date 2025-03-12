@@ -7,7 +7,7 @@
 ;;; Code:
 
 (use-package popper
-  :ensure t ; or :straight t
+  :ensure t
   :bind (("C-`"   . popper-toggle)
 				 ("M-`"   . popper-cycle)
 				 ("C-M-`" . popper-toggle-type))
@@ -72,19 +72,30 @@
 			("4" winum-select-window-4 "jump to win4" :exit t)
 			("5" winum-select-window-5 "jump to win5" :exit t)))))
 
-(use-package perspective
+(use-package persp-mode
 	:ensure t
-	:hook((kill-emacs . persp-state-save)
+	:hook((kill-emacs . persp-save-state)
 				(elpaca-after-init . persp-mode))
 	:custom
 	(persp-mode-prefix-key (kbd "C-c C-w"))
 	:config
-	(setq persp-state-default-file (expand-file-name "persp-state-file" user-emacs-directory))
+	(setq persp-autokill-buffer-on-remove 'kill-weak
+				persp-reset-windows-on-nil-window-conf nil
+				persp-nil-hidden t
+				persp-auto-save-fname "autosave"
+				persp-save-dir (concat user-emacs-directory "workspace/")
+				persp-set-last-persp-for-new-frames t
+				persp-switch-to-added-buffer nil
+				persp-kill-foreign-buffer-behaviour 'kill
+				persp-remove-buffers-from-nil-persp-behaviour nil
+				persp-auto-resume-time -1)
+	
 	(defun conia/pretty-hydra-define-persp ()
 		(pretty-hydra-define+
 			toggles-window ()
 			("persp"
 			 (("w" persp-switch "switch workspace" :exit t)))))
+
 	(add-hook 'persp-mode-hook #'conia/pretty-hydra-define-persp 100))
 
 (use-package transient-posframe

@@ -36,11 +36,11 @@
 (use-package aidermacs
 	:ensure t
   :config
-	(setq aidermacs-default-model "openrouter/deepseek/deepseek-r1")
+	(setq aidermacs-default-model "openrouter/deepseek/deepseek-r1:free")
 	(setq aidermacs-auto-commits t)
-	(setq aidermacs-use-architect-mode t)
-	(setq aidermacs-architect-model "openrouter/deepseek/deepseek-r1")
-	(setq aidermacs-editor-model "openrouter/deepseek/deepseek-r1"))
+	(setq aidermacs-use-architect-mode nil)
+	(setq aidermacs-architect-model "openrouter/deepseek/deepseek-r1:free")
+	(setq aidermacs-editor-model "openrouter/deepseek/deepseek-r1:free"))
 
 (use-package copilot
 	:ensure
