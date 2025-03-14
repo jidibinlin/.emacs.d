@@ -109,7 +109,7 @@
 	:init
 	(defun posframe-poshandler-frame-near-top-center (info)
 		"Posframe handler that smartly positions near top with dynamic offset."
-		(cons 
+		(cons
 		 ;; 水平居中
 		 (/ (- (plist-get info :parent-frame-width)
 					 (plist-get info :posframe-width))
@@ -156,17 +156,19 @@
 	(cl-defun pretty-hydra-title (title &optional icon-type icon-name
 																			&key face height v-adjust)
 		"Add an icon in the hydra title."
-		(let ((face (or face `(:inherit highlight
-																		:reverse-video t
-																		:background unspecified)))
-					(height (or height 1.2))
+		(let ((face (or face `(:background unspecified :foreground unspecified)))
+					(height (or height 2.0))
 					(v-adjust (or v-adjust 0.0)))
 			(concat
 			 (when (and icon-type icon-name)
 				 (let ((f (intern (format "nerd-icons-%s" icon-type))))
 					 (when (fboundp f)
 						 (concat
-							(apply f (list icon-name :face face :height height :v-adjust v-adjust))
+							(apply f (list icon-name
+														 :face face :height height
+														 :v-adjust v-adjust
+														 :background 'unspecified
+														 :foreground 'unspecified))
 							" "))))
 			 (propertize title 'face face))))
 	
