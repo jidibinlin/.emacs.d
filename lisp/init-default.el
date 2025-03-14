@@ -204,5 +204,9 @@
 	:init
 	(setopt text-mode-ispell-word-completion t))
 
+(use-package project
+	:config
+	(setq project-switch-commands #'project-find-file))
+
 (provide 'init-default)
 ;;; init-default.el ends here
