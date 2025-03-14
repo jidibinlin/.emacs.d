@@ -75,7 +75,9 @@
 (use-package persp-mode
 	:ensure t
 	:hook((kill-emacs . persp-save-state)
-				(elpaca-after-init . persp-mode))
+				(elpaca-after-init . persp-mode)
+				;(persp-mode . conia/default-persp-workspace)
+				)
 	:custom
 	(persp-mode-prefix-key (kbd "C-c C-w"))
 	:config
@@ -96,6 +98,19 @@
 			("persp"
 			 (("w" persp-switch "switch workspace" :exit t)))))
 
+	(defun conia/default-persp-workspace ()
+		"Create a default workspace."
+		(unless (gethash "main" *persp-hash*)
+			(persp-switch "main")))
+
+	(defvar conia/current-project-root nil)
+	(defun conia/persp-project-workspace ()
+		(when (and (-> (project-current) null not)
+							 (-> (project-current) (equal conia/current-project-root) not))
+			(persp-remove-buffer (current-buffer))
+			(persp-switch (project-name (project-current)))))
+	
+	;;(add-hook 'find-file-hook #'conia/persp-project-workspace)
 	(add-hook 'persp-mode-hook #'conia/pretty-hydra-define-persp 100))
 
 (use-package transient-posframe
