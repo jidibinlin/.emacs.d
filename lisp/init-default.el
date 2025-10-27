@@ -125,8 +125,8 @@
 	:bind (:map meow-motion-state-keymap
 							("SPC" . toggles-hydra/body))
 	:init
-	(setq hydra-hint-display-type 'posframe)
-	(with-eval-after-load 'posframe
+	(when (posframe-workable-p)
+		(setq hydra-hint-display-type 'posframe)
 		(defun hydra-set-posframe-show-params (&rest _)
 			"Set hydra-posframe style."
 			(setq hydra-posframe-show-params
@@ -142,13 +142,12 @@
 		(hydra-set-posframe-show-params)
 		(add-to-list 'enable-theme-functions 'hydra-set-posframe-show-params t)))
 
+
 (use-package pretty-hydra
 	:demand t
-	:custom (pretty-hydra-default-title-body-format-spec " %s%s")
-	:hook ((after-init . my-pretty-hydra-after-init))
 	:bind (:map meow-normal-state-keymap
 							("SPC" . toggles-hydra/body))
-	:init
+	:config
 	(cl-defun pretty-hydra-title (title &optional icon-type icon-name
 																			&key face height v-adjust)
 		"Add an icon in the hydra title."
@@ -167,31 +166,29 @@
 														 :foreground 'unspecified))
 							" "))))
 			 (propertize title 'face face))))
-	(defun my-pretty-hydra-after-init ()
 
-		(pretty-hydra-define
-			toggles-hydra
-			(:title (pretty-hydra-title "Main" 'mdicon "nf-md-cat")
-							:color amaranth :quit-key ("q" "C-g" "ESC"))
-			("Project"
-			 (("p p" project-switch-project "switch project" :exit t)
-				("p f" project-find-file "find file" :exit t)
-				("p b" consult-project-buffer "switch project buffer" :exit t)
-				("p v" magit "magit" :exit t)
-				("p s" consult-ripgrep "search in project" :exit t)
-				("p c" project-kill-buffers "close project" :exit t))
-			 "Search"
-			 (("s d" xref-find-definitions "find definitions" :exit t)
-				("s r" xref-find-references "find references" :exit t)
-				("s i" consult-imenu-multi "imenu" :exit t))
-			 "Window/Workspace"
-			 (("w" toggles-window/body "windows/workspace" :exit t))
-			 "Buffer"
-			 (("," consult-buffer "switch buffer" :exit t)
-				("b d" kill-current-buffer "kill buffer" :exit t)
-				("f s" save-buffer "save current buffer" :exit t))))))
-
-(use-package elisp-benchmarks)
+	(pretty-hydra-define
+		toggles-hydra
+		(:title
+		 (pretty-hydra-title "Main" 'mdicon "nf-md-cat")
+		 :color amaranth :quit-key ("q" "C-g" "ESC"))
+		("Project"
+		 (("p p" project-switch-project "switch project" :exit t)
+			("p f" project-find-file "find file" :exit t)
+			("p b" consult-project-buffer "switch project buffer" :exit t)
+			("p v" magit "magit" :exit t)
+			("p s" consult-ripgrep "search in project" :exit t)
+			("p c" project-kill-buffers "close project" :exit t))
+		 "Search"
+		 (("s d" xref-find-definitions "find definitions" :exit t)
+			("s r" xref-find-references "find references" :exit t)
+			("s i" consult-imenu-multi "imenu" :exit t))
+		 "Window/Workspace"
+		 (("w" toggles-window/body "windows/workspace" :exit t))
+		 "Buffer"
+		 (("," consult-buffer "switch buffer" :exit t)
+			("b d" kill-current-buffer "kill buffer" :exit t)
+			("f s" save-buffer "save current buffer" :exit t)))))
 
 (use-package nano-read)
 

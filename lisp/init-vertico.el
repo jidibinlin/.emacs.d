@@ -178,8 +178,8 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 			(embark-export))))
 
 (use-package consult-xref-stack
+	:demand t
 	:bind
-
 	(("C-," . consult-xref-stack-backward)))
 
 ;; (use-package nano-vertico
