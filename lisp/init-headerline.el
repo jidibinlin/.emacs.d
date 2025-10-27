@@ -13,7 +13,11 @@
 
 (use-package spacious-padding
   :demand t
-  :hook (after-init . spacious-padding-mode))
+  :hook (after-init . my/spacious-padding-after-init)
+	:init
+	(defun my/spacious-padding-after-init()
+		(when (posframe-workable-p)
+			(spacious-padding-mode))))
 
 (defun subtle-modeline (&rest _)
   "`subtle-modeline' enable subtle mode line."
