@@ -7,11 +7,10 @@
 ;;; Code:
 
 (use-package org-margin
-	:ensure (:host github :repo "rougier/org-margin")
 	:hook (org-mode . org-margin-mode))
 
+
 (use-package org-roam
-  :ensure t
   :custom
   (org-roam-directory (file-truename "~/Documents/MyBlogSite/RoamNote/"))
   :config
@@ -43,7 +42,7 @@
 <!--more-->
 #+end_export")
 																	 :unnarrowed t)))
-	
+
 	(setq org-roam-sub-templates '(("n" "Note" plain "%?"
 																	:target (file+head "${MAIN-TITLE}/${title}/${title}.org"
 																										 "
@@ -62,8 +61,8 @@
 #+HUGO_DRAFT: true
 #+DATE: %<[%Y-%m-%d %a %H:%M]>
 #+TITLE: ${title}
-#+HUGO_TAGS: 
-#+HUGO_CATEGORIES: 
+#+HUGO_TAGS:
+#+HUGO_CATEGORIES:
 #+DESCRIPTION:
 #+begin_export html
 <!--more-->
@@ -73,7 +72,7 @@
 [[id:${MAIN-ID}][${MAIN-TITLE}]]
 ")
 																	:unnarrowed t)))
-	
+
 	(cl-defun org-roam-main-node-capture (&optional goto keys &key info)
 		(interactive "P")
 		(let ((filter-fn (lambda (org-roam-node)
@@ -85,7 +84,7 @@
 												:filter-fn filter-fn
 												:templates org-roam-main-templates
 												:info '(:TYPE "main"))))
-	
+
 	(cl-defun org-roam-sub-node-capture (&optional goto keys &key info)
 		(interactive "P")
 		(let* ((filter-fn (lambda (node-type)

@@ -10,7 +10,6 @@
 (set-face-attribute 'default nil :font conia-font)
 
 (use-package nerd-icons
-	:ensure t
 	:demand t
 	:config
 	(setf (alist-get 'go-mode  nerd-icons-mode-icon-alist)

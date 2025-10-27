@@ -8,14 +8,12 @@
 
 
 (use-package hide-mode-line
-  :hook (elpaca-after-init . global-hide-mode-line-mode)
-  :ensure t
+  :hook (after-init . global-hide-mode-line-mode)
   :demand t)
 
 (use-package spacious-padding
-  :ensure t
   :demand t
-  :hook (elpaca-after-init . spacious-padding-mode))
+  :hook (after-init . spacious-padding-mode))
 
 (defun subtle-modeline (&rest _)
   "`subtle-modeline' enable subtle mode line."
@@ -39,16 +37,14 @@
 												:overline active-subtle :foreground foreground
 												:background background :box new-box)))
 
-(add-hook 'elpaca-after-init-hook #'subtle-modeline)
+(add-hook 'after-init-hook #'subtle-modeline)
 
 (add-to-list 'enable-theme-functions #'subtle-modeline)
 
 (use-package breadcrumb
   :init
   (setq breadcrumb-project-max-length 0.0)
-	(setq breadcrumb-idle-time 1.5)
-  :demand t
-  :ensure t)
+	(setq breadcrumb-idle-time 1.5))
 
 (defface conia/header-line-mode-indicator-face
 	'((t :inherit (font-lock-keyword-face)))
@@ -102,7 +98,7 @@
 																		 " "
 																		 (:eval (breadcrumb--header-line)))))
 
-(add-hook 'elpaca-after-init-hook #'conia/set-base-header-line-format)
+(add-hook 'after-init-hook #'conia/set-base-header-line-format)
 
 (defun conia/subtle-set-face-for-frame (frame)
 	"Set face for frame."

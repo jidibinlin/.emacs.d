@@ -7,28 +7,28 @@
 ;;; Code:
 
 (use-package popper
-  :ensure t
+  :demand t
+  :hook ((after-init . popper-mode)
+         ;(after-init . popper-echo-mode)
+		 )
   :bind (("C-`"   . popper-toggle)
 				 ("M-`"   . popper-cycle)
 				 ("C-M-`" . popper-toggle-type))
   :init
-	(setq popper-group-function #'popper-group-by-project)
+  (setq popper-group-function #'popper-group-by-project)
   (setq popper-reference-buffers
 				'("\\*Messages\\*"
 					"Output\\*$"
 					"\\*Async Shell Command\\*"
 					"\\*Warnings\\*"
 					help-mode
-					compilation-mode))
-  (popper-mode +1)
-  (popper-echo-mode +1))
+					compilation-mode)))
 
 (use-package winum
-	:ensure t
 	:demand t
 	:custom
 	(winum-auto-setup-mode-line nil)
-	:hook ((elpaca-after-init . winum-mode))
+	:hook ((after-init . winum-mode))
 	:custom-face
 	(winum-face ((t (:inherit font-lock-keyword-face))))
 	:config
@@ -42,18 +42,18 @@
 										icon-str
 										:face "winum-face" :v-adjust 0.16)))
 				icon)))
-	
+
 	(defvar conia/winum--mode-line-segment
 		'(:eval (format "%s"
 										(thread-first (winum-get-number-string)
 																	(conia/winum-icon)))))
-	
+
 	(defun conia/winum-append-header-line-format ()
 		(setq-default header-line-format
 									(add-to-list 'header-line-format conia/winum--mode-line-segment)))
-	
-	(add-hook 'elpaca-after-init-hook #'conia/winum-append-header-line-format 100)
-	
+
+	(add-hook 'after-init-hook #'conia/winum-append-header-line-format 100)
+
 	(pretty-hydra-define
 		toggles-window
 		(:title (pretty-hydra-title "Windowd/Workspace" 'mdicon "nf-md-microsoft_windows")
@@ -73,9 +73,8 @@
 			("5" winum-select-window-5 "jump to win5" :exit t)))))
 
 (use-package persp-mode
-	:ensure t
 	:hook((kill-emacs . persp-save-state)
-				(elpaca-after-init . persp-mode))
+				(after-init . persp-mode))
 	:custom
 	(persp-mode-prefix-key (kbd "C-c C-w"))
 	:config
@@ -89,7 +88,7 @@
 				persp-kill-foreign-buffer-behaviour 'kill
 				persp-remove-buffers-from-nil-persp-behaviour nil
 				persp-auto-resume-time -1)
-	
+
 	(defun conia/pretty-hydra-define-persp ()
 		(pretty-hydra-define+
 			toggles-window ()
@@ -102,8 +101,7 @@
 	:diminish
 	:custom-face
 	(transient-posframe ((t (:inherit tooltip))))
-	:hook (elpaca-after-init . transient-posframe-mode)
-	:ensure t
+	:hook (after-init . transient-posframe-mode)
 	:after (posframe)
 	:init
 	(setq transient-posframe-border-width 1

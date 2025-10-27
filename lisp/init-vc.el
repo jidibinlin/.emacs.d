@@ -6,32 +6,23 @@
 ;;
 ;;; Code:
 
-(use-package transient
-  :ensure t)
+(use-package transient)
 
 (use-package magit
-  :ensure t
-	:hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
-				 (magit-post-refresh . diff-hl-magit-post-refresh))
 	:custom
 	(magit-log-section-commit-count 20)
 	:custom-face
 	(magit-header-line ((t (:inherit header-line
 																	 :foreground unspecified
 																	 :background unspecified
-																	 :box unspecified)))))
+																	 :box unspecified))))
+	:config
+	(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
-(use-package vc
-  :defer t
-  :ensure nil
-  :custom-face
-  (vc-up-to-date-state ((t (:inherit font-lock-keyword-face :bold t))))
-  (vc-edited-state ((t (:inherit font-lock-warning-face :bold t))))
-  (vc-conflict-state ((t (:inherit error :bold t)))))
 
 (use-package emsg-blame
-	:ensure (:host github :repo "ISouthRain/emsg-blame")
-  :hook (elpaca-after-init . global-emsg-blame-mode)
+  :hook (after-init . global-emsg-blame-mode)
+
   :config
   (defun my--emsg-blame-display ()
     "Display git blame message, right-aligned with Magit-style faces.
@@ -60,8 +51,7 @@ do not both fit in the echo area."
 								ediff-window-setup-function #'ediff-setup-windows-plain))
 
 (use-package diff-hl
-	:ensure t
-	:hook (elpaca-after-init . global-diff-hl-mode)
+	:hook (after-init . global-diff-hl-mode)
 	:custom
 	(diff-hl-draw-borders nil)
 	:config
@@ -87,13 +77,13 @@ do not both fit in the echo area."
 																			 (make-string (- w half-w) ?0)))
 														 2))
 				nil nil 'center)))
-	
+
 	(advice-add #'diff-hl-define-bitmaps
 							:after #'conia/pretty-diff-hl-fringe)
-	
+
 	(defun conia/diff-hl-type-at-pos-fn (type _pos)
 		'diff-hl-bmp-middle)
-	
+
 	(setq diff-hl-fringe-bmp-function #'conia/diff-hl-type-at-pos-fn)
 	(defun conia/diff-hl-fringe-pretty(_)
 		(set-face-attribute 'diff-hl-insert nil :background 'unspecified :inherit nil)

@@ -7,7 +7,6 @@
 ;;; Code:
 
 (use-package rust-ts-mode
-	:ensure nil
 	:hook (rust-ts-mode . eglot-ensure))
 
 (provide 'init-rust)

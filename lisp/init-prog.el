@@ -30,8 +30,8 @@
   (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 (use-package eldoc-box
-  :ensure (:host github :repo "jidibinlin/eldoc-box")
   :hook (eldoc-mode . eldoc-box-hover-at-point-mode)
+
   :diminish (eldoc-box-hover-at-point-mode eldoc-box-hover-mode)
   :init
   (setq-default eldoc-idle-delay 1)
@@ -109,26 +109,22 @@
 	(add-to-list 'enable-theme-functions #'+pretty-flymake-fringe-indicator))
 
 (use-package apheleia
-  :ensure t
 	:demand t
-  :hook (elpaca-after-init . apheleia-global-mode))
+  :hook (after-init . apheleia-global-mode))
 
 (use-package rainbow-delimiters
-	:ensure t
 	:hook (prog-mode . rainbow-delimiters-mode)
 	:custom
 	(rainbow-delimiters-max-face-count 4))
 
 (use-package treesit-fold
-	:ensure (:host github :repo "emacs-tree-sitter/treesit-fold")
 	:after prog-mode
-	:hook ((elpaca-after-init . global-treesit-fold-mode)))
 
-(use-package protobuf-mode
-	:ensure t)
+	:hook ((after-init . global-treesit-fold-mode)))
+
+(use-package protobuf-mode)
 
 (use-package markdown-mode
-	:ensure t
 	:custom-face
 	(markdown-code-face ((t (:inherit default :background unspecified :foreground unspecified)))))
 

@@ -10,7 +10,6 @@
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
-  :ensure t
   :custom
   ;; Configure a custom style dispatcher (see the Consult wiki)
   ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
@@ -20,13 +19,11 @@
   (completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
-  :hook (elpaca-after-init . marginalia-mode)
-  :demand t
-  :ensure t)
+  :hook (after-init . marginalia-mode)
+  :demand t)
 
 (use-package vertico
-  :hook ((elpaca-after-init . vertico-mode))
-  :ensure t
+  :hook ((after-init . vertico-mode))
   :custom
   (vertico-scroll-margin 0)
   (vertico-count 20)
@@ -51,7 +48,6 @@
 
 (use-package vertico-directory
 	:after vertico
-	:ensure nil
 	:bind (:map vertico-map
 							("RET" . vertico-directory-enter)
 							("DEL" . vertico-directory-delete-char)
@@ -59,7 +55,6 @@
 	:hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package consult
-  :ensure t
   :bind (("C-s" . consult-line))
 	:init
 	(defvar +fly-commands
@@ -72,14 +67,14 @@
 			project-search
 			consult-imenu-multi
       eglot-rename))
-	
+
 	(defvar +fly-back-commands
     '(self-insert-command))
-	
+
 	:config
 	(setq xref-show-xrefs-function #'consult-xref)
 	(setq xref-show-definitions-function #'consult-xref)
-	
+
 	(defun +fly-back-to-present ()
     "Self-explained."
     (remove-hook 'pre-command-hook '+fly-back-to-present t)
@@ -93,7 +88,7 @@
 					 (delete-region
 						(goto-char (minibuffer-prompt-end))
 						(point-max)))))
-	
+
 	(defun +fly-time-travel ()
     "Insert `thing-at-point'."
     (when (memq this-command +fly-commands)
@@ -108,18 +103,15 @@
       (add-hook 'pre-command-hook '+fly-back-to-present nil t)))
 	(add-hook 'minibuffer-setup-hook #'+fly-time-travel))
 
-(use-package consult-tramp
-	:ensure (:host github :repo "Ladicle/consult-tramp"))
+(use-package consult-tramp)
 
-(use-package embark-consult
-	:ensure t)
+
+(use-package embark-consult)
 
 (use-package which-key
-	:ensure t
-	:hook (elpaca-after-init . which-key-mode))
+	:hook (after-init . which-key-mode))
 
 (use-package embark
-	:ensure t
 	:bind ("C-;" . #'embark-act)
 	:config
 	;; shiped from doom
@@ -164,7 +156,6 @@ targets."
 
 (use-package wgrep
 	:commands wgrep-change-to-wgrep-mode
-	:ensure t
 	:config
 	(setq wgrep-auto-save-buffer t)
 	:init
@@ -187,8 +178,8 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 			(embark-export))))
 
 (use-package consult-xref-stack
-	:ensure (:host github :repo "brett-lempereur/consult-xref-stack")
 	:bind
+
 	(("C-," . consult-xref-stack-backward)))
 
 ;; (use-package nano-vertico

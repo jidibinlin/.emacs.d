@@ -6,12 +6,10 @@
 ;;
 ;;; Code:
 
-(use-package doom-themes
-	:ensure t)
+(use-package doom-themes)
 
 ;; use-package with Elpaca:
 (use-package dashboard
-  :ensure t
 	:init
 	(setq-default dashboard-center-content t)
 	(setq dashboard-items '((recents . 5)
@@ -27,15 +25,14 @@
 	(setq-default dashboard-set-heading-icons t)
 	(setq-default dashboard-set-file-icons t)
 	:config
-	(add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
-	(add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+	(add-hook 'after-init-hook #'dashboard-insert-startupify-lists)
+	(add-hook 'after-init-hook #'dashboard-initialize)
 	(dashboard-setup-startup-hook)
 	(remove-hook #'after-init-hook #'dashboard-insert-startupify-lists)
 	(remove-hook #'emacs-startup-hook #'dashboard-initialize))
 
 (use-package page-break-lines
-	:ensure t
-	:hook (elpaca-after-init . global-page-break-lines-mode)
+	:hook (after-init . global-page-break-lines-mode)
 	:config
 	(add-to-list 'page-break-lines-modes 'prog-mode)
 	(add-to-list 'page-break-lines-modes 'fundamental-mode))
@@ -49,7 +46,7 @@
 			(load-theme theme :no-confirm)
 		(load-theme choosed-theme :no-confirm)))
 
-(add-hook 'elpaca-after-init-hook #'conia/load-theme)
+(add-hook 'after-init-hook #'conia/load-theme)
 
 (provide 'init-theme)
 ;;; init-theme.el ends here

@@ -8,7 +8,6 @@
 
 
 (use-package treesit-auto
-  :ensure t
   :demand t
   :hook (after-init . global-treesit-auto-mode)
   :custom

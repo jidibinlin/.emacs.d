@@ -25,12 +25,10 @@
 ;; The package is young and doesn't have comprehensive coverage.
 (use-package tempel-collection
   :after tempel
-  :ensure t
 	:demand t)
 
 (use-package eglot-tempel
   :hook (after-init . eglot-tempel-mode)
-  :ensure t
 	:demand t)
 
 (provide 'init-snippets)

@@ -7,7 +7,6 @@
 ;;; Code:
 
 (use-package eglot-inactive-regions
-	:ensure t
   :after eglot
 	:hook ((c-ts-mode . eglot-inactive-regions-mode)
 				 (c++-ts-mode . eglot-inactive-regions-mode))

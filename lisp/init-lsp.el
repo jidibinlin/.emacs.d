@@ -36,18 +36,17 @@
 
 	(defun conia/eglot--register-apheleia-formatter()
 		(add-to-list 'apheleia-formatters
-								 '(eglot . conia/apheleia-formatter-eglot)))
-	(add-hook 'elpaca-after-init-hook  #'conia/eglot--register-apheleia-formatter)
+									 '(eglot . conia/apheleia-formatter-eglot)))
+	(add-hook 'after-init-hook  #'conia/eglot--register-apheleia-formatter)
 	(add-hook 'eglot--managed-mode-hook #'conia/merge-capf 100))
 
-(use-package consult-eglot
-  :ensure t)
+(use-package consult-eglot)
 
 (when (< emacs-major-version 30)
 	(use-package eglot-booster
-		:ensure (:host github :repo "jdtsmith/eglot-booster")
 		:after eglot
-		:hook (elpaca-after-init . eglot-booster-mode)))
+
+		:hook (after-init . eglot-booster-mode)))
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

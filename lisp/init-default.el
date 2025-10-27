@@ -65,13 +65,11 @@
 (advice-add 'font-lock-mode :around #'conia/large-file-control)
 
 (use-package gcmh
-	:ensure t
 	:config
 	(gcmh-mode 1))
 
 (use-package hungry-delete
-	:ensure t
-	:hook (elpaca-after-init . global-hungry-delete-mode))
+	:hook (after-init . global-hungry-delete-mode))
 
 (use-package eldoc
 	:config
@@ -86,7 +84,6 @@
 	(advice-add #'eldoc--invoke-strategy :before #'conia/eldoc-invoke-strategy-advice))
 
 (use-package helpful
-	:ensure t
 	:bind (([remap describe-function] . helpful-callable)
 				 ([remap describe-command] . helpful-command)
 				 ([remap describe-variable] . helpful-variable)
@@ -103,7 +100,6 @@
 	(add-to-list 'enable-theme-functions #'my/disable-fille-column-background))
 
 (use-package posframe
-	:ensure t
 	:custom
 	(posframe-inhibit-double-buffering t)
 	:init
@@ -126,7 +122,6 @@
 	(add-to-list 'enable-theme-functions #'conia/refresh-posframe))
 
 (use-package hydra
-	:ensure t
 	:bind (:map meow-motion-state-keymap
 							("SPC" . toggles-hydra/body))
 	:init
@@ -148,8 +143,9 @@
 		(add-to-list 'enable-theme-functions 'hydra-set-posframe-show-params t)))
 
 (use-package pretty-hydra
-	:ensure t
+	:demand t
 	:custom (pretty-hydra-default-title-body-format-spec " %s%s")
+	:hook ((after-init . my-pretty-hydra-after-init))
 	:bind (:map meow-normal-state-keymap
 							("SPC" . toggles-hydra/body))
 	:init
@@ -171,34 +167,34 @@
 														 :foreground 'unspecified))
 							" "))))
 			 (propertize title 'face face))))
-	
-	(pretty-hydra-define
-		toggles-hydra
-		(:title (pretty-hydra-title "Main" 'mdicon "nf-md-cat")
-						:color amaranth :quit-key ("q" "C-g" "ESC"))
-		("Project"
-		 (("p p" project-switch-project "switch project" :exit t)
-			("p f" project-find-file "find file" :exit t)
-			("p b" consult-project-buffer "switch project buffer" :exit t)
-			("p v" magit "magit" :exit t)
-			("p s" consult-ripgrep "search in project" :exit t)
-			("p c" project-kill-buffers "close project" :exit t))
-		 "Search"
-		 (("s d" xref-find-definitions "find definitions" :exit t)
-			("s r" xref-find-references "find references" :exit t)
-			("s i" consult-imenu-multi "imenu" :exit t))
-		 "Window/Workspace"
-		 (("w" toggles-window/body "windows/workspace" :exit t))
-		 "Buffer"
-		 (("," consult-buffer "switch buffer" :exit t)
-			("b d" kill-current-buffer "kill buffer" :exit t)
-			("f s" save-buffer "save current buffer" :exit t)))))
+	(defun my-pretty-hydra-after-init ()
 
-(use-package elisp-benchmarks
-	:ensure t)
+		(pretty-hydra-define
+			toggles-hydra
+			(:title (pretty-hydra-title "Main" 'mdicon "nf-md-cat")
+							:color amaranth :quit-key ("q" "C-g" "ESC"))
+			("Project"
+			 (("p p" project-switch-project "switch project" :exit t)
+				("p f" project-find-file "find file" :exit t)
+				("p b" consult-project-buffer "switch project buffer" :exit t)
+				("p v" magit "magit" :exit t)
+				("p s" consult-ripgrep "search in project" :exit t)
+				("p c" project-kill-buffers "close project" :exit t))
+			 "Search"
+			 (("s d" xref-find-definitions "find definitions" :exit t)
+				("s r" xref-find-references "find references" :exit t)
+				("s i" consult-imenu-multi "imenu" :exit t))
+			 "Window/Workspace"
+			 (("w" toggles-window/body "windows/workspace" :exit t))
+			 "Buffer"
+			 (("," consult-buffer "switch buffer" :exit t)
+				("b d" kill-current-buffer "kill buffer" :exit t)
+				("f s" save-buffer "save current buffer" :exit t))))))
 
-(use-package nano-read
-	:ensure (:host github :repo "rougier/nano-read"))
+(use-package elisp-benchmarks)
+
+(use-package nano-read)
+
 
 (use-package text-mode
 	:init

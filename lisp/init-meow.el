@@ -7,8 +7,8 @@
 ;;; Code:
 
 (use-package meow
-  :ensure (:host github :repo "jidibinlin/meow")
   :demand t
+
   :custom-face
   (meow-normal-indicator ((t (:inherit font-lock-keyword-face :bold t))))
   (meow-motion-indicator ((t (:inherit font-lock-keyword-face :bold t))))

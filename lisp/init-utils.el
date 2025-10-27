@@ -9,7 +9,6 @@
 (require 'envir)
 
 (use-package makefile-executor
-	:ensure t
 	:hook (makefile-mode . makefile-executor-mode)
 	:demand t
 	:config
@@ -28,36 +27,31 @@ you'll be prompted to select one."
 				(let ((default-directory (file-name-directory makefile)))
 					(makefile-executor-execute-target makefile))))))
 
-(use-package rime
-	:ensure t
-	:demand t
-	:bind  (:map rime-active-mode-map
-							 ("<escape>" . nil))
-	:hook (kill-emacs . rime-lib-finalize)
-	:custom
-	(default-input-method "rime")
-	(rime-show-candidate 'posframe)
-	:config
-	(add-to-list 'rime-disable-predicates 'meow-normal-mode-p)
-	(defun conia/enable-rime ()
-		(rime-activate nil)
-		(rime-lib-select-schema "luna_pinyin_simp"))
-	(add-hook 'elpaca-after-init-hook #'conia/enable-rime))
+;; (use-package rime
+;; 	:demand t
+;; 	:bind  (:map rime-active-mode-map
+;; 							 ("<escape>" . nil))
+;; 	:hook (kill-emacs . rime-lib-finalize)
+;; 	:custom
+;; 	(default-input-method "rime")
+;; 	(rime-show-candidate 'posframe)
+;; 	:config
+;; 	(add-to-list 'rime-disable-predicates 'meow-normal-mode-p)
+;; 	(defun conia/enable-rime ()
+;; 		(rime-activate nil)
+;; 		(rime-lib-select-schema "luna_pinyin_simp"))
+;; 	(add-hook 'after-init-hook #'conia/enable-rime))
 
-(use-package keycast
-	:ensure t)
+(use-package keycast)
 
 (use-package visual-replace
-	:ensure t
-	:hook (elpaca-after-init . visual-replace-global-mode))
+	:hook (after-init . visual-replace-global-mode))
 
 (use-package dumb-jump
-	:ensure t
 	:config
 	(add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package pdf-tools
-	:ensure t)
+(use-package pdf-tools)
 
 (provide 'init-utils)
 ;;; init-utils.el ends here
