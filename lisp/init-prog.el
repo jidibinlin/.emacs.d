@@ -128,5 +128,8 @@
 	:custom-face
 	(markdown-code-face ((t (:inherit default :background unspecified :foreground unspecified)))))
 
+(use-package nix-ts-mode
+	:mode "\\.nix\\'")
+
 (provide 'init-prog)
 ;;; init-prog.el ends here

@@ -1,3 +1,4 @@
+
 ;;; init-theme.el --- config for themes -*- lexical-binding: t; -*-
 
 ;;; Commentary:
@@ -37,7 +38,7 @@
 	(add-to-list 'page-break-lines-modes 'prog-mode)
 	(add-to-list 'page-break-lines-modes 'fundamental-mode))
 
-(defvar choosed-theme 'doom-nord)
+(defvar choosed-theme 'modus-vivendi-deuteranopia)
 
 (defun conia/load-theme (&optional theme)
 	"Load a theme, `THEME' is the theme to load."
