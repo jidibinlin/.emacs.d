@@ -9,8 +9,8 @@
 (use-package popper
   :demand t
   :hook ((after-init . popper-mode)
-         ;(after-init . popper-echo-mode)
-		 )
+																				;(after-init . popper-echo-mode)
+				 )
   :bind (("C-`"   . popper-toggle)
 				 ("M-`"   . popper-cycle)
 				 ("C-M-`" . popper-toggle-type))
@@ -41,7 +41,7 @@
 						 (icon (nerd-icons-mdicon
 										icon-str
 										:face "winum-face" :v-adjust 0.16)))
-				icon)))
+				(format " %s " icon))))
 
 	(defvar conia/winum--mode-line-segment
 		'(:eval (format "%s"
