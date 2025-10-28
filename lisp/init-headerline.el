@@ -94,7 +94,8 @@
 			(propertize str 'face 'conia/header-line-input-method-indicator-face))))
 
 (defun conia/set-base-header-line-format ()
-	(setq-default header-line-format '((:eval (meow--render-indicator))
+	(setq-default header-line-format '(
+																		 (:eval (format " %s " evil-state))
 																		 (:eval (conia/header-line-input-method-indicator))
 																		 (:eval (conia/header-line-vc-indicator))
 																		 " "

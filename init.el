@@ -24,7 +24,7 @@
 (require 'init-headerline)
 (require 'init-theme)
 (require 'init-treesit)
-(require 'init-meow)
+(require 'init-evil)
 (require 'init-default)
 (require 'init-prog)
 (require 'init-window)

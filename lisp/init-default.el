@@ -122,7 +122,7 @@
 	(add-to-list 'enable-theme-functions #'conia/refresh-posframe))
 
 (use-package hydra
-	:bind (:map meow-motion-state-keymap
+	:bind (:map evil-normal-state-map
 							("SPC" . toggles-hydra/body))
 	:init
 	(when (posframe-workable-p)
@@ -145,8 +145,6 @@
 
 (use-package pretty-hydra
 	:demand t
-	:bind (:map meow-normal-state-keymap
-							("SPC" . toggles-hydra/body))
 	:config
 	(cl-defun pretty-hydra-title (title &optional icon-type icon-name
 																			&key face height v-adjust)
