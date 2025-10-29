@@ -117,6 +117,12 @@
 ;; 	;; (add-to-list 'conia/capfs-priority '(copilot-completion-at-point . 50))
 ;; )
 
+(use-package claude-code-ide
+	:config
+	(setq claude-code-ide-cli-path "codebuddy-code")
+	(setq claude-code-ide-terminal-backend 'eat)
+	(claude-code-ide-emacs-tools-setup))
+
 (provide 'init-ai)
 
 ;;; init-ai.el ends here

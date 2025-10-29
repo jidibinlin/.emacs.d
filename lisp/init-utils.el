@@ -53,5 +53,10 @@ you'll be prompted to select one."
 
 (use-package pdf-tools)
 
+(use-package eat
+	:config
+	(add-to-list 'evil-emacs-state-modes 'eat-mode)
+	(setq evil-insert-state-modes (remove 'eat-mode evil-insert-state-modes)))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here

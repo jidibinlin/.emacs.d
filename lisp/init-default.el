@@ -122,8 +122,8 @@
 	(add-to-list 'enable-theme-functions #'conia/refresh-posframe))
 
 (use-package hydra
-	:bind (:map evil-normal-state-map
-							("SPC" . toggles-hydra/body))
+	:bind (:map evil-normal-state-map ("SPC" . toggles-hydra/body)
+							:map evil-emacs-state-map ("C-c -" . toggles-hydra/body))
 	:init
 	(when (posframe-workable-p)
 		(setq hydra-hint-display-type 'posframe)

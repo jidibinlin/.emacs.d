@@ -19,6 +19,8 @@
 (add-to-list 'load-path (concat user-emacs-directory "envir/"))
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 (require 'envir)
+(require 'bytecomp)
+(setq byte-compile-warnings nil)
 
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
@@ -38,5 +40,6 @@
 
 
 (setq custom-file (make-temp-file "emacs-custom"))
+
 
 ;;; early-init.el ends here
