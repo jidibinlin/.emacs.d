@@ -56,6 +56,7 @@
 
 (use-package consult
   :bind (("C-s" . consult-line))
+	:demand t
 	:init
 	(defvar +fly-commands
     '(consult-line
@@ -74,6 +75,7 @@
 	:config
 	(setq xref-show-xrefs-function #'consult-xref)
 	(setq xref-show-definitions-function #'consult-xref)
+	(require 'consult-imenu)
 
 	(defun +fly-back-to-present ()
     "Self-explained."
