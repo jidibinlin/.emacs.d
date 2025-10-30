@@ -110,6 +110,8 @@
 
 (use-package apheleia
 	:demand t
+	:init
+	(defvar format-on-save t)
   :hook (after-init . apheleia-global-mode))
 
 (use-package rainbow-delimiters

@@ -28,7 +28,10 @@
 					(ignore (funcall callback)))))
 	(cl-defun conia/apheleia-formatter-eglot
 			(&rest plist &key buffer callback &allow-other-keys)
-		(conia/format--with-eglot nil nil :buffer buffer plist))
+
+		(when (buffer-local-value 'format-on-save buffer)
+			(message "format-on-save is %s current-buffer is %s" (buffer-local-value 'format-on-save buffer) buffer)
+			(conia/format--with-eglot nil nil :buffer buffer plist)))
 
 	(defun conia/enable-eglot-format-onsave ()
 		(setq-local apheleia-formatter 'eglot))
@@ -36,7 +39,7 @@
 
 	(defun conia/eglot--register-apheleia-formatter()
 		(add-to-list 'apheleia-formatters
-									 '(eglot . conia/apheleia-formatter-eglot)))
+								 '(eglot . conia/apheleia-formatter-eglot)))
 	(add-hook 'after-init-hook  #'conia/eglot--register-apheleia-formatter)
 	(add-hook 'eglot--managed-mode-hook #'conia/merge-capf 100))
 
