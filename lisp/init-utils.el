@@ -27,20 +27,20 @@ you'll be prompted to select one."
 				(let ((default-directory (file-name-directory makefile)))
 					(makefile-executor-execute-target makefile))))))
 
-;; (use-package rime
-;; 	:demand t
-;; 	:bind  (:map rime-active-mode-map
-;; 							 ("<escape>" . nil))
-;; 	:hook (kill-emacs . rime-lib-finalize)
-;; 	:custom
-;; 	(default-input-method "rime")
-;; 	(rime-show-candidate 'posframe)
-;; 	:config
-;; 	(add-to-list 'rime-disable-predicates 'meow-normal-mode-p)
-;; 	(defun conia/enable-rime ()
-;; 		(rime-activate nil)
-;; 		(rime-lib-select-schema "luna_pinyin_simp"))
-;; 	(add-hook 'after-init-hook #'conia/enable-rime))
+(use-package rime
+	:demand t
+	:hook ((kill-emacs . rime-lib-finalize)
+				 (after-init . conia/enable-rime))
+	:custom
+	(default-input-method "rime")
+	:init
+	(defun conia/enable-rime ()
+		(rime-activate nil)
+		(rime-lib-select-schema "luna_pinyin_simp"))
+	:config
+	(when (posframe-workable-p)
+		(setq rime-show-candidate 'posframe))
+	(add-to-list 'rime-disable-predicates 'evil-normal-state-p))
 
 (use-package keycast)
 
@@ -54,6 +54,16 @@ you'll be prompted to select one."
 (use-package pdf-tools)
 
 (use-package eat
+	:demand t
+	:hook((after-init . conia/pretty-hydra-define-eat))
+	:custom
+	(eat-kill-buffer-on-exit t)
+	:init
+	(defun conia/pretty-hydra-define-eat ()
+		(pretty-hydra-define+
+			toggles-hydra ()
+			("Project"
+			 (("p t" eat "open terminal" :exit t)))))
 	:config
 	(add-to-list 'evil-emacs-state-modes 'eat-mode)
 	(setq evil-insert-state-modes (remove 'eat-mode evil-insert-state-modes)))
