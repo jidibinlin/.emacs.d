@@ -25,7 +25,6 @@
         corfu-on-exact-match nil
         corfu-quit-no-match  t
 				corfu-quit-at-boundary 'separator)
-  :config
   (defun conia/switch-corfu-preselect-prompt ()
     (setq-local corfu-preselect 'prompt)))
 
