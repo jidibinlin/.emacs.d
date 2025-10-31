@@ -131,7 +131,17 @@
 	(markdown-code-face ((t (:inherit default :background unspecified :foreground unspecified)))))
 
 (use-package nix-ts-mode
-	:mode "\\.nix\\'")
+	:mode "\\.nix\\'"
+	:hook ((nix-ts-mode . eglot-ensure)))
+
+(use-package lua-ts-mode
+	:hook((lua-ts-mode . (lambda ()
+												 (indent-tabs-mode -1)))
+				(lua-ts-mode . eglot-ensure)))
+
+(use-package editorconfig
+	:demand t
+	:hook (after-init . editorconfig-mode))
 
 (provide 'init-prog)
 ;;; init-prog.el ends here

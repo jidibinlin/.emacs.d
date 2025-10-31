@@ -11,6 +11,7 @@
   (setq eglot-autoshutdown t)
   (setq eglot-send-changes-idle-time 0.1)
   (setq-default eglot-events-buffer-size 0)
+	(setq-default eglot-events-buffer-config '(:size 0 :format full))
 	(setq-default eglot-sync-connect 0)
 	(add-to-list 'conia/capfs-to-merge (cons 'eglot--managed-mode
 																					 'eglot-completion-at-point))
