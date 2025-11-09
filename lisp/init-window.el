@@ -40,7 +40,9 @@
 						 (icon-str (format format-str num))
 						 (icon (nerd-icons-mdicon
 										icon-str
-										:face "winum-face" :v-adjust 0.16)))
+										:face "winum-face"
+																				;:v-adjust 0.16
+										)))
 				(format " %s " icon))))
 
 	(defvar conia/winum--mode-line-segment

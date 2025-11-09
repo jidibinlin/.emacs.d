@@ -6,7 +6,7 @@
 ;;
 ;;; Code:
 
-(defvar conia-font (font-spec :family "Iosevka Comfy Fixed" :size 16))
+(defvar conia-font (font-spec :family "Aporetic Sans Mono" :size 25))
 (set-face-attribute 'default nil :font conia-font)
 
 (use-package nerd-icons
