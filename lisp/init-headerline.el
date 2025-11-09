@@ -8,8 +8,11 @@
 
 
 (use-package hide-mode-line
-  :hook (after-init . global-hide-mode-line-mode)
-  :demand t)
+  ;; :hook ((after-init . )
+	;; 			 (global-hide-mode-line-mode . subtle-modeline))
+  :demand t
+	:config
+	(global-hide-mode-line-mode +1))
 
 (use-package spacious-padding
   :demand t
@@ -17,7 +20,8 @@
 	:init
 	(defun my/spacious-padding-after-init()
 		(when (posframe-workable-p)
-			(spacious-padding-mode))))
+			(spacious-padding-mode)
+			(subtle-modeline))))
 
 (defun subtle-modeline (&rest _)
   "`subtle-modeline' enable subtle mode line."
