@@ -28,13 +28,13 @@
   (defun conia/switch-corfu-preselect-prompt ()
     (setq-local corfu-preselect 'prompt)))
 
-(use-package corfu-terminal
-	:demand t
-	:hook ((after-init . my/corfu-terminal-mode-after-init))
-	:init
-	(defun my/corfu-terminal-mode-after-init ()
-		(unless (posframe-workable-p)
-			(corfu-terminal-mode +1))))
+;; (use-package corfu-terminal
+;; 	:demand t
+;; 	:hook ((after-init . my/corfu-terminal-mode-after-init))
+;; 	:init
+;; 	(defun my/corfu-terminal-mode-after-init ()
+;; 		(unless (posframe-workable-p)
+;; 			(corfu-terminal-mode +1))))
 
 (use-package cape
   :demand t

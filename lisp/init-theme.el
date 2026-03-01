@@ -1,4 +1,3 @@
-
 ;;; init-theme.el --- config for themes -*- lexical-binding: t; -*-
 
 ;;; Commentary:
